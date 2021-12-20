@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Text, ListItem, Avatar, Icon, Badge, Button, Switch, colors} from 'react-native-elements';
-import {View, StyleSheet, Image, FlatList} from 'react-native';
+import {View, StyleSheet, Image, FlatList, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {quizOptions} from '../../utils/QuizOptions';
 
 const log = () => console.log('this is an example method');
 
@@ -75,159 +77,35 @@ const Main = () => {
   const [expanded, setExpanded] = React.useState(false);
 
   const listItemProps = {};
-  const renderRow = ({item}: {item: List1Data}) => {
-    return (
-      <ListItem.Swipeable
-        onPress={log}
-        bottomDivider
-        leftContent={<Button title="Info" icon={{name: 'info', color: 'white'}} buttonStyle={{minHeight: '100%'}} />}
-        rightContent={<Button title="Delete" icon={{name: 'delete', color: 'white'}} buttonStyle={{minHeight: '100%', backgroundColor: 'red'}} />}>
-        <Icon name={item.icon} tvParallaxProperties={undefined} />
-        <ListItem.Content>
-          <ListItem.Title>{item.title}</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron tvParallaxProperties={undefined} />
-      </ListItem.Swipeable>
-    );
-  };
+
   const [switch1, setSwitch1] = useState(true);
   const [checkbox1, setCheckbox1] = useState(true);
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
 
   return (
-    <>
-      <FlatList
-        ListHeaderComponent={
+    <ScrollView>
+      <ListItem.Accordion
+        hasTVPreferredFocus={undefined}
+        tvParallaxProperties={undefined}
+        content={
           <>
-            <View style={{paddingVertical: 8}}>
-              {list2.map((l, i) => (
-                <ListItem
-                  key={i}
-                  linearGradientProps={{
-                    colors: l.linearGradientColors,
-                    start: [1, 0],
-                    end: [0.2, 0],
-                  }}
-                  containerStyle={{
-                    marginHorizontal: 16,
-                    marginVertical: 8,
-                    borderRadius: 8,
-                  }}
-                  hasTVPreferredFocus={undefined}
-                  tvParallaxProperties={undefined}>
-                  <Avatar rounded source={{uri: l.avatar_url}} />
-                  <ListItem.Content>
-                    <ListItem.Title style={{color: 'white', fontWeight: 'bold'}}>{l.name}</ListItem.Title>
-                    <ListItem.Subtitle style={[{color: 'white'}]}>{l.subtitle}</ListItem.Subtitle>
-                  </ListItem.Content>
-                  <ListItem.Chevron color="white" tvParallaxProperties={undefined} />
-                </ListItem>
-              ))}
-            </View>
-
-            <View style={styles.list}>
-              <ListItem.Accordion
-                hasTVPreferredFocus={undefined}
-                tvParallaxProperties={undefined}
-                content={
-                  <>
-                    <Icon tvParallaxProperties={undefined} name="place" size={30} />
-                    <ListItem.Content>
-                      <ListItem.Title>List Accordion</ListItem.Title>
-                    </ListItem.Content>
-                  </>
-                }
-                isExpanded={expanded}
-                onPress={() => {
-                  setExpanded(!expanded);
-                }}>
-                {list2.map((l: Partial<List2Data>, i: React.Key) => (
-                  <ListItem key={i} onPress={log} bottomDivider hasTVPreferredFocus={undefined} tvParallaxProperties={undefined}>
-                    <Avatar title={l.name} source={{uri: l.avatar_url}} />
-                    <ListItem.Content>
-                      <ListItem.Title>{l.name}</ListItem.Title>
-                      <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    <ListItem.Chevron tvParallaxProperties={undefined} />
-                  </ListItem>
-                ))}
-              </ListItem.Accordion>
-            </View>
-            <View style={styles.list}>
-              {list2.map((l, i) => (
-                <ListItem key={i} bottomDivider hasTVPreferredFocus={undefined} tvParallaxProperties={undefined}>
-                  <Icon tvParallaxProperties={undefined} name="user-circle-o" type="font-awesome" color="red" />
-                  <ListItem.Content>
-                    <ListItem.Title style={{color: 'red'}}>{l.name}</ListItem.Title>
-                    <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                  </ListItem.Content>
-                  <ListItem.Content right>
-                    <ListItem.Title right style={{color: 'green'}}>
-                      11:00 am
-                    </ListItem.Title>
-                    <ListItem.Subtitle right>12:00 am</ListItem.Subtitle>
-                  </ListItem.Content>
-                </ListItem>
-              ))}
-            </View>
-            <View style={styles.list}>
-              <ListItem bottomDivider hasTVPreferredFocus={undefined} tvParallaxProperties={undefined}>
-                <ListItem.Content>
-                  <ListItem.Title>Name</ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Input autoCompleteType={undefined} placeholder="Type your name" />
-                <ListItem.Chevron tvParallaxProperties={undefined} />
-              </ListItem>
-              <ListItem tvParallaxProperties={undefined} hasTVPreferredFocus={undefined} bottomDivider>
-                <ListItem.Content>
-                  <ListItem.Title>Switch that please 😲</ListItem.Title>
-                </ListItem.Content>
-                <Switch value={switch1} onValueChange={(value: any) => setSwitch1(value)} />
-              </ListItem>
-              <ListItem tvParallaxProperties={undefined} hasTVPreferredFocus={undefined} bottomDivider>
-                <ListItem.Content>
-                  <ListItem.Title>Choose 🤯</ListItem.Title>
-                </ListItem.Content>
-                <ListItem.ButtonGroup buttons={['Flower', 'Coco']} selectedIndex={selectedButtonIndex} onPress={(index: number) => setSelectedButtonIndex(index)} />
-              </ListItem>
-              <ListItem tvParallaxProperties={undefined} hasTVPreferredFocus={undefined} bottomDivider>
-                <ListItem.CheckBox checked={checkbox1} onPress={() => setCheckbox1(!checkbox1)} />
-                <ListItem.Content>
-                  <ListItem.Title>Check that please 😢</ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-              <ListItem tvParallaxProperties={undefined} hasTVPreferredFocus={undefined} bottomDivider>
-                <Badge value="12" />
-                <ListItem.Content>
-                  <ListItem.Title>With a Badge ! 😻</ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-              <ListItem tvParallaxProperties={undefined} hasTVPreferredFocus={undefined} bottomDivider>
-                <Icon tvParallaxProperties={undefined} name="check" size={20} />
-                <ListItem.Content>
-                  <ListItem.Title>This thing is checked 😎</ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            </View>
-            <View style={styles.list}>
-              <ListItem tvParallaxProperties={undefined} hasTVPreferredFocus={undefined}>
-                <Avatar source={{}} />
-                <ListItem.Content>
-                  <ListItem.Title>Limited supply! Its like digital gold!</ListItem.Title>
-                  <View style={styles.subtitleView}>
-                    <Image source={{}} style={styles.ratingImage} />
-                    <Text style={styles.ratingText}>5 months ago</Text>
-                  </View>
-                </ListItem.Content>
-              </ListItem>
-            </View>
+            <Icon tvParallaxProperties={undefined} name="place" size={30} />
+            <ListItem.Content>
+              <ListItem.Title>풀고싶은 문제 유형을 선택해주세요!</ListItem.Title>
+            </ListItem.Content>
           </>
         }
-        data={list1}
-        keyExtractor={(a: List1Data, index: number) => index.toString()}
-        renderItem={renderRow}
-      />
-    </>
+        isExpanded={expanded}
+        onPress={() => {
+          setExpanded(!expanded);
+        }}>
+        {quizOptions.SelectCategory.map(category => (
+          <ListItem key={category} onPress={log} bottomDivider hasTVPreferredFocus={undefined} tvParallaxProperties={undefined}>
+            <Text>{category}</Text>
+          </ListItem>
+        ))}
+      </ListItem.Accordion>
+    </ScrollView>
   );
 };
 
