@@ -11,8 +11,10 @@ import {
 } from '@testing-library/react-native';
 import MainScreen from '../modules/QuizMain/Screen/MainScreen';
 import MainStackScreenHeader from '../modules/QuizMain/Components/MainStackScreenHeader';
-import {SubFontColor} from '../modules/utils/Colors';
+import {disabledColor} from '../modules/utils/Colors';
 import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
+import {Provider} from 'react-redux';
+import configureStroe from '../modules/utils/Redux/configureStore';
 
 export const navigationMocking = {
    addListener: jest.fn(),
@@ -38,30 +40,26 @@ let MainHeader: RenderAPI | undefined;
 let mainHeaderProps: MainStackScreenHeaderProps = {
    navigation: navigationMocking,
    title: '문제 고르기',
-   difficulty: '쉬움',
-   numberOfQuiz: 10,
-   quizType: '객관식',
-   selectedCategory: '일반상식',
 };
 beforeEach(() => {
    MainRendered = render(
-      <MainScreen
-         navigation={navigationMocking}
-         route={{
-            key: '',
-            name: 'SelectQuizOption',
-         }}
-      />,
+      <Provider store={configureStroe}>
+         <MainScreen
+            navigation={navigationMocking}
+            route={{
+               key: '',
+               name: 'SelectQuizOption',
+            }}
+         />
+      </Provider>,
    );
    MainHeader = render(
-      <MainStackScreenHeader
-         difficulty={mainHeaderProps.difficulty}
-         numberOfQuiz={mainHeaderProps.numberOfQuiz}
-         quizType={mainHeaderProps.quizType}
-         selectedCategory={mainHeaderProps.selectedCategory}
-         navigation={mainHeaderProps.navigation}
-         title={mainHeaderProps.title}
-      />,
+      <Provider store={configureStroe}>
+         <MainStackScreenHeader
+            navigation={mainHeaderProps.navigation}
+            title={mainHeaderProps.title}
+         />
+      </Provider>,
    );
 });
 const testId: string[] = [
@@ -92,7 +90,7 @@ describe('main component visible test', () => {
          );
          const getElementConfirm = MainHeader.getByText('확인');
          expect(getElementConfirm.props.style.color).toBe(
-            SubFontColor,
+            disabledColor,
          );
       }
    });
