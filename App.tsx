@@ -1,13 +1,15 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-
-import Main from './modules/QuizMain/Screen/Main';
+import QuizMainNavigator from './modules/QuizMain/QuizMainNavigator';
 
 const App = () => {
   return (
     <SafeAreaProvider>
-      <SafeAreaView>
-        <Main />
+      <SafeAreaView style={{flex: 1}}>
+        <NavigationContainer>
+          <QuizMainNavigator />
+        </NavigationContainer>
       </SafeAreaView>
     </SafeAreaProvider>
   );
