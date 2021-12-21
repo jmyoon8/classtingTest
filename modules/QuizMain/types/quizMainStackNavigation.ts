@@ -12,7 +12,7 @@ export type GetQuizParamProps = {
 };
 type QuizStackNavigationPramlist = {
    SelectQuizOption: undefined;
-   GetQuizScreen: GetQuizParamProps;
+   GetQuizScreen: undefined;
 };
 export const QuizStackNavigation =
    createStackNavigator<QuizStackNavigationPramlist>();
@@ -20,7 +20,12 @@ export type MainStackScreenProps = StackScreenProps<
    QuizStackNavigationPramlist,
    'SelectQuizOption'
 >;
-export type MainStackScreenHeaderNavigationProps = StackNavigationProp<
+export type MainStackScreenHeaderNavigationProps =
+   StackNavigationProp<
+      QuizStackNavigationPramlist,
+      'SelectQuizOption'
+   >;
+export type QuizStackScreenProps = StackScreenProps<
    QuizStackNavigationPramlist,
-   'SelectQuizOption'
+   'GetQuizScreen'
 >;
