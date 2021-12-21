@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import MainScreen from './Screen/MainScreen';
+import GetQuizScreen from './Screen/GetQuizScreen';
 import {QuizStackNavigation} from './types/quizMainStackNavigation';
 
 const QuizMainNavigator = () => {
@@ -12,7 +13,7 @@ const QuizMainNavigator = () => {
          />
          <QuizStackNavigation.Screen
             name="GetQuizScreen"
-            component={MainScreen}
+            component={GetQuizScreen}
          />
       </QuizStackNavigation.Navigator>
    );
