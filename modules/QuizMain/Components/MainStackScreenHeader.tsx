@@ -2,15 +2,14 @@ import React from 'react';
 import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
 import {
    backgroundColor,
    C00C9B7,
    disabledColor,
    SubFontColor,
 } from '../../utils/Colors';
-import {getParsingQuizOption} from '../../utils/utilFunction';
 import {MainStackScreenHeaderProps} from '../types/componentType';
-import {MainStackScreenHeaderNavigationProps} from '../types/quizMainStackNavigation';
 
 const styles = StyleSheet.create({
    container: {
@@ -30,12 +29,9 @@ const styles = StyleSheet.create({
 const MainStackScreenHeader = ({
    navigation,
    title,
-   difficulty,
-   quizType,
-   selectedCategory,
-   numberOfQuiz,
 }: MainStackScreenHeaderProps) => {
-   const confirm = selectedCategory && difficulty && quizType;
+   const getQuize = useSelector((state: any) => state.slice.results);
+
    return (
       <View style={styles.container} testID="MainStackScreenHeader">
          <View>
@@ -49,23 +45,14 @@ const MainStackScreenHeader = ({
 
          <TouchableOpacity
             onPress={
-               confirm
-                  ? () =>
-                       navigation.navigate(
-                          'GetQuizScreen',
-                          getParsingQuizOption(
-                             selectedCategory,
-                             difficulty,
-                             quizType,
-                             numberOfQuiz,
-                          ),
-                       )
+               getQuize.length > 0
+                  ? () => navigation.navigate('GetQuizScreen')
                   : () => Alert.alert('옵션을 모두 선택해주세요!')
             }
             activeOpacity={0.6}>
             <Text
                style={{
-                  color: confirm ? SubFontColor : disabledColor,
+                  color: getQuize.length > 0 ? SubFontColor : disabledColor,
                   fontSize: 16,
                   fontWeight: '700',
                }}>

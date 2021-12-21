@@ -1,6 +1,6 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {Text, ListItem, Icon} from 'react-native-elements';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import {quizOptions} from '../../utils/QuizOptions';
 import {Slider} from 'react-native-elements/dist/slider/Slider';
 import {
@@ -14,18 +14,19 @@ import {
 } from '../../utils/Colors';
 import {MainStackScreenProps} from '../types/quizMainStackNavigation';
 import MainStackScreenHeader from '../Components/MainStackScreenHeader';
+import {getParsingQuizOption} from '../../utils/utilFunction';
+import {useDispatch, useSelector} from 'react-redux';
+import {getQuizThunk} from '../../utils/Redux/slice';
 
-const MainScreen = ({navigation, route}: MainStackScreenProps) => {
+const MainScreen = ({navigation}: MainStackScreenProps) => {
    const [numberOfQuiz, setNumberOfQuiz] = useState(1);
    const [selectedCategory, setSelectedCategory] = useState('');
    const [difficulty, setDifficulty] = useState('');
    const [quizType, setQuizType] = useState('');
 
-   const [isNumberOfQuizExtends, setIsNumberQuizExtends] =
-      useState(false);
+   const [isNumberOfQuizExtends, setIsNumberQuizExtends] = useState(false);
    const [isCategoryExtends, setIsCategoryExtends] = useState(false);
-   const [isDifficultyExtends, setIsDifficultyExtends] =
-      useState(false);
+   const [isDifficultyExtends, setIsDifficultyExtends] = useState(false);
    const [isQuizType, setIsQuizType] = useState(false);
    const categoryHandler = (category: string) => {
       setSelectedCategory(category);
@@ -39,21 +40,37 @@ const MainScreen = ({navigation, route}: MainStackScreenProps) => {
       setQuizType(quizType);
       setIsQuizType(false);
    };
-
    useLayoutEffect(() => {
       navigation.setOptions({
          header: () => (
             <MainStackScreenHeader
                title="문제 고르기"
                navigation={navigation}
-               difficulty={difficulty}
-               quizType={quizType}
-               selectedCategory={selectedCategory}
-               numberOfQuiz={numberOfQuiz}
             />
          ),
       });
-   }, [difficulty, quizType, selectedCategory, numberOfQuiz]);
+   }, []);
+   const dispatcher = useDispatch();
+   const getQuize = useSelector((state: any) => state.slice.results);
+
+   useEffect(() => {
+      const getParsing = getParsingQuizOption(
+         selectedCategory,
+         difficulty,
+         quizType,
+         numberOfQuiz,
+      );
+      if (selectedCategory && difficulty && quizType && numberOfQuiz) {
+         dispatcher(getQuizThunk(getParsing));
+      }
+   }, [selectedCategory, difficulty, quizType, numberOfQuiz]);
+   useEffect(() => {
+      if (selectedCategory && difficulty && quizType && numberOfQuiz) {
+         if (getQuize.length <= 0) {
+            Alert.alert('문제가 없습니다 다른옵션으로 다시 검색해주세요!');
+         }
+      }
+   }, [getQuize]);
    return (
       <ScrollView bounces={false} style={styles.container}>
          <ListItem.Accordion
@@ -86,9 +103,7 @@ const MainScreen = ({navigation, route}: MainStackScreenProps) => {
                </View>
             }
             isExpanded={isNumberOfQuizExtends}
-            onPress={() =>
-               setIsNumberQuizExtends(!isNumberOfQuizExtends)
-            }>
+            onPress={() => setIsNumberQuizExtends(!isNumberOfQuizExtends)}>
             <View style={styles.sliderContainer}>
                <Slider
                   value={numberOfQuiz}
@@ -149,8 +164,7 @@ const MainScreen = ({navigation, route}: MainStackScreenProps) => {
                         bottomDivider
                         hasTVPreferredFocus={undefined}
                         tvParallaxProperties={undefined}>
-                        <Text
-                           style={styles.accordionContentBoxSubFont}>
+                        <Text style={styles.accordionContentBoxSubFont}>
                            {difficulty}
                         </Text>
                      </ListItem>
@@ -199,8 +213,7 @@ const MainScreen = ({navigation, route}: MainStackScreenProps) => {
                         bottomDivider
                         hasTVPreferredFocus={undefined}
                         tvParallaxProperties={undefined}>
-                        <Text
-                           style={styles.accordionContentBoxSubFont}>
+                        <Text style={styles.accordionContentBoxSubFont}>
                            {quizType}
                         </Text>
                      </ListItem>
@@ -249,8 +262,7 @@ const MainScreen = ({navigation, route}: MainStackScreenProps) => {
                         bottomDivider
                         hasTVPreferredFocus={undefined}
                         tvParallaxProperties={undefined}>
-                        <Text
-                           style={styles.accordionContentBoxSubFont}>
+                        <Text style={styles.accordionContentBoxSubFont}>
                            {category}
                         </Text>
                      </ListItem>
