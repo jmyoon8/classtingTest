@@ -1,4 +1,4 @@
-import {GetQuizParamProps} from '../QuizMain/types/quizMainStackNavigation';
+import {GetQuizParamProps} from '../QuizMain/types/quizMainStackNavigationTypes';
 import {quizOptions} from './QuizOptions';
 
 export const getParsingQuizOption = (

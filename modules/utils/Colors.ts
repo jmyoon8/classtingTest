@@ -1,4 +1,4 @@
-export const C00C9B7 = '#00C9B7';
+export const HeaderColor = '#00C9B7';
 export const C56D8AE = '#96B1AC';
 export const MainFontColor = '#344B47';
 export const SubFontColor = '#569D93';

@@ -7,15 +7,13 @@ import {navigationMocking} from './Main.test';
  */
 describe('functionTest', () => {
    test('getParsingQuizOption return UrlParam?', () => {
-      let getParsingQuizOptionParams: Omit<
-         MainStackScreenHeaderProps,
-         'navigation' | 'title'
-      > = {
+      const getParsingQuizOptionParams = {
          difficulty: '쉬움',
          numberOfQuiz: 1,
          quizType: '객관식',
          selectedCategory: '일반상식',
       };
+
       const getParsingData = getParsingQuizOption(
          getParsingQuizOptionParams.selectedCategory,
          getParsingQuizOptionParams.difficulty,

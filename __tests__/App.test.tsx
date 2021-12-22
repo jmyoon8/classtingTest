@@ -8,6 +8,6 @@ import App from '../App';
 import {render} from '@testing-library/react-native';
 
 it('renders correctly', () => {
-  const appRendered = render(<App />);
-  expect(appRendered).toMatchSnapshot();
+   const appRendered = render(<App />);
+   expect(appRendered).toMatchSnapshot();
 });

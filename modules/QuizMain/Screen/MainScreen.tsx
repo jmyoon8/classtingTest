@@ -1,22 +1,24 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react';
-import {Text, ListItem, Icon} from 'react-native-elements';
-import {Alert, ScrollView, StyleSheet, View} from 'react-native';
-import {quizOptions} from '../../utils/QuizOptions';
+import {Alert, ScrollView, StyleSheet, View, Text} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {Slider} from 'react-native-elements/dist/slider/Slider';
+import {quizOptions} from '../../utils/QuizOptions';
 import {
    backgroundColor,
-   C00C9B7,
+   HeaderColor,
    C56D8AE,
    MainFontColor,
    SliderThumbColor,
    SliderTrackColor,
    SubFontColor,
 } from '../../utils/Colors';
-import {MainStackScreenProps} from '../types/quizMainStackNavigation';
+import {MainStackScreenProps} from '../types/quizMainStackNavigationTypes';
 import MainStackScreenHeader from '../Components/MainStackScreenHeader';
 import {getParsingQuizOption} from '../../utils/utilFunction';
-import {useDispatch, useSelector} from 'react-redux';
 import {getQuizThunk} from '../../utils/Redux/slice';
+import AccordianContent from '../Components/AccordianContent';
+import {Icon} from 'react-native-elements/dist/icons/Icon';
+import {ListItem} from 'react-native-elements';
 
 const MainScreen = ({navigation}: MainStackScreenProps) => {
    const [numberOfQuiz, setNumberOfQuiz] = useState(1);
@@ -28,6 +30,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    const [isCategoryExtends, setIsCategoryExtends] = useState(false);
    const [isDifficultyExtends, setIsDifficultyExtends] = useState(false);
    const [isQuizType, setIsQuizType] = useState(false);
+
    const categoryHandler = (category: string) => {
       setSelectedCategory(category);
       setIsCategoryExtends(false);
@@ -44,12 +47,16 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
       navigation.setOptions({
          header: () => (
             <MainStackScreenHeader
-               title="문제 고르기"
+               title="퀴즈 고르기"
                navigation={navigation}
+               difficulty={difficulty}
+               numberOfQuiz={numberOfQuiz}
+               quizType={quizType}
+               category={selectedCategory}
             />
          ),
       });
-   }, []);
+   }, [difficulty, numberOfQuiz, quizType, selectedCategory]);
    const dispatcher = useDispatch();
    const getQuize = useSelector((state: any) => state.slice.results);
 
@@ -67,10 +74,11 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    useEffect(() => {
       if (selectedCategory && difficulty && quizType && numberOfQuiz) {
          if (getQuize.length <= 0) {
-            Alert.alert('문제가 없습니다 다른옵션으로 다시 검색해주세요!');
+            Alert.alert('퀴즈가 없습니다 다른옵션으로 다시 검색해주세요!');
          }
       }
    }, [getQuize]);
+
    return (
       <ScrollView bounces={false} style={styles.container}>
          <ListItem.Accordion
@@ -79,28 +87,18 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
             tvParallaxProperties={undefined}
             containerStyle={styles.accordionContentStyle}
             content={
-               <View style={styles.accordionContent}>
-                  <View style={styles.accordionContentBox}>
+               <AccordianContent
+                  Icon={() => (
                      <Icon
                         type="feather"
                         name="plus-square"
-                        color={C00C9B7}
-                        tvParallaxProperties={undefined}
+                        color={HeaderColor}
                         size={30}
                      />
-
-                     <ListItem.Title
-                        style={[
-                           styles.accordionContentBoxMainFont,
-                           styles.marginLeft8,
-                        ]}>
-                        문항 갯수
-                     </ListItem.Title>
-                  </View>
-                  <Text style={styles.accordionContentBoxSubFont}>
-                     {numberOfQuiz * 10}문제
-                  </Text>
-               </View>
+                  )}
+                  title="총 문항"
+                  subTitle={`${numberOfQuiz * 10} 문항`}
+               />
             }
             isExpanded={isNumberOfQuizExtends}
             onPress={() => setIsNumberQuizExtends(!isNumberOfQuizExtends)}>
@@ -129,27 +127,18 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
             tvParallaxProperties={undefined}
             containerStyle={styles.accordionContentStyle}
             content={
-               <View style={styles.accordionContent}>
-                  <View style={styles.accordionContentBox}>
+               <AccordianContent
+                  Icon={() => (
                      <Icon
-                        tvParallaxProperties={undefined}
                         type="entypo"
-                        color={C00C9B7}
+                        color={HeaderColor}
                         name="pencil"
                         size={30}
                      />
-                     <ListItem.Title
-                        style={[
-                           styles.accordionContentBoxMainFont,
-                           styles.marginLeft8,
-                        ]}>
-                        문제 난이도
-                     </ListItem.Title>
-                  </View>
-                  <Text style={styles.accordionContentBoxSubFont}>
-                     {difficulty}
-                  </Text>
-               </View>
+                  )}
+                  subTitle={difficulty}
+                  title="퀴즈 난이도"
+               />
             }
             isExpanded={isDifficultyExtends}
             onPress={() => {
@@ -178,27 +167,18 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
             tvParallaxProperties={undefined}
             containerStyle={styles.accordionContentStyle}
             content={
-               <View style={styles.accordionContent}>
-                  <View style={styles.accordionContentBox}>
+               <AccordianContent
+                  Icon={() => (
                      <Icon
-                        tvParallaxProperties={undefined}
                         type="antdesign"
-                        color={C00C9B7}
+                        color={HeaderColor}
                         name="checksquareo"
                         size={30}
                      />
-                     <ListItem.Title
-                        style={[
-                           styles.accordionContentBoxMainFont,
-                           styles.marginLeft8,
-                        ]}>
-                        문제 형식
-                     </ListItem.Title>
-                  </View>
-                  <Text style={styles.accordionContentBoxSubFont}>
-                     {quizType}
-                  </Text>
-               </View>
+                  )}
+                  subTitle={quizType}
+                  title="퀴즈 형식"
+               />
             }
             isExpanded={isQuizType}
             onPress={() => {
@@ -227,27 +207,18 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
             tvParallaxProperties={undefined}
             containerStyle={styles.accordionContentStyle}
             content={
-               <View style={styles.accordionContent}>
-                  <View style={styles.accordionContentBox}>
+               <AccordianContent
+                  Icon={() => (
                      <Icon
-                        tvParallaxProperties={undefined}
                         type="material"
-                        color={C00C9B7}
+                        color={HeaderColor}
                         name="category"
                         size={30}
                      />
-                     <ListItem.Title
-                        style={[
-                           styles.accordionContentBoxMainFont,
-                           styles.marginLeft8,
-                        ]}>
-                        문제 유형
-                     </ListItem.Title>
-                  </View>
-                  <Text style={styles.accordionContentBoxSubFont}>
-                     {selectedCategory}
-                  </Text>
-               </View>
+                  )}
+                  subTitle={selectedCategory}
+                  title="퀴즈 유형"
+               />
             }
             isExpanded={isCategoryExtends}
             onPress={() => {
@@ -302,6 +273,7 @@ const styles = StyleSheet.create({
    accordionContentBoxMainFont: {
       color: MainFontColor,
       fontWeight: '700',
+      fontSize: 18,
    },
    accordionContentBoxSubFont: {
       color: SubFontColor,

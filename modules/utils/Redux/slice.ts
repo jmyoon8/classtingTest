@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {GetQuizParamProps} from '../../QuizMain/types/quizMainStackNavigation';
+import {GetQuizParamProps} from '../../QuizMain/types/quizMainStackNavigationTypes';
 import {instance} from '../axiosInstance';
-import {reduxDefaultProps} from './reduxType';
+import {ReduxDefaultProps} from './reduxType';
 
 export const getQuizThunk = createAsyncThunk(
    'quiz/getQuiz',
@@ -19,7 +19,7 @@ export const getQuizThunk = createAsyncThunk(
    },
 );
 
-const getArticleSlice = createSlice<reduxDefaultProps, any, any>({
+const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
    name: 'quiz',
    initialState: {
       apiState: '',
@@ -27,11 +27,8 @@ const getArticleSlice = createSlice<reduxDefaultProps, any, any>({
    },
 
    reducers: {
-      setWebViewUrl: (state: reduxDefaultProps, action: any) => {
-         return {...state, webViewUrl: action.payload};
-      },
-      setSearchOption: (state: reduxDefaultProps, action: any) => {
-         return {...state, searchOption: action.payload};
+      resetQuize: (state: ReduxDefaultProps, action: any) => {
+         state.results = [];
       },
    },
 
@@ -41,7 +38,7 @@ const getArticleSlice = createSlice<reduxDefaultProps, any, any>({
       });
       builder.addCase(
          getQuizThunk.fulfilled,
-         (state: reduxDefaultProps, action) => {
+         (state: ReduxDefaultProps, action) => {
             state.apiState = 'fulfilled';
             state.results = action.payload.data.results;
          },
@@ -51,5 +48,5 @@ const getArticleSlice = createSlice<reduxDefaultProps, any, any>({
       });
    },
 });
-export const {setWebViewUrl, setSearchOption} = getArticleSlice.actions as any;
+export const {resetQuize} = getArticleSlice.actions as any;
 export default getArticleSlice.reducer;
