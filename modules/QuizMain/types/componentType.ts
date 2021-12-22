@@ -3,6 +3,7 @@ import {
    MainStackScreenHeaderNavigationProps,
    QuizStackScreenHeaderNavigationProps,
 } from './quizMainStackNavigationTypes';
+import {MultipleQuizType, QuizeType} from './quizMainTypes';
 
 export interface MainStackScreenHeaderProps {
    navigation: MainStackScreenHeaderNavigationProps;
@@ -33,6 +34,24 @@ export interface SolvingQuizTopInfoProps {
    title: string;
    subTitle: string;
 }
-export interface SolvingQuizTimer {
+export interface SolvingQuizTimerProps {
    startTime: string;
+   setTimerState: React.Dispatch<
+      React.SetStateAction<{
+         hour: string;
+         minuts: string;
+         seconds: string;
+      }>
+   >;
+   timerState: {
+      hour: string;
+      minuts: string;
+      seconds: string;
+   };
+}
+export interface MultipleQuizAnswersProps {
+   currentQuizInfo: MultipleQuizType;
+   selectAnswerHandler: (selectedAnswer: any) => void;
+   selectAnswer: any[];
+   currentQuizAmount: number;
 }

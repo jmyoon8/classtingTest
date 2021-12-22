@@ -1,28 +1,29 @@
-import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import _ from 'lodash';
 import SolvingQuizHeader from '../Components/SolvingQuizHeader';
 import {QuizStackScreenProps} from '../types/quizMainStackNavigationTypes';
 import QuizStartModal from '../Components/QuizStartModal';
-import moment from 'moment';
 import {
    BackgroundColor,
+   CorrectColor,
    EnjoySolvingQuizColor,
+   HeaderColor,
+   InCorrectColor,
    MainFontColor,
 } from '../../utils/Styles';
 import SolvingQuizTopInfo from '../Components/SolvingQuizTopInfo';
-import {useIsFocused} from '@react-navigation/native';
+import SolvingQuizTimer from '../Components/SolvingQuizTimer';
+import {MultipleQuizType, QuizeType} from '../types/quizMainTypes';
+import {setShuffleQuiz} from '../../utils/Redux/slice';
+import MultipleQuizAnswers from '../Components/MultipleQuizAnswers';
 
 const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
-   useLayoutEffect(() => {
-      navigation.setOptions({
-         header: () => (
-            <SolvingQuizHeader navigation={navigation} title="문제풀기" />
-         ),
-      });
-   }, [navigation]);
-
    const {selectedOption, apiOption} = route.params;
+
+   const dispatcher = useDispatch();
+
    const [startTime, setStartTime] = useState<any>('');
    const [timerState, setTimerState] = useState({
       hour: '',
@@ -30,11 +31,19 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       seconds: '',
    });
    const [quizStartModalVisible, setQuizStartModalVisible] = useState(true);
-   const [currentQuizAmount, setCurrentQuizAmount] = useState(1);
-   const getQuiz = useSelector((state: any) => state.slice.results);
 
-   console.log(getQuiz[currentQuizAmount - 1]);
-   const isFocus = useIsFocused();
+   const [currentQuizAmount, setCurrentQuizAmount] = useState(1);
+   const getShuffleQuiz: QuizeType[] = useSelector(
+      (state: any) => state.slice.shuffleQuiz,
+   );
+   const currentQuizInfo = getShuffleQuiz[currentQuizAmount - 1];
+   const getQuiz: QuizeType[] = useSelector(
+      (state: any) => state.slice.results,
+   );
+   const [selectAnswer, setSelectAnswer] = useState<any[]>(
+      Array(getQuiz.length).fill(undefined),
+   );
+
    const topInfoArr = [
       {
          title: '퀴즈풀기',
@@ -53,59 +62,46 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
          subtitle: `${selectedOption.amount} / ${currentQuizAmount}`,
       },
    ];
+   const selectAnswerHandler = (selectedAnswer: any) => {
+      console.log(selectAnswer.length);
+      selectAnswer.splice(currentQuizAmount - 1, 1, selectedAnswer);
+      setSelectAnswer([...selectAnswer]);
+   };
 
-   const timerHandler = useCallback(() => {
-      const interval = setInterval(() => {
-         const lastSeconds = moment
-            .duration(moment().diff(startTime))
-            .seconds();
-         const lastMinutes = moment
-            .duration(moment().diff(startTime))
-            .minutes();
-         const lastHour = moment.duration(moment().diff(startTime)).hours();
-         setTimerState({
-            hour: lastHour.toString(),
-            minuts: lastMinutes.toString(),
-            seconds: lastSeconds.toString(),
-         });
-         console.log(lastHour, lastMinutes, lastSeconds);
-      }, 1000);
-
-      return interval;
-   }, [startTime]);
-   useLayoutEffect(() => {
-      if (startTime) {
-         timerHandler();
-      }
-      if (!isFocus) {
-         console.log('꺼짐?');
-         clearInterval(timerHandler());
-      }
-      return () => {
-         clearInterval(timerHandler());
+   useEffect(() => {
+      const shuffleQuizAnswers = () => {
+         if (apiOption.type === 'multiple') {
+            let cloneQuiz = _.cloneDeep(getQuiz) as MultipleQuizType[];
+            for (let i = 0; i < cloneQuiz.length; i++) {
+               cloneQuiz[i].answers = cloneQuiz[i].incorrect_answers;
+               cloneQuiz[i].answers.push(cloneQuiz[i].correct_answer);
+               cloneQuiz[i].answers = _.shuffle(cloneQuiz[i].answers);
+            }
+            dispatcher(setShuffleQuiz(cloneQuiz));
+         }
       };
-   }, [startTime, isFocus]);
-
+      shuffleQuizAnswers();
+   }, []);
+   useLayoutEffect(() => {
+      navigation.setOptions({
+         header: () => (
+            <SolvingQuizHeader navigation={navigation} title="퀴즈퀴즈!" />
+         ),
+      });
+   }, [navigation]);
    return (
-      <View style={{flex: 1, backgroundColor: BackgroundColor}}>
-         <View
-            style={{
-               flexDirection: 'row',
-               justifyContent: 'center',
-               alignItems: 'center',
-               height: 30,
-               backgroundColor: EnjoySolvingQuizColor,
-            }}>
-            <Text
-               style={{
-                  color: BackgroundColor,
-                  fontWeight: 'bold',
-                  fontSize: 15,
-               }}>
-               즐거운 퀴즈풀이!
-            </Text>
+      <ScrollView
+         bounces={false}
+         style={{flex: 1, backgroundColor: BackgroundColor}}>
+         <View style={styles.titleBox}>
+            <Text style={styles.titleText}>퀴즈를 풀어보아요!</Text>
+            <SolvingQuizTimer
+               setTimerState={setTimerState}
+               startTime={startTime}
+               timerState={timerState}
+            />
          </View>
-         <View style={{flexDirection: 'row'}}>
+         <View style={styles.topInfoContainer}>
             {topInfoArr.map(item => (
                <SolvingQuizTopInfo
                   key={item.title}
@@ -114,6 +110,48 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                />
             ))}
          </View>
+         <View style={styles.quizInfoContainer}>
+            <View style={styles.questionContainer}>
+               <View style={styles.questionTitleBox}>
+                  <Text style={styles.questionTitle}>문제</Text>
+                  {selectAnswer[currentQuizAmount - 1] && (
+                     <View
+                        style={[
+                           {
+                              backgroundColor:
+                                 selectAnswer[0] ===
+                                 currentQuizInfo.correct_answer
+                                    ? CorrectColor
+                                    : InCorrectColor,
+                           },
+                           styles.answerIsCorrectBox,
+                        ]}>
+                        <Text style={styles.answerIsCorrectMent}>
+                           {selectAnswer[currentQuizAmount - 1] ===
+                           currentQuizInfo.correct_answer
+                              ? '정답입니다!'
+                              : '틀렸습니다!'}
+                        </Text>
+                     </View>
+                  )}
+               </View>
+               <Text style={styles.questionText}>
+                  {currentQuizInfo?.question}
+               </Text>
+            </View>
+            <View style={styles.answerContainer}>
+               {currentQuizInfo?.type === 'multiple' ? (
+                  <MultipleQuizAnswers
+                     currentQuizAmount={currentQuizAmount}
+                     currentQuizInfo={currentQuizInfo}
+                     selectAnswer={selectAnswer}
+                     selectAnswerHandler={selectAnswerHandler}
+                  />
+               ) : (
+                  <View></View>
+               )}
+            </View>
+         </View>
          <QuizStartModal
             quizStartModalVisible={quizStartModalVisible}
             setQuizStartModalVisible={setQuizStartModalVisible}
@@ -121,10 +159,70 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
             setStartTime={setStartTime}
             navigation={navigation}
          />
-      </View>
+      </ScrollView>
    );
 };
 
 export default SolvingQuizScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+   titleBox: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 30,
+      backgroundColor: EnjoySolvingQuizColor,
+   },
+   titleText: {
+      color: BackgroundColor,
+      fontWeight: '900',
+      fontSize: 16,
+   },
+   topInfoContainer: {
+      flexDirection: 'row',
+   },
+   quizInfoContainer: {
+      paddingTop: 12,
+      paddingHorizontal: 16,
+      flex: 1,
+   },
+   questionContainer: {
+      backgroundColor: BackgroundColor,
+      minHeight: 60,
+      justifyContent: 'space-between',
+   },
+   questionTitleBox: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: 30,
+   },
+   questionTitle: {
+      color: HeaderColor,
+      fontWeight: '500',
+      fontSize: 18,
+   },
+   answerIsCorrectBox: {
+      height: 30,
+      minWidth: 40,
+      paddingHorizontal: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 40,
+   },
+   answerIsCorrectMent: {
+      color: BackgroundColor,
+      fontWeight: 'bold',
+   },
+   questionText: {
+      color: MainFontColor,
+      fontSize: 17,
+      marginTop: 20,
+      fontWeight: '600',
+   },
+   answerContainer: {
+      marginTop: 15,
+      minHeight: 140,
+      justifyContent: 'space-around',
+   },
+});

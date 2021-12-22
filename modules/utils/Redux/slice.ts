@@ -24,11 +24,15 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
    initialState: {
       apiState: '',
       results: [],
+      shuffleQuiz: [],
    },
 
    reducers: {
-      resetQuize: (state: ReduxDefaultProps, action: any) => {
+      resetQuiz: (state: ReduxDefaultProps, action: any) => {
          state.results = [];
+      },
+      setShuffleQuiz: (state: ReduxDefaultProps, action: any) => {
+         state.shuffleQuiz = action.payload;
       },
    },
 
@@ -48,5 +52,5 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
       });
    },
 });
-export const {resetQuize} = getArticleSlice.actions as any;
+export const {resetQuiz, setShuffleQuiz} = getArticleSlice.actions as any;
 export default getArticleSlice.reducer;

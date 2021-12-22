@@ -1,4 +1,4 @@
-import {QuizOptions} from '../QuizMain/types/utilsTypes';
+import {QuizOptions} from './utilsTypes';
 
 export const quizOptions: QuizOptions = {
    NumberQuestions: 10,
