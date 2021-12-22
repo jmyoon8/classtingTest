@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'space-around',
       backgroundColor: SolvingQuizTopInfoBackGround,
-      height: 45,
+      height: '100%',
       paddingHorizontal: 4,
    },
    text: {
       color: SolvingQuizTopInfoTextColor,
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: 'bold',
    },
 });

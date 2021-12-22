@@ -58,7 +58,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
          subtitle: selectedOption.type,
       },
       {
-         title: '총문항 / 현재 문항',
+         title: '진행사항',
          subtitle: `${selectedOption.amount} / ${currentQuizAmount}`,
       },
    ];
@@ -90,9 +90,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       });
    }, [navigation]);
    return (
-      <ScrollView
-         bounces={false}
-         style={{flex: 1, backgroundColor: BackgroundColor}}>
+      <ScrollView bounces={false} style={styles.container}>
          <View style={styles.titleBox}>
             <Text style={styles.titleText}>퀴즈를 풀어보아요!</Text>
             <SolvingQuizTimer
@@ -166,20 +164,22 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
 export default SolvingQuizScreen;
 
 const styles = StyleSheet.create({
+   container: {flex: 1, backgroundColor: BackgroundColor},
    titleBox: {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      height: 30,
+      height: 40,
       backgroundColor: EnjoySolvingQuizColor,
    },
    titleText: {
       color: BackgroundColor,
       fontWeight: '900',
-      fontSize: 16,
+      fontSize: 18,
    },
    topInfoContainer: {
       flexDirection: 'row',
+      height: 60,
    },
    quizInfoContainer: {
       paddingTop: 12,
