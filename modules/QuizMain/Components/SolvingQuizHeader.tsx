@@ -1,21 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View, Alert, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
-import {useSelector} from 'react-redux';
-import {
-   backgroundColor,
-   C00C9B7,
-   disabledColor,
-   SubFontColor,
-} from '../../utils/Colors';
-import {
-   MainStackScreenHeaderProps,
-   SolvingQuizStackScreenHeaderProps,
-} from '../types/componentType';
+import {BackgroundColor, HeaderColor} from '../../utils/Styles';
+import {SolvingQuizStackScreenHeaderProps} from '../types/componentType';
 
 const styles = StyleSheet.create({
    container: {
-      backgroundColor: backgroundColor,
+      backgroundColor: BackgroundColor,
       flexDirection: 'row',
       justifyContent: 'space-between',
       height: 44,
@@ -33,7 +24,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
    },
    headerTitle: {
-      color: C00C9B7,
+      color: HeaderColor,
       fontWeight: '900',
       fontSize: 18,
    },
@@ -48,12 +39,10 @@ const SolvingQuizHeader = ({
    navigation,
    title,
 }: SolvingQuizStackScreenHeaderProps) => {
-   const getQuiz = useSelector((state: any) => state.slice.results);
-
    return (
-      <View style={styles.container} testID="MainStackScreenHeader">
+      <View style={styles.container}>
          <View style={styles.arrowBox}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.popToTop()}>
                <Icon type="material" name="arrow-back-ios" />
             </TouchableOpacity>
          </View>

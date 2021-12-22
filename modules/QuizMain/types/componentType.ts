@@ -22,8 +22,17 @@ export interface SolvingQuizStackScreenHeaderProps {
    title: string;
 }
 
-export interface QuizStartModalProps extends GetQuizParamProps {
+export interface QuizStartModalProps {
    setQuizStartModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
    quizStartModalVisible: boolean;
+   selectedOption: GetQuizParamProps;
+   setStartTime: React.Dispatch<React.SetStateAction<any>>;
    navigation: QuizStackScreenHeaderNavigationProps;
+}
+export interface SolvingQuizTopInfoProps {
+   title: string;
+   subTitle: string;
+}
+export interface SolvingQuizTimer {
+   startTime: string;
 }

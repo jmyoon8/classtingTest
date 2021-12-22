@@ -39,7 +39,7 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
       builder.addCase(
          getQuizThunk.fulfilled,
          (state: ReduxDefaultProps, action) => {
-            state.apiState = 'fulfilled';
+            state.apiState = '';
             state.results = action.payload.data.results;
          },
       );

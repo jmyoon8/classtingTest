@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {MainFontColor, SubFontColor} from '../../utils/Colors';
+import {MainFontColor, SubFontColor} from '../../utils/Styles';
 import {AccordianContentProps} from '../types/componentType';
 
 const AccordianContent = ({title, subTitle, Icon}: AccordianContentProps) => {

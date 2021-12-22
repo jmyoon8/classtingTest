@@ -7,7 +7,7 @@ import React from 'react';
 import {fireEvent, render, RenderAPI} from '@testing-library/react-native';
 import MainScreen from '../modules/QuizMain/Screen/MainScreen';
 import MainStackScreenHeader from '../modules/QuizMain/Components/MainStackScreenHeader';
-import {disabledColor} from '../modules/utils/Colors';
+import {DisabledColor} from '../modules/utils/Styles';
 import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
 import {Provider} from 'react-redux';
 import configureStroe from '../modules/utils/Redux/configureStore';
@@ -80,7 +80,7 @@ describe('main component visible test', () => {
          const getElementTitle = MainHeader.getByText(mainHeaderProps.title);
          expect(getElementTitle.props.children).toBe(mainHeaderProps.title);
          const getElementConfirm = MainHeader.getByText('퀴즈를 골라주세요!');
-         expect(getElementConfirm.props.style.color).toBe(disabledColor);
+         expect(getElementConfirm.props.style.color).toBe(DisabledColor);
       }
    });
 });

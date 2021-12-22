@@ -3,17 +3,17 @@ import {StyleSheet, Text, View, Alert, TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
 import {useSelector} from 'react-redux';
 import {
-   backgroundColor,
+   BackgroundColor,
+   DisabledColor,
    HeaderColor,
-   disabledColor,
    SubFontColor,
-} from '../../utils/Colors';
+} from '../../utils/Styles';
 import {getParsingQuizOption} from '../../utils/utilFunction';
 import {MainStackScreenHeaderProps} from '../types/componentType';
 
 const styles = StyleSheet.create({
    container: {
-      backgroundColor: backgroundColor,
+      backgroundColor: BackgroundColor,
       flexDirection: 'row',
       justifyContent: 'space-between',
       height: 44,
@@ -89,11 +89,11 @@ const MainStackScreenHeader = ({
             activeOpacity={0.6}>
             <Text
                style={{
-                  color: getQuiz.length > 0 ? SubFontColor : disabledColor,
+                  color: getQuiz.length > 0 ? SubFontColor : DisabledColor,
                   fontSize: 15,
                   fontWeight: '700',
                }}>
-               {getQuiz.length > 0 ? '퀴즈 풀러가기!' : '퀴즈를 골라주세요!'}
+               {getQuiz.length > 0 ? '퀴즈 풀러가기!' : '퀴즈를\n골라주세요!'}
             </Text>
          </TouchableOpacity>
       </View>
