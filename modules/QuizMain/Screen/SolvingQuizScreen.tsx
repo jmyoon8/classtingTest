@@ -13,8 +13,8 @@ import {
 } from '../../utils/Styles';
 import SolvingQuizTopInfo from '../Components/SolvingQuizTopInfo';
 import SolvingQuizTimer from '../Components/SolvingQuizTimer';
-import {QuizeType} from '../types/quizMainTypes';
-import MultipleQuizAnswers from '../Components/MultipleQuizAnswers';
+import {QuizType} from '../types/quizMainTypes';
+import MultipleQuizAnswers from '../Components/QuizAnswers';
 import QuizCorrectMent from '../Components/QuizCorrectMent';
 import QuizeExplorer from '../Components/QuizeExplorer';
 import QuizFinishModal from '../Components/QuizFinishModal';
@@ -27,7 +27,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
    const [quizFinishModalVisible, setQuizFinishModalVisible] = useState(false);
 
    const [currentQuizAmount, setCurrentQuizAmount] = useState(1);
-   const getShuffleQuiz: QuizeType[] = useSelector(
+   const getShuffleQuiz: QuizType[] = useSelector(
       (state: any) => state.slice.shuffleQuiz,
    );
 
@@ -57,8 +57,10 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       },
    ];
    const selectAnswerHandler = (selectedAnswer: any) => {
-      selectAnswer.splice(currentQuizAmount - 1, 1, selectedAnswer);
-      setSelectAnswer([...selectAnswer]);
+      if (!selectAnswer[currentQuizAmount - 1]) {
+         selectAnswer.splice(currentQuizAmount - 1, 1, selectedAnswer);
+         setSelectAnswer([...selectAnswer]);
+      }
    };
    const quizExplorerHandler = (whereGoing: 'next' | 'prev') => {
       if (whereGoing === 'next') {
@@ -97,6 +99,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
          ),
       });
    }, [navigation]);
+
    return (
       <>
          <ScrollView bounces={false} style={styles.container}>
@@ -116,7 +119,9 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
             <View style={styles.quizInfoContainer}>
                <View style={styles.questionContainer}>
                   <View style={styles.questionTitleBox}>
-                     <Text style={styles.questionTitle}>문제</Text>
+                     <Text style={styles.questionTitle}>
+                        {currentQuizAmount - 1}. 문제
+                     </Text>
                      <QuizCorrectMent
                         currentQuizAmount={currentQuizAmount}
                         currentQuizInfo={currentQuizInfo}
@@ -128,16 +133,12 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                   </Text>
                </View>
                <View style={styles.answerContainer}>
-                  {currentQuizInfo?.type === 'multiple' ? (
-                     <MultipleQuizAnswers
-                        currentQuizAmount={currentQuizAmount}
-                        currentQuizInfo={currentQuizInfo}
-                        selectAnswer={selectAnswer}
-                        selectAnswerHandler={selectAnswerHandler}
-                     />
-                  ) : (
-                     <View></View>
-                  )}
+                  <MultipleQuizAnswers
+                     currentQuizAmount={currentQuizAmount}
+                     currentQuizInfo={currentQuizInfo}
+                     selectAnswer={selectAnswer}
+                     selectAnswerHandler={selectAnswerHandler}
+                  />
                </View>
             </View>
 
@@ -153,6 +154,12 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                getShuffleQuiz={getShuffleQuiz}
                quizFinishModalVisible={quizFinishModalVisible}
                setQuizFinishModalVisible={setQuizFinishModalVisible}
+               setSelectAnswer={setSelectAnswer}
+               setCurrentQuizAmount={setCurrentQuizAmount}
+               setStartTime={setStartTime}
+               setIsFinish={setIsFinish}
+               navigation={navigation}
+               selectedOption={selectedOption}
             />
          </ScrollView>
          <QuizeExplorer

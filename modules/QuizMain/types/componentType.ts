@@ -3,7 +3,7 @@ import {
    MainStackScreenHeaderNavigationProps,
    QuizStackScreenHeaderNavigationProps,
 } from './quizMainStackNavigationTypes';
-import {MultipleQuizType, QuizeType} from './quizMainTypes';
+import {QuizType} from './quizMainTypes';
 
 export interface MainStackScreenHeaderProps {
    navigation: MainStackScreenHeaderNavigationProps;
@@ -38,8 +38,8 @@ export interface SolvingQuizTimerProps {
    startTime: string;
    isFinish: boolean;
 }
-export interface MultipleQuizAnswersProps {
-   currentQuizInfo: MultipleQuizType;
+export interface QuizAnswersProps {
+   currentQuizInfo: QuizType;
    selectAnswerHandler: (selectedAnswer: any) => void;
    selectAnswer: string[];
    currentQuizAmount: number;
@@ -47,7 +47,7 @@ export interface MultipleQuizAnswersProps {
 export interface QuizCorrectMentProps {
    selectAnswer: string[];
    currentQuizAmount: number;
-   currentQuizInfo: QuizeType;
+   currentQuizInfo: QuizType;
 }
 export interface QuizeExplorerProps {
    currentQuizAmount: number;
@@ -57,6 +57,12 @@ export interface QuizeExplorerProps {
 export interface QuizFinishModalProps {
    quizFinishModalVisible: boolean;
    setQuizFinishModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-   getShuffleQuiz: QuizeType[];
+   getShuffleQuiz: QuizType[];
    selectAnswer: string[];
+   setSelectAnswer: React.Dispatch<React.SetStateAction<string[]>>;
+   setCurrentQuizAmount: React.Dispatch<React.SetStateAction<number>>;
+   setStartTime: React.Dispatch<any>;
+   setIsFinish: React.Dispatch<React.SetStateAction<boolean>>;
+   navigation: QuizStackScreenHeaderNavigationProps;
+   selectedOption: GetQuizParamProps;
 }

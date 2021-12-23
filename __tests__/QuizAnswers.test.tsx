@@ -1,15 +1,16 @@
 import React from 'react';
 import {fireEvent, render} from '@testing-library/react-native';
-import MultipleQuizAnswers from '../modules/QuizMain/Components/MultipleQuizAnswers';
-import {MultipleQuizAnswersProps} from '../modules/QuizMain/types/componentType';
-describe('MultipleQuizAnswers render test', () => {
+import QuizAnswers from '../modules/QuizMain/Components/QuizAnswers';
+import {QuizAnswersProps} from '../modules/QuizMain/types/componentType';
+
+describe('QuizAnswers render test', () => {
    test('render well and selectAnswer Correctly? ', () => {
-      const answerArr: number[] = Array(10).fill(undefined);
+      const answerArr: string[] = Array(10).fill(undefined);
       const currentQuizAmount = 1;
       const selectHandler = (selectedAnswer: any) => {
          answerArr.splice(currentQuizAmount - 1, 1, selectedAnswer);
       };
-      const mockProps: MultipleQuizAnswersProps = {
+      const mockProps: QuizAnswersProps = {
          currentQuizAmount: 1,
          currentQuizInfo: {
             answers: ['Cinnamon', 'Vanilla', 'Cardamom', 'Saffron'],
@@ -22,7 +23,7 @@ describe('MultipleQuizAnswers render test', () => {
          selectAnswer: answerArr,
          selectAnswerHandler: selectHandler,
       };
-      const rendered = render(<MultipleQuizAnswers {...mockProps} />);
+      const rendered = render(<QuizAnswers {...mockProps} />);
       const answers = mockProps.currentQuizInfo.answers;
       for (let i = 0; i < answers.length; i++) {
          const getOnPress = rendered.getByTestId(answers[i]);

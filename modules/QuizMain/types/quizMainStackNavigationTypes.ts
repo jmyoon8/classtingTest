@@ -14,6 +14,7 @@ export type GetQuizParamProps = {
 export type SolvingQuizScreenPram = {
    apiOption: GetQuizParamProps;
    selectedOption: GetQuizParamProps;
+   isWrongAnswerNotes?: boolean;
 };
 type QuizStackNavigationPramlist = {
    SelectQuizOption: undefined;

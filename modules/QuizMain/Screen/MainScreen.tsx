@@ -1,7 +1,18 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react';
-import {Alert, ScrollView, StyleSheet, View, Text} from 'react-native';
+import {
+   Alert,
+   ScrollView,
+   StyleSheet,
+   View,
+   Text,
+   TouchableOpacity,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Slider} from 'react-native-elements/dist/slider/Slider';
+import AccordianContent from '../Components/AccordianContent';
+import {Icon} from 'react-native-elements/dist/icons/Icon';
+import {ListItem} from 'react-native-elements';
+import {useIsFocused} from '@react-navigation/native';
 import {quizOptions} from '../../utils/QuizOptions';
 import {
    HeaderColor,
@@ -11,14 +22,15 @@ import {
    SliderTrackColor,
    SubFontColor,
    BackgroundColor,
+   BottomDividerColor,
 } from '../../utils/Styles';
 import {MainStackScreenProps} from '../types/quizMainStackNavigationTypes';
 import MainStackScreenHeader from '../Components/MainStackScreenHeader';
 import {getParsingQuizOption} from '../../utils/utilFunction';
-import {getQuizThunk} from '../../utils/Redux/slice';
-import AccordianContent from '../Components/AccordianContent';
-import {Icon} from 'react-native-elements/dist/icons/Icon';
-import {ListItem} from 'react-native-elements';
+import {getQuizThunk, resetQuiz} from '../../utils/Redux/slice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GET_WRONG_ANSWER_NOTE} from '../../utils/AsyncStorageHandlers';
+import {WrongAnswerNoteType} from '../../utils/utilsTypes';
 
 const MainScreen = ({navigation}: MainStackScreenProps) => {
    const [numberOfQuiz, setNumberOfQuiz] = useState(1);
@@ -30,7 +42,13 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    const [isCategoryExtends, setIsCategoryExtends] = useState(false);
    const [isDifficultyExtends, setIsDifficultyExtends] = useState(false);
    const [isQuizType, setIsQuizType] = useState(false);
+   const [isWrongAnswerExtends, setIsWrongAnswerExtends] = useState(false);
 
+   const [wrongAnswerNote, setWrongAnswerNote] = useState<
+      WrongAnswerNoteType[]
+   >([]);
+
+   const isFocus = useIsFocused();
    const categoryHandler = (category: string) => {
       setSelectedCategory(category);
       setIsCategoryExtends(false);
@@ -59,9 +77,9 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    }, [difficulty, numberOfQuiz, quizType, selectedCategory]);
 
    const dispatcher = useDispatch();
-   const getQuiz = useSelector((state: any) => state.slice.results);
+   const getQuiz = useSelector((state: any) => state.slice.shuffleQuiz);
 
-   useEffect(() => {
+   useLayoutEffect(() => {
       const getParsing = getParsingQuizOption(
          selectedCategory,
          difficulty,
@@ -72,13 +90,28 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
          dispatcher(getQuizThunk(getParsing));
       }
    }, [selectedCategory, difficulty, quizType, numberOfQuiz]);
-   useEffect(() => {
+   useLayoutEffect(() => {
       if (selectedCategory && difficulty && quizType && numberOfQuiz) {
          if (getQuiz.length <= 0) {
             Alert.alert('퀴즈가 없습니다 다른옵션으로 다시 검색해주세요!');
          }
       }
    }, [getQuiz]);
+   useLayoutEffect(() => {
+      if (isFocus) {
+         setNumberOfQuiz(1);
+         setSelectedCategory('');
+         setDifficulty('');
+         setQuizType('');
+         dispatcher(resetQuiz());
+         AsyncStorage.getItem(GET_WRONG_ANSWER_NOTE).then(data => {
+            if (data) {
+               const getItem: WrongAnswerNoteType[] = JSON.parse(data);
+               setWrongAnswerNote(getItem);
+            }
+         });
+      }
+   }, [isFocus]);
 
    return (
       <>
@@ -149,16 +182,20 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                {isDifficultyExtends && (
                   <>
                      {quizOptions.SelectDifficulty.map(difficulty => (
-                        <ListItem
-                           key={difficulty}
+                        <TouchableOpacity
+                           activeOpacity={0.4}
                            onPress={() => difficultyHandler(difficulty)}
-                           bottomDivider
-                           hasTVPreferredFocus={undefined}
-                           tvParallaxProperties={undefined}>
+                           style={{
+                              height: 43.3,
+                              justifyContent: 'center',
+                              paddingHorizontal: 14,
+                              borderBottomColor: BottomDividerColor,
+                              borderBottomWidth: 0.3,
+                           }}>
                            <Text style={styles.accordionContentBoxSubFont}>
                               {difficulty}
                            </Text>
-                        </ListItem>
+                        </TouchableOpacity>
                      ))}
                   </>
                )}
@@ -189,16 +226,20 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                {isQuizType && (
                   <>
                      {quizOptions.SelectType.map(quizType => (
-                        <ListItem
-                           key={quizType}
+                        <TouchableOpacity
+                           activeOpacity={0.4}
                            onPress={() => quizTypeHandler(quizType)}
-                           bottomDivider
-                           hasTVPreferredFocus={undefined}
-                           tvParallaxProperties={undefined}>
+                           style={{
+                              height: 43.3,
+                              justifyContent: 'center',
+                              paddingHorizontal: 14,
+                              borderBottomColor: BottomDividerColor,
+                              borderBottomWidth: 0.3,
+                           }}>
                            <Text style={styles.accordionContentBoxSubFont}>
                               {quizType}
                            </Text>
-                        </ListItem>
+                        </TouchableOpacity>
                      ))}
                   </>
                )}
@@ -229,16 +270,72 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                {isCategoryExtends && (
                   <>
                      {quizOptions.SelectCategory.map(category => (
-                        <ListItem
-                           key={category}
+                        <TouchableOpacity
+                           activeOpacity={0.4}
                            onPress={() => categoryHandler(category)}
-                           bottomDivider
-                           hasTVPreferredFocus={undefined}
-                           tvParallaxProperties={undefined}>
+                           style={{
+                              height: 43.3,
+                              justifyContent: 'center',
+                              paddingHorizontal: 14,
+                              borderBottomColor: BottomDividerColor,
+                              borderBottomWidth: 0.3,
+                           }}>
                            <Text style={styles.accordionContentBoxSubFont}>
                               {category}
                            </Text>
-                        </ListItem>
+                        </TouchableOpacity>
+                     ))}
+                  </>
+               )}
+            </ListItem.Accordion>
+            <ListItem.Accordion
+               testID="quizCategory"
+               hasTVPreferredFocus={undefined}
+               tvParallaxProperties={undefined}
+               containerStyle={styles.accordionContentStyle}
+               content={
+                  <AccordianContent
+                     Icon={() => (
+                        <Icon
+                           type="entypo"
+                           color={HeaderColor}
+                           name="lab-flask"
+                           size={30}
+                        />
+                     )}
+                     subTitle={''}
+                     title="오답노트"
+                  />
+               }
+               isExpanded={isWrongAnswerExtends}
+               onPress={() => {
+                  setIsWrongAnswerExtends(!isWrongAnswerExtends);
+               }}>
+               {isWrongAnswerExtends && (
+                  <>
+                     {wrongAnswerNote.map(wrongAnswerNoteItem => (
+                        <TouchableOpacity
+                           activeOpacity={0.6}
+                           style={{
+                              minHeight: 43.3,
+                              justifyContent: 'space-between',
+                              paddingHorizontal: 14,
+                              borderBottomColor: BottomDividerColor,
+                              borderBottomWidth: 0.3,
+                              paddingVertical: 8,
+                           }}>
+                           <Text style={styles.accordionContentBoxSubFont}>
+                              완료 시간 : {wrongAnswerNoteItem.solvedDate}
+                           </Text>
+                           <Text style={styles.accordionContentBoxSubFont}>
+                              퀴즈 형식 :{' '}
+                              {wrongAnswerNoteItem.selectedOption.type}
+                           </Text>
+                           <Text style={styles.accordionContentBoxSubFont}>
+                              난이도 :{' '}
+                              {wrongAnswerNoteItem.selectedOption.difficulty}
+                           </Text>
+                        </TouchableOpacity>
                      ))}
                   </>
                )}
@@ -281,6 +378,7 @@ const styles = StyleSheet.create({
    accordionContentBoxSubFont: {
       color: SubFontColor,
       fontWeight: '700',
+      marginVertical: 4,
    },
    marginLeft8: {marginLeft: 8},
    sliderContainer: {

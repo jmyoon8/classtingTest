@@ -1,14 +1,8 @@
-export interface BooleanQuizType {
+export interface QuizType {
    question: string;
-   correct_answer: 'False' | 'True';
-   incorrect_answers: 'False' | 'True';
-   type: 'boolean';
-}
-export interface MultipleQuizType {
-   question: string;
-   correct_answer: string;
    incorrect_answers: string[];
+   correct_answer: string;
    answers: string[];
-   type: 'multiple';
+   type: string;
+   difficulty: string;
 }
-export type QuizeType = MultipleQuizType | BooleanQuizType;

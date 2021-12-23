@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import _ from 'lodash';
 import {GetQuizParamProps} from '../../QuizMain/types/quizMainStackNavigationTypes';
-import {MultipleQuizType} from '../../QuizMain/types/quizMainTypes';
 import {instance} from '../axiosInstance';
 import {ReduxDefaultProps} from './reduxType';
 
@@ -16,7 +15,6 @@ export const getQuizThunk = createAsyncThunk(
             type,
          },
       });
-
       return {data};
    },
 );
@@ -25,7 +23,6 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
    name: 'quiz',
    initialState: {
       apiState: '',
-      results: [],
       shuffleQuiz: [],
       quizTimerState: {
          hour: '',
@@ -36,9 +33,9 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
 
    reducers: {
       resetQuiz: (state: ReduxDefaultProps, action: any) => {
-         state.results = [];
+         state.shuffleQuiz = [];
       },
-     
+
       setQuizTimerState: (state: ReduxDefaultProps, action: any) => {
          state.quizTimerState.hour = action.payload.hour;
          state.quizTimerState.minuts = action.payload.minuts;
@@ -55,16 +52,14 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
          (state: ReduxDefaultProps, action) => {
             const results = action.payload.data.results;
             state.apiState = '';
-            state.results = results;
-            if (action.meta.arg.type === 'multiple') {
-               let cloneQuiz = _.cloneDeep(results) as MultipleQuizType[];
-               for (let i = 0; i < cloneQuiz.length; i++) {
-                  cloneQuiz[i].answers = cloneQuiz[i].incorrect_answers;
-                  cloneQuiz[i].answers.push(cloneQuiz[i].correct_answer);
-                  cloneQuiz[i].answers = _.shuffle(cloneQuiz[i].answers);
-               }
-               state.shuffleQuiz = cloneQuiz;
+
+            let cloneQuiz = _.cloneDeep(results);
+            for (let i = 0; i < cloneQuiz.length; i++) {
+               cloneQuiz[i].answers = cloneQuiz[i].incorrect_answers;
+               cloneQuiz[i].answers.push(cloneQuiz[i].correct_answer);
+               cloneQuiz[i].answers = _.shuffle(cloneQuiz[i].answers);
             }
+            state.shuffleQuiz = cloneQuiz;
          },
       );
       builder.addCase(getQuizThunk.rejected, state => {
@@ -72,6 +67,5 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
       });
    },
 });
-export const {resetQuiz,  setQuizTimerState} =
-   getArticleSlice.actions as any;
+export const {resetQuiz, setQuizTimerState} = getArticleSlice.actions as any;
 export default getArticleSlice.reducer;

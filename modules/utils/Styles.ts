@@ -17,5 +17,7 @@ export const EnjoySolvingQuizColor = '#00C9B7';
 export const SelectedAnswerColor = '#0083DD';
 export const CorrectColor = '#7AB6FF';
 export const InCorrectColor = '#86007B';
+export const ReplayQuizColor = '#7160C1';
+export const BottomDividerColor = '#bcbbc1';
 
 export const dimentions = Dimensions.get('screen');

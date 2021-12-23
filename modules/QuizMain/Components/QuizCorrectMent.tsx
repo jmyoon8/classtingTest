@@ -20,7 +20,7 @@ const QuizCorrectMent = ({
                   {
                      backgroundColor:
                         selectAnswer[currentQuizAmount - 1] ===
-                        currentQuizInfo.correct_answer
+                        currentQuizInfo?.correct_answer
                            ? CorrectColor
                            : InCorrectColor,
                   },
@@ -28,7 +28,7 @@ const QuizCorrectMent = ({
                ]}>
                <Text style={styles.answerIsCorrectMent}>
                   {selectAnswer[currentQuizAmount - 1] ===
-                  currentQuizInfo.correct_answer
+                  currentQuizInfo?.correct_answer
                      ? '정답입니다!'
                      : '틀렸습니다!'}
                </Text>

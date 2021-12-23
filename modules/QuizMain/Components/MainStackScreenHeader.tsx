@@ -50,7 +50,7 @@ const MainStackScreenHeader = ({
    category,
    quizType,
 }: MainStackScreenHeaderProps) => {
-   const getQuiz = useSelector((state: any) => state.slice.results);
+   const getQuiz = useSelector((state: any) => state.slice.shuffleQuiz);
    const headerConfirmHandler = () => {
       if (getQuiz.length > 0) {
          navigation.navigate('SolvingQuiz', {

@@ -20,7 +20,6 @@ const QuizStartModal = ({
    navigation,
    setStartTime,
 }: QuizStartModalProps) => {
-   const now = moment();
    const closeHandler = () => {
       setQuizStartModalVisible(false);
       setTimeout(() => {
@@ -28,7 +27,7 @@ const QuizStartModal = ({
       }, 100);
    };
    const checkHandler = () => {
-      setStartTime(now);
+      setStartTime(moment());
       setQuizStartModalVisible(false);
    };
    return (
@@ -80,7 +79,7 @@ export default QuizStartModal;
 const styles = StyleSheet.create({
    contentBox: {
       backgroundColor: BackgroundColor,
-      height: '30%',
+      minHeight: '30%',
       borderRadius: 10,
       paddingTop: 4,
       paddingBottom: 14,

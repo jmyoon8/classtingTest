@@ -1,22 +1,21 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
-import configureStroe from '../../utils/Redux/configureStore';
 import {
    BackgroundColor,
    MainFontColor,
    SelectedAnswerColor,
 } from '../../utils/Styles';
-import {MultipleQuizAnswersProps} from '../types/componentType';
+import {QuizAnswersProps} from '../types/componentType';
 
-const MultipleQuizAnswers = ({
+const QuizAnswers = ({
    currentQuizInfo,
    selectAnswerHandler,
    selectAnswer,
    currentQuizAmount,
-}: MultipleQuizAnswersProps) => {
+}: QuizAnswersProps) => {
    return (
       <>
-         {currentQuizInfo.answers.map((item: string, index: number) => (
+         {currentQuizInfo?.answers.map((item: string, index: number) => (
             <Pressable
                testID={item}
                key={item}
@@ -60,7 +59,7 @@ const MultipleQuizAnswers = ({
    );
 };
 
-export default MultipleQuizAnswers;
+export default QuizAnswers;
 
 const styles = StyleSheet.create({
    answerBox: {
@@ -72,14 +71,16 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       borderWidth: 2,
       borderColor: MainFontColor,
-      height: 35,
+      minHeight: 35,
+      paddingVertical: 5,
+      paddingRight: 20,
    },
    answerText: {
       fontSize: 15,
       fontWeight: 'bold',
    },
    answerNumber: {
-      fontSize: 15,
+      fontSize: 16,
       fontWeight: 'bold',
    },
 });

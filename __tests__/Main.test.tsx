@@ -9,7 +9,11 @@ import MainScreen from '../modules/QuizMain/Screen/MainScreen';
 import MainStackScreenHeader from '../modules/QuizMain/Components/MainStackScreenHeader';
 import {DisabledColor} from '../modules/utils/Styles';
 import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
-import {MockingProvier, navigationMocking} from './testUtils.test';
+import {
+   MockingNavigatorComponent,
+   MockingProvier,
+   navigationMocking,
+} from './testUtils.test';
 
 let MainRendered: RenderAPI | undefined;
 let MainHeader: RenderAPI | undefined;
@@ -23,13 +27,14 @@ let mainHeaderProps: MainStackScreenHeaderProps = {
 };
 beforeEach(() => {
    MainRendered = render(
-      <MockingProvier
+      <MockingNavigatorComponent
          Component={() => (
             <MainScreen
                navigation={navigationMocking}
                route={{
                   key: '',
                   name: 'SelectQuizOption',
+                  params: [],
                }}
             />
          )}
