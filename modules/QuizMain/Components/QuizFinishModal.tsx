@@ -1,8 +1,6 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
-import moment from 'moment';
-import {v5 as uuid} from 'uuid';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
 import {
    BackgroundColor,
@@ -11,29 +9,37 @@ import {
    HeaderColor,
    MainFontColor,
 } from '../../utils/Styles';
-import {QuizStartModalProps} from '../types/componentType';
+import {QuizFinishModalProps} from '../types/componentType';
+import {useSelector} from 'react-redux';
 
-const QuizStartModal = ({
-   quizStartModalVisible,
-   setQuizStartModalVisible,
-   selectedOption,
-   navigation,
-   setStartTime,
-}: QuizStartModalProps) => {
-   const now = moment();
+const QuizFinishModal = ({
+   quizFinishModalVisible,
+   setQuizFinishModalVisible,
+   getShuffleQuiz,
+   selectAnswer,
+}: QuizFinishModalProps) => {
    const closeHandler = () => {
-      setQuizStartModalVisible(false);
-      setTimeout(() => {
-         navigation.goBack();
-      }, 100);
+      setQuizFinishModalVisible(false);
    };
-   const checkHandler = () => {
-      setStartTime(now);
-      setQuizStartModalVisible(false);
-   };
+   const quizTimerState = useSelector(
+      (state: any) => state.slice.quizTimerState,
+   );
+   const result = useMemo(() => {
+      console.log(selectAnswer);
+      let correct = 0;
+      let inCorrect = 0;
+      for (let i = 0; i < getShuffleQuiz.length; i++) {
+         if (getShuffleQuiz[i].correct_answer === selectAnswer[i]) {
+            correct++;
+         } else {
+            inCorrect++;
+         }
+      }
+      console.log(correct, inCorrect);
+   }, [selectAnswer]);
    return (
       <Modal
-         isVisible={quizStartModalVisible}
+         isVisible={quizFinishModalVisible}
          onBackButtonPress={closeHandler}
          testID="closeButton">
          <View style={styles.contentBox}>
@@ -42,40 +48,13 @@ const QuizStartModal = ({
                onPress={closeHandler}>
                <Icon type="ionicon" name="ios-close" />
             </TouchableOpacity>
-            <Text style={styles.titleText}>
-               아래 내용으로 퀴즈를 시작하시겠습니까?
-            </Text>
-            <Text style={styles.textStyle}>
-               퀴즈 종목 : {selectedOption.category}
-            </Text>
-            <Text style={styles.textStyle}>
-               난이도 : {selectedOption.difficulty}
-            </Text>
-            <Text style={styles.textStyle}>
-               퀴즈 형식 : {selectedOption.type}
-            </Text>
-            <Text style={styles.textStyle}>
-               총문항 : {selectedOption.amount}
-            </Text>
-            <View style={styles.buttonContainer}>
-               <TouchableOpacity
-                  onPress={checkHandler}
-                  style={styles.checkButtonBox}
-                  testID="checkButton">
-                  <Text style={styles.checkButtonText}>확인</Text>
-               </TouchableOpacity>
-               <TouchableOpacity
-                  onPress={closeHandler}
-                  style={styles.cancelButtonBox}>
-                  <Text style={styles.cancelButtonText}>취소</Text>
-               </TouchableOpacity>
-            </View>
+            <Text>소요된시간 {quizTimerState.hour}</Text>
          </View>
       </Modal>
    );
 };
 
-export default QuizStartModal;
+export default React.memo(QuizFinishModal);
 
 const styles = StyleSheet.create({
    contentBox: {

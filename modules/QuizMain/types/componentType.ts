@@ -36,22 +36,27 @@ export interface SolvingQuizTopInfoProps {
 }
 export interface SolvingQuizTimerProps {
    startTime: string;
-   setTimerState: React.Dispatch<
-      React.SetStateAction<{
-         hour: string;
-         minuts: string;
-         seconds: string;
-      }>
-   >;
-   timerState: {
-      hour: string;
-      minuts: string;
-      seconds: string;
-   };
+   isFinish: boolean;
 }
 export interface MultipleQuizAnswersProps {
    currentQuizInfo: MultipleQuizType;
    selectAnswerHandler: (selectedAnswer: any) => void;
-   selectAnswer: any[];
+   selectAnswer: string[];
    currentQuizAmount: number;
+}
+export interface QuizCorrectMentProps {
+   selectAnswer: string[];
+   currentQuizAmount: number;
+   currentQuizInfo: QuizeType;
+}
+export interface QuizeExplorerProps {
+   currentQuizAmount: number;
+   quizExplorerHandler: (whereGoing: 'next' | 'prev') => void;
+   selectAnswer: string[];
+}
+export interface QuizFinishModalProps {
+   quizFinishModalVisible: boolean;
+   setQuizFinishModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+   getShuffleQuiz: QuizeType[];
+   selectAnswer: string[];
 }

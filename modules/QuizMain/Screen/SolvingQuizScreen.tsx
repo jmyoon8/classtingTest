@@ -1,48 +1,42 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {useLayoutEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View, Alert} from 'react-native';
+import {useSelector} from 'react-redux';
 import _ from 'lodash';
 import SolvingQuizHeader from '../Components/SolvingQuizHeader';
 import {QuizStackScreenProps} from '../types/quizMainStackNavigationTypes';
 import QuizStartModal from '../Components/QuizStartModal';
 import {
    BackgroundColor,
-   CorrectColor,
    EnjoySolvingQuizColor,
    HeaderColor,
-   InCorrectColor,
    MainFontColor,
 } from '../../utils/Styles';
 import SolvingQuizTopInfo from '../Components/SolvingQuizTopInfo';
 import SolvingQuizTimer from '../Components/SolvingQuizTimer';
-import {MultipleQuizType, QuizeType} from '../types/quizMainTypes';
-import {setShuffleQuiz} from '../../utils/Redux/slice';
+import {QuizeType} from '../types/quizMainTypes';
 import MultipleQuizAnswers from '../Components/MultipleQuizAnswers';
+import QuizCorrectMent from '../Components/QuizCorrectMent';
+import QuizeExplorer from '../Components/QuizeExplorer';
+import QuizFinishModal from '../Components/QuizFinishModal';
 
 const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
    const {selectedOption, apiOption} = route.params;
-
-   const dispatcher = useDispatch();
-
    const [startTime, setStartTime] = useState<any>('');
-   const [timerState, setTimerState] = useState({
-      hour: '',
-      minuts: '',
-      seconds: '',
-   });
+
    const [quizStartModalVisible, setQuizStartModalVisible] = useState(true);
+   const [quizFinishModalVisible, setQuizFinishModalVisible] = useState(false);
 
    const [currentQuizAmount, setCurrentQuizAmount] = useState(1);
    const getShuffleQuiz: QuizeType[] = useSelector(
       (state: any) => state.slice.shuffleQuiz,
    );
+
+   const [selectAnswer, setSelectAnswer] = useState<string[]>(
+      Array(getShuffleQuiz.length).fill(undefined),
+   );
    const currentQuizInfo = getShuffleQuiz[currentQuizAmount - 1];
-   const getQuiz: QuizeType[] = useSelector(
-      (state: any) => state.slice.results,
-   );
-   const [selectAnswer, setSelectAnswer] = useState<any[]>(
-      Array(getQuiz.length).fill(undefined),
-   );
+
+   const [isFinish, setIsFinish] = useState(false);
 
    const topInfoArr = [
       {
@@ -63,25 +57,39 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       },
    ];
    const selectAnswerHandler = (selectedAnswer: any) => {
-      console.log(selectAnswer.length);
       selectAnswer.splice(currentQuizAmount - 1, 1, selectedAnswer);
       setSelectAnswer([...selectAnswer]);
    };
-
-   useEffect(() => {
-      const shuffleQuizAnswers = () => {
-         if (apiOption.type === 'multiple') {
-            let cloneQuiz = _.cloneDeep(getQuiz) as MultipleQuizType[];
-            for (let i = 0; i < cloneQuiz.length; i++) {
-               cloneQuiz[i].answers = cloneQuiz[i].incorrect_answers;
-               cloneQuiz[i].answers.push(cloneQuiz[i].correct_answer);
-               cloneQuiz[i].answers = _.shuffle(cloneQuiz[i].answers);
-            }
-            dispatcher(setShuffleQuiz(cloneQuiz));
+   const quizExplorerHandler = (whereGoing: 'next' | 'prev') => {
+      if (whereGoing === 'next') {
+         if (selectedOption.amount !== currentQuizAmount) {
+            setCurrentQuizAmount(currentQuizAmount + 1);
+         } else {
+            Alert.alert(
+               '마지막 퀴즈입니다',
+               '결과를 보시겠습니까?',
+               [
+                  {
+                     text: '네! 볼래요!',
+                     style: 'default',
+                     onPress: () => {
+                        setQuizFinishModalVisible(true);
+                        setIsFinish(true);
+                     },
+                  },
+                  {
+                     text: '좀더 검토할께요!',
+                     style: 'destructive',
+                  },
+               ],
+               {cancelable: true},
+            );
          }
-      };
-      shuffleQuizAnswers();
-   }, []);
+      } else {
+         setCurrentQuizAmount(currentQuizAmount - 1);
+      }
+   };
+
    useLayoutEffect(() => {
       navigation.setOptions({
          header: () => (
@@ -90,74 +98,69 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       });
    }, [navigation]);
    return (
-      <ScrollView bounces={false} style={styles.container}>
-         <View style={styles.titleBox}>
-            <Text style={styles.titleText}>퀴즈를 풀어보아요!</Text>
-            <SolvingQuizTimer
-               setTimerState={setTimerState}
-               startTime={startTime}
-               timerState={timerState}
-            />
-         </View>
-         <View style={styles.topInfoContainer}>
-            {topInfoArr.map(item => (
-               <SolvingQuizTopInfo
-                  key={item.title}
-                  subTitle={item.subtitle as string}
-                  title={item.title}
-               />
-            ))}
-         </View>
-         <View style={styles.quizInfoContainer}>
-            <View style={styles.questionContainer}>
-               <View style={styles.questionTitleBox}>
-                  <Text style={styles.questionTitle}>문제</Text>
-                  {selectAnswer[currentQuizAmount - 1] && (
-                     <View
-                        style={[
-                           {
-                              backgroundColor:
-                                 selectAnswer[0] ===
-                                 currentQuizInfo.correct_answer
-                                    ? CorrectColor
-                                    : InCorrectColor,
-                           },
-                           styles.answerIsCorrectBox,
-                        ]}>
-                        <Text style={styles.answerIsCorrectMent}>
-                           {selectAnswer[currentQuizAmount - 1] ===
-                           currentQuizInfo.correct_answer
-                              ? '정답입니다!'
-                              : '틀렸습니다!'}
-                        </Text>
-                     </View>
+      <>
+         <ScrollView bounces={false} style={styles.container}>
+            <View style={styles.titleBox}>
+               <Text style={styles.titleText}>퀴즈를 풀어보아요!</Text>
+               <SolvingQuizTimer startTime={startTime} isFinish={isFinish} />
+            </View>
+            <View style={styles.topInfoContainer}>
+               {topInfoArr.map(item => (
+                  <SolvingQuizTopInfo
+                     key={item.title}
+                     subTitle={item.subtitle as string}
+                     title={item.title}
+                  />
+               ))}
+            </View>
+            <View style={styles.quizInfoContainer}>
+               <View style={styles.questionContainer}>
+                  <View style={styles.questionTitleBox}>
+                     <Text style={styles.questionTitle}>문제</Text>
+                     <QuizCorrectMent
+                        currentQuizAmount={currentQuizAmount}
+                        currentQuizInfo={currentQuizInfo}
+                        selectAnswer={selectAnswer}
+                     />
+                  </View>
+                  <Text style={styles.questionText}>
+                     {currentQuizInfo?.question}
+                  </Text>
+               </View>
+               <View style={styles.answerContainer}>
+                  {currentQuizInfo?.type === 'multiple' ? (
+                     <MultipleQuizAnswers
+                        currentQuizAmount={currentQuizAmount}
+                        currentQuizInfo={currentQuizInfo}
+                        selectAnswer={selectAnswer}
+                        selectAnswerHandler={selectAnswerHandler}
+                     />
+                  ) : (
+                     <View></View>
                   )}
                </View>
-               <Text style={styles.questionText}>
-                  {currentQuizInfo?.question}
-               </Text>
             </View>
-            <View style={styles.answerContainer}>
-               {currentQuizInfo?.type === 'multiple' ? (
-                  <MultipleQuizAnswers
-                     currentQuizAmount={currentQuizAmount}
-                     currentQuizInfo={currentQuizInfo}
-                     selectAnswer={selectAnswer}
-                     selectAnswerHandler={selectAnswerHandler}
-                  />
-               ) : (
-                  <View></View>
-               )}
-            </View>
-         </View>
-         <QuizStartModal
-            quizStartModalVisible={quizStartModalVisible}
-            setQuizStartModalVisible={setQuizStartModalVisible}
-            selectedOption={selectedOption}
-            setStartTime={setStartTime}
-            navigation={navigation}
+
+            <QuizStartModal
+               quizStartModalVisible={quizStartModalVisible}
+               setQuizStartModalVisible={setQuizStartModalVisible}
+               selectedOption={selectedOption}
+               setStartTime={setStartTime}
+               navigation={navigation}
+            />
+            <QuizFinishModal
+               selectAnswer={selectAnswer}
+               getShuffleQuiz={getShuffleQuiz}
+               quizFinishModalVisible={quizFinishModalVisible}
+               setQuizFinishModalVisible={setQuizFinishModalVisible}
+            />
+         </ScrollView>
+         <QuizeExplorer
+            currentQuizAmount={currentQuizAmount}
+            quizExplorerHandler={quizExplorerHandler}
+            selectAnswer={selectAnswer}
          />
-      </ScrollView>
+      </>
    );
 };
 

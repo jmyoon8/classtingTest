@@ -1,5 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import _ from 'lodash';
 import {GetQuizParamProps} from '../../QuizMain/types/quizMainStackNavigationTypes';
+import {MultipleQuizType} from '../../QuizMain/types/quizMainTypes';
 import {instance} from '../axiosInstance';
 import {ReduxDefaultProps} from './reduxType';
 
@@ -25,14 +27,22 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
       apiState: '',
       results: [],
       shuffleQuiz: [],
+      quizTimerState: {
+         hour: '',
+         minuts: '',
+         seconds: '',
+      },
    },
 
    reducers: {
       resetQuiz: (state: ReduxDefaultProps, action: any) => {
          state.results = [];
       },
-      setShuffleQuiz: (state: ReduxDefaultProps, action: any) => {
-         state.shuffleQuiz = action.payload;
+     
+      setQuizTimerState: (state: ReduxDefaultProps, action: any) => {
+         state.quizTimerState.hour = action.payload.hour;
+         state.quizTimerState.minuts = action.payload.minuts;
+         state.quizTimerState.seconds = action.payload.seconds;
       },
    },
 
@@ -43,8 +53,18 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
       builder.addCase(
          getQuizThunk.fulfilled,
          (state: ReduxDefaultProps, action) => {
+            const results = action.payload.data.results;
             state.apiState = '';
-            state.results = action.payload.data.results;
+            state.results = results;
+            if (action.meta.arg.type === 'multiple') {
+               let cloneQuiz = _.cloneDeep(results) as MultipleQuizType[];
+               for (let i = 0; i < cloneQuiz.length; i++) {
+                  cloneQuiz[i].answers = cloneQuiz[i].incorrect_answers;
+                  cloneQuiz[i].answers.push(cloneQuiz[i].correct_answer);
+                  cloneQuiz[i].answers = _.shuffle(cloneQuiz[i].answers);
+               }
+               state.shuffleQuiz = cloneQuiz;
+            }
          },
       );
       builder.addCase(getQuizThunk.rejected, state => {
@@ -52,5 +72,6 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
       });
    },
 });
-export const {resetQuiz, setShuffleQuiz} = getArticleSlice.actions as any;
+export const {resetQuiz,  setQuizTimerState} =
+   getArticleSlice.actions as any;
 export default getArticleSlice.reducer;

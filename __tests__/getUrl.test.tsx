@@ -1,6 +1,4 @@
-import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
 import {getParsingQuizOption} from '../modules/utils/utilFunction';
-import {navigationMocking} from './Main.test';
 
 /**
  * @format

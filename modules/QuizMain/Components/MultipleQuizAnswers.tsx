@@ -1,5 +1,6 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
+import configureStroe from '../../utils/Redux/configureStore';
 import {
    BackgroundColor,
    MainFontColor,
@@ -17,6 +18,7 @@ const MultipleQuizAnswers = ({
       <>
          {currentQuizInfo.answers.map((item: string, index: number) => (
             <Pressable
+               testID={item}
                key={item}
                onPress={() => selectAnswerHandler(item)}
                style={[

@@ -72,7 +72,7 @@ const MainStackScreenHeader = ({
       }
    };
    return (
-      <View style={styles.container} testID="MainStackScreenHeader">
+      <View style={styles.container}>
          <View style={styles.arrowBox}>
             {navigation.canGoBack() && (
                <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -84,6 +84,7 @@ const MainStackScreenHeader = ({
             <Text style={styles.headerTitle}>{title}</Text>
          </View>
          <TouchableOpacity
+            testID="confirmButton"
             onPress={headerConfirmHandler}
             style={styles.confirmMessageBox}
             activeOpacity={0.6}>

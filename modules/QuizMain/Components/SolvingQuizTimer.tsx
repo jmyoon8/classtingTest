@@ -2,6 +2,8 @@ import {useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useLayoutEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {setQuizTimerState} from '../../utils/Redux/slice';
 import {BackgroundColor} from '../../utils/Styles';
 import numberPad from '../../utils/utilFunction';
 import {SolvingQuizTimerProps} from '../types/componentType';
@@ -18,12 +20,12 @@ const styles = StyleSheet.create({
    },
 });
 
-const SolvingQuizTimer = ({
-   startTime,
-   setTimerState,
-   timerState,
-}: SolvingQuizTimerProps) => {
+const SolvingQuizTimer = ({startTime, isFinish}: SolvingQuizTimerProps) => {
    const isFocus = useIsFocused();
+   const dispatcher = useDispatch();
+   const quizTimerSelect = useSelector(
+      (state: any) => state.slice.quizTimerState,
+   );
    const timerHandler = () => {
       const interval = setInterval(() => {
          const lastSeconds = moment
@@ -33,11 +35,13 @@ const SolvingQuizTimer = ({
             .duration(moment().diff(startTime))
             .minutes();
          const lastHour = moment.duration(moment().diff(startTime)).hours();
-         setTimerState({
-            hour: lastHour.toString(),
-            minuts: lastMinutes.toString(),
-            seconds: lastSeconds.toString(),
-         });
+         dispatcher(
+            setQuizTimerState({
+               hour: lastHour.toString(),
+               minuts: lastMinutes.toString(),
+               seconds: lastSeconds.toString(),
+            }),
+         );
       }, 1000);
 
       return interval;
@@ -45,24 +49,24 @@ const SolvingQuizTimer = ({
    useLayoutEffect(() => {
       if (startTime) {
          const timer = timerHandler();
-
+         if (isFinish) {
+            clearInterval(timer);
+         }
          return () => {
-            console.log('언마운트?');
             clearInterval(timer);
          };
       }
-   }, [startTime, isFocus]);
+   }, [startTime, isFocus, isFinish]);
+
    return (
       <View style={styles.timerContainer}>
-         {timerState.seconds ? (
+         {quizTimerSelect.seconds ? (
             <Text style={styles.timerText}>
-               {numberPad(timerState.hour, 2)} :{' '}
-               {numberPad(timerState.minuts, 2)} :{' '}
-               {numberPad(timerState.seconds, 2)}
+               {numberPad(quizTimerSelect.hour, 2)} :{' '}
+               {numberPad(quizTimerSelect.minuts, 2)} :{' '}
+               {numberPad(quizTimerSelect.seconds, 2)}
             </Text>
-         ) : (
-            <Text></Text>
-         )}
+         ) : undefined}
       </View>
    );
 };
