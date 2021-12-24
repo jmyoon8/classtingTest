@@ -2,7 +2,8 @@ import React from 'react';
 import {fireEvent, render, RenderAPI} from '@testing-library/react-native';
 import MainStackScreenHeader from '../modules/QuizMain/Components/MainStackScreenHeader';
 import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
-import {MockingProvier, navigationMocking} from './testUtils.test';
+import {MockingProvier} from './testUtils.test';
+import {navigationMocking} from '../mock';
 
 let renderMainStackScreenHeader: RenderAPI | undefined;
 

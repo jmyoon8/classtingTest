@@ -1,5 +1,4 @@
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react-native';
 import renderer from 'react-test-renderer';
 import SolvingQuizTimer from '../modules/QuizMain/Components/SolvingQuizTimer';
 import moment from 'moment';
@@ -10,9 +9,12 @@ describe('SolvingQuizTimer render Test', () => {
       const rendered = renderer.create(
          <MockingNavigatorComponent
             Component={() => (
-               <SolvingQuizTimer startTime={moment().toString()} />
+               <SolvingQuizTimer
+                  isFinish={false}
+                  startTime={moment().toString()}
+               />
             )}
          />,
-      ).root;
+      );
    });
 });

@@ -19,9 +19,11 @@ describe('QuizAnswers render test', () => {
             question:
                'What is the world&#039;s most expensive spice by weight?',
             type: 'multiple',
+            difficulty: '',
          },
          selectAnswer: answerArr,
          selectAnswerHandler: selectHandler,
+         isWrongAnswerView: false,
       };
       const rendered = render(<QuizAnswers {...mockProps} />);
       const answers = mockProps.currentQuizInfo.answers;

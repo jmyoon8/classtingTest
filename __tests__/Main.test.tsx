@@ -9,11 +9,8 @@ import MainScreen from '../modules/QuizMain/Screen/MainScreen';
 import MainStackScreenHeader from '../modules/QuizMain/Components/MainStackScreenHeader';
 import {DisabledColor} from '../modules/utils/Styles';
 import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
-import {
-   MockingNavigatorComponent,
-   MockingProvier,
-   navigationMocking,
-} from './testUtils.test';
+import {MockingNavigatorComponent, MockingProvier} from './testUtils.test';
+import {navigationMocking} from '../mock';
 
 let MainRendered: RenderAPI | undefined;
 let MainHeader: RenderAPI | undefined;
@@ -25,6 +22,7 @@ let mainHeaderProps: MainStackScreenHeaderProps = {
    quizType: '객관식',
    category: '일반상식',
 };
+
 beforeEach(() => {
    MainRendered = render(
       <MockingNavigatorComponent
@@ -34,7 +32,6 @@ beforeEach(() => {
                route={{
                   key: '',
                   name: 'SelectQuizOption',
-                  params: [],
                }}
             />
          )}

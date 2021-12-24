@@ -2,7 +2,7 @@ import React from 'react';
 import {fireEvent, render} from '@testing-library/react-native';
 import SolvingQuizHeader from '../modules/QuizMain/Components/SolvingQuizHeader';
 import {SolvingQuizStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
-import {navigationMocking} from './testUtils.test';
+import {navigationMocking} from '../mock';
 
 describe('SolvingQuizHeader render well', () => {
    const mockProps: SolvingQuizStackScreenHeaderProps = {

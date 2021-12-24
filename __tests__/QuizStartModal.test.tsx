@@ -2,8 +2,9 @@ import React from 'react';
 import {fireEvent, render} from '@testing-library/react-native';
 import QuizStartModal from '../modules/QuizMain/Components/QuizStartModal';
 import {QuizStartModalProps} from '../modules/QuizMain/types/componentType';
-import {navigationMocking} from './testUtils.test';
+
 import moment from 'moment';
+import {navigationMocking} from '../mock';
 
 let QuizStartModalVisible = true;
 let startTime = '';
