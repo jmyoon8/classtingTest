@@ -3,8 +3,6 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
-import 'react-native-get-random-values';
-import {v4 as uuid} from 'uuid';
 import {
    BackgroundColor,
    CorrectColor,
@@ -31,6 +29,11 @@ const QuizFinishModal = ({
    setIsFinish,
    navigation,
    selectedOption,
+   quizId,
+   setIsReplay,
+   setIsWrongAnswerView,
+   isWrongAnswerView,
+   startTime,
 }: QuizFinishModalProps) => {
    const replayQuizHandler = () => {
       setQuizFinishModalVisible(false);
@@ -40,7 +43,9 @@ const QuizFinishModal = ({
          prev = Array(prev.length).fill(undefined);
          return prev;
       });
+      setIsReplay(prev => !prev);
       setCurrentQuizAmount(1);
+      setIsWrongAnswerView(false);
    };
    const selectAnotherQuizHandler = () => {
       setQuizFinishModalVisible(false);
@@ -48,19 +53,36 @@ const QuizFinishModal = ({
          navigation.navigate('SelectQuizOption');
       }, 200);
    };
-   const getuuid = uuid();
+   const getQuizTimer: {
+      hour: string;
+      minuts: string;
+      seconds: string;
+   } = useSelector((state: any) => state.slice.quizTimerState);
    const insertWongAnswerNote = async () => {
-      const insertQuiz = await insertQuizLog(
-         selectAnswer,
-         getShuffleQuiz,
-         getuuid,
-         selectedOption,
-      );
+      console.log(startTime);
+      const {correct, inCorrect} = result;
+      if (!isWrongAnswerView) {
+         const insertQuiz = await insertQuizLog(
+            selectAnswer,
+            getShuffleQuiz,
+            quizId,
+            selectedOption,
+            {correct, inCorrect},
+            getQuizTimer,
+            startTime,
+         );
+         if (insertQuiz) {
+            Toast.show(`저장되었습니다.`, Toast.SHORT);
+         } else {
+            Toast.show(`저장에 실패했습니다. `, Toast.SHORT);
+         }
+      }
 
-      Toast.show(
-         `${insertQuiz ? '저장되었습니다.' : '이미 저장되었습니다.'}`,
-         Toast.SHORT,
-      );
+      setCurrentQuizAmount(1);
+      setIsWrongAnswerView(true);
+      setTimeout(() => {
+         setQuizFinishModalVisible(false);
+      }, 500);
    };
    const quizTimerState = useSelector(
       (state: any) => state.slice.quizTimerState,
@@ -174,10 +196,10 @@ const QuizFinishModal = ({
                      ]}
                      onPress={insertWongAnswerNote}>
                      <Text style={styles.buttonText}>
-                        오답노트에 저장할래요!
+                        오답노트를 보고싶어요!
                      </Text>
                      <Text style={styles.buttonText}>
-                        (오답노트에선 정답을 확인할 수 있어요!)
+                        (자동으로 저장되서 언제든지 다시 볼수 있어요!)
                      </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -195,7 +217,7 @@ const QuizFinishModal = ({
    );
 };
 
-export default React.memo(QuizFinishModal);
+export default QuizFinishModal;
 
 const styles = StyleSheet.create({
    contentBox: {

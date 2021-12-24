@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import moment from 'moment';
-import {v5 as uuid} from 'uuid';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
 import {
    BackgroundColor,
@@ -74,7 +73,7 @@ const QuizStartModal = ({
    );
 };
 
-export default QuizStartModal;
+export default React.memo(QuizStartModal);
 
 const styles = StyleSheet.create({
    contentBox: {

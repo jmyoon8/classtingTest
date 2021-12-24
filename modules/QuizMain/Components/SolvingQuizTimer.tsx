@@ -8,18 +8,6 @@ import {BackgroundColor} from '../../utils/Styles';
 import numberPad from '../../utils/utilFunction';
 import {SolvingQuizTimerProps} from '../types/componentType';
 
-const styles = StyleSheet.create({
-   timerContainer: {
-      position: 'absolute',
-      right: 16,
-   },
-   timerText: {
-      color: BackgroundColor,
-      fontSize: 14,
-      fontWeight: '900',
-   },
-});
-
 const SolvingQuizTimer = ({startTime, isFinish}: SolvingQuizTimerProps) => {
    const isFocus = useIsFocused();
    const dispatcher = useDispatch();
@@ -72,3 +60,15 @@ const SolvingQuizTimer = ({startTime, isFinish}: SolvingQuizTimerProps) => {
 };
 
 export default React.memo(SolvingQuizTimer);
+
+const styles = StyleSheet.create({
+   timerContainer: {
+      position: 'absolute',
+      right: 16,
+   },
+   timerText: {
+      color: BackgroundColor,
+      fontSize: 14,
+      fontWeight: '900',
+   },
+});

@@ -1,7 +1,10 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Icon} from 'react-native-elements/dist/icons/Icon';
 import {
    BackgroundColor,
+   CorrectColor,
+   InCorrectColor,
    MainFontColor,
    SelectedAnswerColor,
 } from '../../utils/Styles';
@@ -12,6 +15,7 @@ const QuizAnswers = ({
    selectAnswerHandler,
    selectAnswer,
    currentQuizAmount,
+   isWrongAnswerView,
 }: QuizAnswersProps) => {
    return (
       <>
@@ -29,37 +33,59 @@ const QuizAnswers = ({
                   },
                   styles.answerBox,
                ]}>
-               <Text
-                  style={[
-                     styles.answerNumber,
-                     {
-                        color:
-                           selectAnswer[currentQuizAmount - 1] !== item
-                              ? '#000'
-                              : BackgroundColor,
-                     },
-                  ]}>
-                  {index + 1}.{'  '}
-               </Text>
-               <Text
-                  style={[
-                     styles.answerText,
-                     {
-                        color:
-                           selectAnswer[currentQuizAmount - 1] !== item
-                              ? '#000'
-                              : BackgroundColor,
-                     },
-                  ]}>
-                  {item}
-               </Text>
+               <View style={{flexDirection: 'row'}}>
+                  <Text
+                     style={[
+                        styles.answerNumber,
+                        {
+                           color:
+                              selectAnswer[currentQuizAmount - 1] !== item
+                                 ? '#000'
+                                 : BackgroundColor,
+                        },
+                     ]}>
+                     {index + 1}.{'  '}
+                  </Text>
+
+                  <Text
+                     style={[
+                        styles.answerText,
+                        {
+                           color:
+                              selectAnswer[currentQuizAmount - 1] !== item
+                                 ? '#000'
+                                 : BackgroundColor,
+                        },
+                     ]}>
+                     {item}
+                  </Text>
+               </View>
+               {isWrongAnswerView &&
+                  (currentQuizInfo.correct_answer === item ? (
+                     <View>
+                        <Icon
+                           type="feather"
+                           name="check-circle"
+                           color={CorrectColor}
+                        />
+                     </View>
+                  ) : (
+                     <View>
+                        <Icon
+                           type="feather"
+                           name="x-circle"
+                           color={InCorrectColor}
+                           style={{marginLeft: 12}}
+                        />
+                     </View>
+                  ))}
             </Pressable>
          ))}
       </>
    );
 };
 
-export default QuizAnswers;
+export default React.memo(QuizAnswers);
 
 const styles = StyleSheet.create({
    answerBox: {
@@ -74,10 +100,12 @@ const styles = StyleSheet.create({
       minHeight: 35,
       paddingVertical: 5,
       paddingRight: 20,
+      justifyContent: 'space-between',
    },
    answerText: {
       fontSize: 15,
       fontWeight: 'bold',
+      maxWidth: '90%',
    },
    answerNumber: {
       fontSize: 16,

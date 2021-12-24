@@ -8,7 +8,6 @@ import {
    HeaderColor,
    SubFontColor,
 } from '../../utils/Styles';
-import {getParsingQuizOption} from '../../utils/utilFunction';
 import {MainStackScreenHeaderProps} from '../types/componentType';
 
 const styles = StyleSheet.create({
@@ -54,12 +53,6 @@ const MainStackScreenHeader = ({
    const headerConfirmHandler = () => {
       if (getQuiz.length > 0) {
          navigation.navigate('SolvingQuiz', {
-            apiOption: getParsingQuizOption(
-               category,
-               difficulty,
-               quizType,
-               numberOfQuiz,
-            ),
             selectedOption: {
                amount: numberOfQuiz * 10,
                category: category,

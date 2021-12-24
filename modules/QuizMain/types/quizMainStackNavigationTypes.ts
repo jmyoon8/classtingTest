@@ -3,6 +3,8 @@ import {
    StackNavigationProp,
    StackScreenProps,
 } from '@react-navigation/stack';
+import {WrongAnswerNoteType} from '../../utils/utilsTypes';
+import {QuizType} from './quizMainTypes';
 
 export type GetQuizParamProps = {
    category: number | string;
@@ -12,9 +14,9 @@ export type GetQuizParamProps = {
 };
 
 export type SolvingQuizScreenPram = {
-   apiOption: GetQuizParamProps;
    selectedOption: GetQuizParamProps;
-   isWrongAnswerNotes?: boolean;
+   isWrongAnswerNotes?: 'watchNow';
+   wrongAnswerNoteInfo?: WrongAnswerNoteType;
 };
 type QuizStackNavigationPramlist = {
    SelectQuizOption: undefined;

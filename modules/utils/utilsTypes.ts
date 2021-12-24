@@ -14,4 +14,11 @@ export interface WrongAnswerNoteType {
    quizId: string;
    solvedDate: String;
    selectedOption: GetQuizParamProps;
+   result: {correct: number; inCorrect: number};
+   getQuizTimer: {
+      hour: string;
+      minuts: string;
+      seconds: string;
+   };
+   startTime: any;
 }

@@ -45,7 +45,7 @@ const QuizeExplorer = ({
    );
 };
 
-export default QuizeExplorer;
+export default React.memo(QuizeExplorer);
 
 const styles = StyleSheet.create({
    quizExplorerContainer: {

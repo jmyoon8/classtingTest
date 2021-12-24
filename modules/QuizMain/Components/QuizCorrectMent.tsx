@@ -38,7 +38,7 @@ const QuizCorrectMent = ({
    );
 };
 
-export default QuizCorrectMent;
+export default React.memo(QuizCorrectMent);
 
 const styles = StyleSheet.create({
    answerIsCorrectBox: {

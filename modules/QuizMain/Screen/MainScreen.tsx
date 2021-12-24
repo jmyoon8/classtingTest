@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import {
    Alert,
    ScrollView,
@@ -29,8 +29,12 @@ import MainStackScreenHeader from '../Components/MainStackScreenHeader';
 import {getParsingQuizOption} from '../../utils/utilFunction';
 import {getQuizThunk, resetQuiz} from '../../utils/Redux/slice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GET_WRONG_ANSWER_NOTE} from '../../utils/AsyncStorageHandlers';
+import {
+   deleteQiuz,
+   GET_WRONG_ANSWER_NOTE,
+} from '../../utils/AsyncStorageHandlers';
 import {WrongAnswerNoteType} from '../../utils/utilsTypes';
+import WrongAnswerListItem from '../Components/WrongAnswerListItem';
 
 const MainScreen = ({navigation}: MainStackScreenProps) => {
    const [numberOfQuiz, setNumberOfQuiz] = useState(1);
@@ -49,6 +53,9 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    >([]);
 
    const isFocus = useIsFocused();
+   const dispatcher = useDispatch();
+   const getQuiz = useSelector((state: any) => state.slice.shuffleQuiz);
+
    const categoryHandler = (category: string) => {
       setSelectedCategory(category);
       setIsCategoryExtends(false);
@@ -60,6 +67,20 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    const quizTypeHandler = (quizType: string) => {
       setQuizType(quizType);
       setIsQuizType(false);
+   };
+   const deleteWrongAnswerNoteHandler = (id: string) => {
+      deleteQiuz(id).then(isDeleted => {
+         if (isDeleted) {
+            setWrongAnswerNote(prev => prev.filter(item => item.quizId !== id));
+         }
+      });
+   };
+   const goToWrongAnswerNoteHandler = (info: WrongAnswerNoteType) => {
+      navigation.navigate('SolvingQuiz', {
+         selectedOption: info.selectedOption,
+         isWrongAnswerNotes: 'watchNow',
+         wrongAnswerNoteInfo: info,
+      });
    };
    useLayoutEffect(() => {
       navigation.setOptions({
@@ -75,11 +96,8 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
          ),
       });
    }, [difficulty, numberOfQuiz, quizType, selectedCategory]);
-
-   const dispatcher = useDispatch();
-   const getQuiz = useSelector((state: any) => state.slice.shuffleQuiz);
-
    useLayoutEffect(() => {
+      // 자동으로 퀴즈 가져오기
       const getParsing = getParsingQuizOption(
          selectedCategory,
          difficulty,
@@ -91,6 +109,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
       }
    }, [selectedCategory, difficulty, quizType, numberOfQuiz]);
    useLayoutEffect(() => {
+      // 퀴즈가 없으면 다시 검색해달라는 메세지 띄우기
       if (selectedCategory && difficulty && quizType && numberOfQuiz) {
          if (getQuiz.length <= 0) {
             Alert.alert('퀴즈가 없습니다 다른옵션으로 다시 검색해주세요!');
@@ -111,6 +130,11 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
             }
          });
       }
+      setIsNumberQuizExtends(false);
+      setIsCategoryExtends(false);
+      setIsDifficultyExtends(false);
+      setIsQuizType(false);
+      setIsWrongAnswerExtends(false);
    }, [isFocus]);
 
    return (
@@ -147,11 +171,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                      step={1}
                      trackStyle={styles.silderTrackStyle}
                      allowTouchTrack
-                     thumbStyle={{
-                        width: 30,
-                        height: 30,
-                        backgroundColor: SliderThumbColor,
-                     }}
+                     thumbStyle={styles.thumbStyle}
                   />
                </View>
             </ListItem.Accordion>
@@ -179,26 +199,18 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                onPress={() => {
                   setIsDifficultyExtends(!isDifficultyExtends);
                }}>
-               {isDifficultyExtends && (
-                  <>
-                     {quizOptions.SelectDifficulty.map(difficulty => (
-                        <TouchableOpacity
-                           activeOpacity={0.4}
-                           onPress={() => difficultyHandler(difficulty)}
-                           style={{
-                              height: 43.3,
-                              justifyContent: 'center',
-                              paddingHorizontal: 14,
-                              borderBottomColor: BottomDividerColor,
-                              borderBottomWidth: 0.3,
-                           }}>
-                           <Text style={styles.accordionContentBoxSubFont}>
-                              {difficulty}
-                           </Text>
-                        </TouchableOpacity>
-                     ))}
-                  </>
-               )}
+               {isDifficultyExtends &&
+                  quizOptions.SelectDifficulty.map(difficulty => (
+                     <TouchableOpacity
+                        key={difficulty}
+                        activeOpacity={0.4}
+                        onPress={() => difficultyHandler(difficulty)}
+                        style={styles.listItemContainer}>
+                        <Text style={styles.accordionContentBoxSubFont}>
+                           {difficulty}
+                        </Text>
+                     </TouchableOpacity>
+                  ))}
             </ListItem.Accordion>
             <ListItem.Accordion
                testID="quizType"
@@ -223,26 +235,18 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                onPress={() => {
                   setIsQuizType(!isQuizType);
                }}>
-               {isQuizType && (
-                  <>
-                     {quizOptions.SelectType.map(quizType => (
-                        <TouchableOpacity
-                           activeOpacity={0.4}
-                           onPress={() => quizTypeHandler(quizType)}
-                           style={{
-                              height: 43.3,
-                              justifyContent: 'center',
-                              paddingHorizontal: 14,
-                              borderBottomColor: BottomDividerColor,
-                              borderBottomWidth: 0.3,
-                           }}>
-                           <Text style={styles.accordionContentBoxSubFont}>
-                              {quizType}
-                           </Text>
-                        </TouchableOpacity>
-                     ))}
-                  </>
-               )}
+               {isQuizType &&
+                  quizOptions.SelectType.map(quizType => (
+                     <TouchableOpacity
+                        key={quizType}
+                        activeOpacity={0.4}
+                        onPress={() => quizTypeHandler(quizType)}
+                        style={styles.listItemContainer}>
+                        <Text style={styles.accordionContentBoxSubFont}>
+                           {quizType}
+                        </Text>
+                     </TouchableOpacity>
+                  ))}
             </ListItem.Accordion>
             <ListItem.Accordion
                testID="quizCategory"
@@ -267,29 +271,21 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                onPress={() => {
                   setIsCategoryExtends(!isCategoryExtends);
                }}>
-               {isCategoryExtends && (
-                  <>
-                     {quizOptions.SelectCategory.map(category => (
-                        <TouchableOpacity
-                           activeOpacity={0.4}
-                           onPress={() => categoryHandler(category)}
-                           style={{
-                              height: 43.3,
-                              justifyContent: 'center',
-                              paddingHorizontal: 14,
-                              borderBottomColor: BottomDividerColor,
-                              borderBottomWidth: 0.3,
-                           }}>
-                           <Text style={styles.accordionContentBoxSubFont}>
-                              {category}
-                           </Text>
-                        </TouchableOpacity>
-                     ))}
-                  </>
-               )}
+               {isCategoryExtends &&
+                  quizOptions.SelectCategory.map(category => (
+                     <TouchableOpacity
+                        activeOpacity={0.4}
+                        key={category}
+                        onPress={() => categoryHandler(category)}
+                        style={styles.listItemContainer}>
+                        <Text style={styles.accordionContentBoxSubFont}>
+                           {category}
+                        </Text>
+                     </TouchableOpacity>
+                  ))}
             </ListItem.Accordion>
             <ListItem.Accordion
-               testID="quizCategory"
+               testID="wrongAnswerNote"
                hasTVPreferredFocus={undefined}
                tvParallaxProperties={undefined}
                containerStyle={styles.accordionContentStyle}
@@ -311,34 +307,17 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                onPress={() => {
                   setIsWrongAnswerExtends(!isWrongAnswerExtends);
                }}>
-               {isWrongAnswerExtends && (
-                  <>
-                     {wrongAnswerNote.map(wrongAnswerNoteItem => (
-                        <TouchableOpacity
-                           activeOpacity={0.6}
-                           style={{
-                              minHeight: 43.3,
-                              justifyContent: 'space-between',
-                              paddingHorizontal: 14,
-                              borderBottomColor: BottomDividerColor,
-                              borderBottomWidth: 0.3,
-                              paddingVertical: 8,
-                           }}>
-                           <Text style={styles.accordionContentBoxSubFont}>
-                              완료 시간 : {wrongAnswerNoteItem.solvedDate}
-                           </Text>
-                           <Text style={styles.accordionContentBoxSubFont}>
-                              퀴즈 형식 :{' '}
-                              {wrongAnswerNoteItem.selectedOption.type}
-                           </Text>
-                           <Text style={styles.accordionContentBoxSubFont}>
-                              난이도 :{' '}
-                              {wrongAnswerNoteItem.selectedOption.difficulty}
-                           </Text>
-                        </TouchableOpacity>
-                     ))}
-                  </>
-               )}
+               {isWrongAnswerExtends &&
+                  wrongAnswerNote.map(wrongAnswerNoteItem => (
+                     <WrongAnswerListItem
+                        key={wrongAnswerNoteItem.quizId}
+                        deleteWrongAnswerNoteHandler={
+                           deleteWrongAnswerNoteHandler
+                        }
+                        goToWrongAnswerNoteHandler={goToWrongAnswerNoteHandler}
+                        wrongAnswerNoteItem={wrongAnswerNoteItem}
+                     />
+                  ))}
             </ListItem.Accordion>
          </ScrollView>
       </>
@@ -389,5 +368,17 @@ const styles = StyleSheet.create({
       width: '100%',
       justifyContent: 'center',
       height: 5,
+   },
+   thumbStyle: {
+      width: 30,
+      height: 30,
+      backgroundColor: SliderThumbColor,
+   },
+   listItemContainer: {
+      height: 43.3,
+      justifyContent: 'center',
+      paddingHorizontal: 14,
+      borderBottomColor: BottomDividerColor,
+      borderBottomWidth: 0.3,
    },
 });

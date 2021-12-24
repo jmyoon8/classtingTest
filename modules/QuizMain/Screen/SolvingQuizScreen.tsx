@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useLayoutEffect, useMemo, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View, Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import _ from 'lodash';
@@ -14,30 +14,46 @@ import {
 import SolvingQuizTopInfo from '../Components/SolvingQuizTopInfo';
 import SolvingQuizTimer from '../Components/SolvingQuizTimer';
 import {QuizType} from '../types/quizMainTypes';
-import MultipleQuizAnswers from '../Components/QuizAnswers';
+import QuizAnswers from '../Components/QuizAnswers';
 import QuizCorrectMent from '../Components/QuizCorrectMent';
 import QuizeExplorer from '../Components/QuizeExplorer';
 import QuizFinishModal from '../Components/QuizFinishModal';
+import 'react-native-get-random-values';
+import {v4 as uuid} from 'uuid';
 
 const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
-   const {selectedOption, apiOption} = route.params;
+   const {selectedOption, isWrongAnswerNotes, wrongAnswerNoteInfo} =
+      route.params;
    const [startTime, setStartTime] = useState<any>('');
 
-   const [quizStartModalVisible, setQuizStartModalVisible] = useState(true);
+   const [isReplay, setIsReplay] = useState(false);
+   const quizId = useMemo(() => {
+      const id = uuid();
+      return id;
+   }, [isReplay]);
+
+   const [quizStartModalVisible, setQuizStartModalVisible] = useState(
+      isWrongAnswerNotes ? false : true,
+   );
    const [quizFinishModalVisible, setQuizFinishModalVisible] = useState(false);
 
    const [currentQuizAmount, setCurrentQuizAmount] = useState(1);
-   const getShuffleQuiz: QuizType[] = useSelector(
-      (state: any) => state.slice.shuffleQuiz,
-   );
+
+   const getShuffleQuiz: QuizType[] = isWrongAnswerNotes
+      ? wrongAnswerNoteInfo?.getShuffleQuiz
+      : useSelector((state: any) => state.slice.shuffleQuiz);
 
    const [selectAnswer, setSelectAnswer] = useState<string[]>(
-      Array(getShuffleQuiz.length).fill(undefined),
+      isWrongAnswerNotes
+         ? (wrongAnswerNoteInfo?.selectAnswer as string[])
+         : Array(getShuffleQuiz.length).fill(undefined),
    );
    const currentQuizInfo = getShuffleQuiz[currentQuizAmount - 1];
 
    const [isFinish, setIsFinish] = useState(false);
-
+   const [isWrongAnswerView, setIsWrongAnswerView] = useState(
+      isWrongAnswerNotes ? true : false,
+   );
    const topInfoArr = [
       {
          title: '퀴즈풀기',
@@ -120,7 +136,8 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                <View style={styles.questionContainer}>
                   <View style={styles.questionTitleBox}>
                      <Text style={styles.questionTitle}>
-                        {currentQuizAmount - 1}. 문제
+                        {currentQuizAmount}.{' '}
+                        {isWrongAnswerView ? '오답노트' : '문제'}
                      </Text>
                      <QuizCorrectMent
                         currentQuizAmount={currentQuizAmount}
@@ -133,11 +150,12 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                   </Text>
                </View>
                <View style={styles.answerContainer}>
-                  <MultipleQuizAnswers
+                  <QuizAnswers
                      currentQuizAmount={currentQuizAmount}
                      currentQuizInfo={currentQuizInfo}
                      selectAnswer={selectAnswer}
                      selectAnswerHandler={selectAnswerHandler}
+                     isWrongAnswerView={isWrongAnswerView}
                   />
                </View>
             </View>
@@ -149,18 +167,25 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                setStartTime={setStartTime}
                navigation={navigation}
             />
-            <QuizFinishModal
-               selectAnswer={selectAnswer}
-               getShuffleQuiz={getShuffleQuiz}
-               quizFinishModalVisible={quizFinishModalVisible}
-               setQuizFinishModalVisible={setQuizFinishModalVisible}
-               setSelectAnswer={setSelectAnswer}
-               setCurrentQuizAmount={setCurrentQuizAmount}
-               setStartTime={setStartTime}
-               setIsFinish={setIsFinish}
-               navigation={navigation}
-               selectedOption={selectedOption}
-            />
+            {quizFinishModalVisible && (
+               <QuizFinishModal
+                  selectAnswer={selectAnswer}
+                  getShuffleQuiz={getShuffleQuiz}
+                  quizFinishModalVisible={quizFinishModalVisible}
+                  setQuizFinishModalVisible={setQuizFinishModalVisible}
+                  setSelectAnswer={setSelectAnswer}
+                  setCurrentQuizAmount={setCurrentQuizAmount}
+                  setStartTime={setStartTime}
+                  setIsFinish={setIsFinish}
+                  navigation={navigation}
+                  selectedOption={selectedOption}
+                  quizId={quizId}
+                  setIsReplay={setIsReplay}
+                  setIsWrongAnswerView={setIsWrongAnswerView}
+                  isWrongAnswerView={isWrongAnswerView}
+                  startTime={startTime}
+               />
+            )}
          </ScrollView>
          <QuizeExplorer
             currentQuizAmount={currentQuizAmount}

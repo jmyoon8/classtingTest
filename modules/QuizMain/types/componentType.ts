@@ -1,3 +1,4 @@
+import {WrongAnswerNoteType} from '../../utils/utilsTypes';
 import {
    GetQuizParamProps,
    MainStackScreenHeaderNavigationProps,
@@ -43,6 +44,7 @@ export interface QuizAnswersProps {
    selectAnswerHandler: (selectedAnswer: any) => void;
    selectAnswer: string[];
    currentQuizAmount: number;
+   isWrongAnswerView: boolean;
 }
 export interface QuizCorrectMentProps {
    selectAnswer: string[];
@@ -65,4 +67,14 @@ export interface QuizFinishModalProps {
    setIsFinish: React.Dispatch<React.SetStateAction<boolean>>;
    navigation: QuizStackScreenHeaderNavigationProps;
    selectedOption: GetQuizParamProps;
+   quizId: string;
+   setIsReplay: React.Dispatch<React.SetStateAction<boolean>>;
+   isWrongAnswerView: boolean;
+   setIsWrongAnswerView: React.Dispatch<React.SetStateAction<boolean>>;
+   startTime: string;
+}
+export interface WrongAnswerListItemProps {
+   wrongAnswerNoteItem: WrongAnswerNoteType;
+   goToWrongAnswerNoteHandler: (info: WrongAnswerNoteType) => void;
+   deleteWrongAnswerNoteHandler: (id: string) => void;
 }
