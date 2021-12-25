@@ -1,9 +1,9 @@
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
-import {QuizeExplorerProps} from '../modules/QuizMain/types/componentType';
+import {QuizExplorerProps} from '../modules/QuizMain/types/componentType';
 import QuizExplorer from '../modules/QuizMain/Components/QuizExplorer';
 
-const mockProps: QuizeExplorerProps = {
+const mockProps: QuizExplorerProps = {
    currentQuizAmount: 2,
    quizExplorerHandler: jest
       .fn()

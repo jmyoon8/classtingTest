@@ -6,17 +6,18 @@ import {
    CorrectColor,
    InCorrectColor,
 } from '../../utils/Styles';
-import {QuizeExplorerProps} from '../types/componentType';
+import {QuizExplorerProps} from '../types/componentType';
 
-const QuizeExplorer = ({
+const QuizExplorer = ({
    currentQuizAmount,
    quizExplorerHandler,
    selectAnswer,
-}: QuizeExplorerProps) => {
+}: QuizExplorerProps) => {
    return (
       <View style={styles.quizExplorerContainer}>
          {currentQuizAmount - 1 !== 0 && (
             <TouchableOpacity
+               testID="prev"
                onPress={() => quizExplorerHandler('prev')}
                activeOpacity={0.6}
                style={styles.quizExplorerBeforeBox}>
@@ -30,6 +31,7 @@ const QuizeExplorer = ({
          )}
          {selectAnswer[currentQuizAmount - 1] && (
             <TouchableOpacity
+               testID="next"
                onPress={() => quizExplorerHandler('next')}
                activeOpacity={0.6}
                style={styles.quizExplorerNextBox}>
@@ -45,7 +47,7 @@ const QuizeExplorer = ({
    );
 };
 
-export default React.memo(QuizeExplorer);
+export default React.memo(QuizExplorer);
 
 const styles = StyleSheet.create({
    quizExplorerContainer: {
