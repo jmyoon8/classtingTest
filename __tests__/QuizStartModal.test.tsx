@@ -23,6 +23,7 @@ const mockProps: QuizStartModalProps = {
    setStartTime: () => {
       startTime = moment().toString();
    },
+   setIsFinish: () => {},
 };
 
 const renderedHandler = () => {
