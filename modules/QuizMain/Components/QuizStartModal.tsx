@@ -18,6 +18,7 @@ const QuizStartModal = ({
    selectedOption,
    navigation,
    setStartTime,
+   setIsFinish,
 }: QuizStartModalProps) => {
    const closeHandler = () => {
       setQuizStartModalVisible(false);
@@ -28,6 +29,7 @@ const QuizStartModal = ({
    const checkHandler = () => {
       setStartTime(moment());
       setQuizStartModalVisible(false);
+      setIsFinish(false);
    };
    return (
       <Modal

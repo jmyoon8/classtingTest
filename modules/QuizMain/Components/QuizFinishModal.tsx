@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import moment from 'moment';
 import Modal from 'react-native-modal';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
 import {
@@ -25,8 +24,6 @@ const QuizFinishModal = ({
    selectAnswer,
    setSelectAnswer,
    setCurrentQuizAmount,
-   setStartTime,
-   setIsFinish,
    navigation,
    selectedOption,
    quizId,
@@ -36,63 +33,11 @@ const QuizFinishModal = ({
    startTime,
    setQuizStartModalVisible,
 }: QuizFinishModalProps) => {
-   // 다시풀기
-   const replayQuizHandler = () => {
-      // 피니시 모달 끄기
-      setQuizFinishModalVisible(false);
-      // 선택한 문제 초기화
-      setSelectAnswer(prev => {
-         prev = Array(prev.length).fill(undefined);
-         return prev;
-      });
-      // 문제 ID 재생성 위한 스테이트 변경
-      setIsReplay(prev => !prev);
-      // 현재 문제 번호 변경
-      setCurrentQuizAmount(1);
-      //
-      setIsWrongAnswerView(false);
-      setQuizStartModalVisible(true);
-      setIsWrongAnswerView(false);
-      setIsFinish(false);
-   };
-   const selectAnotherQuizHandler = () => {
-      setQuizStartModalVisible(true);
-      setQuizFinishModalVisible(false);
-      setTimeout(() => {
-         navigation.navigate('SelectQuizOption');
-      }, 200);
-   };
    const getQuizTimer: {
       hour: string;
       minuts: string;
       seconds: string;
    } = useSelector((state: any) => state.slice.quizTimerState);
-   const insertWongAnswerNote = async () => {
-      console.log(startTime);
-      const {correct, inCorrect} = result;
-      if (!isWrongAnswerView) {
-         const insertQuiz = await insertQuizLog(
-            selectAnswer,
-            getShuffleQuiz,
-            quizId,
-            selectedOption,
-            {correct, inCorrect},
-            getQuizTimer,
-            startTime,
-         );
-         if (insertQuiz) {
-            Toast.show(`저장되었습니다.`, Toast.SHORT);
-         } else {
-            Toast.show(`저장에 실패했습니다. `, Toast.SHORT);
-         }
-      }
-
-      setCurrentQuizAmount(1);
-      setIsWrongAnswerView(true);
-      setTimeout(() => {
-         setQuizFinishModalVisible(false);
-      }, 500);
-   };
    const quizTimerState = useSelector(
       (state: any) => state.slice.quizTimerState,
    );
@@ -124,6 +69,58 @@ const QuizFinishModal = ({
       ];
       return {pieChartData, correct, inCorrect};
    }, [selectAnswer]);
+
+   // 다시풀기
+   const replayQuizHandler = () => {
+      // 피니시 모달 끄기
+      setQuizFinishModalVisible(false);
+      // 선택한 문제 초기화
+      setSelectAnswer(prev => {
+         prev = Array(prev.length).fill(undefined);
+         return prev;
+      });
+      // 문제 ID 재생성 위한 스테이트 변경
+      setIsReplay(prev => !prev);
+      // 현재 문제 번호 변경
+      setCurrentQuizAmount(1);
+      // 오답 노트 상태일때 문제풀이 환경으로 변경
+      setIsWrongAnswerView(false);
+      // 재시작이니 만큼 스타트 모달 노출
+      setQuizStartModalVisible(true);
+   };
+
+   const selectAnotherQuizHandler = () => {
+      setQuizFinishModalVisible(false);
+      setTimeout(() => {
+         navigation.navigate('SelectQuizOption');
+      }, 200);
+   };
+
+   const insertWrongAnswerNote = async () => {
+      setCurrentQuizAmount(1);
+      setIsWrongAnswerView(true);
+      setTimeout(() => {
+         setQuizFinishModalVisible(false);
+      }, 500);
+      const {correct, inCorrect} = result;
+      if (!isWrongAnswerView) {
+         const insertQuiz = await insertQuizLog(
+            selectAnswer,
+            getShuffleQuiz,
+            quizId,
+            selectedOption,
+            {correct, inCorrect},
+            getQuizTimer,
+            startTime,
+         );
+         if (insertQuiz) {
+            Toast.show(`저장되었습니다.`, Toast.SHORT);
+         } else {
+            Toast.show(`저장에 실패했습니다. `, Toast.SHORT);
+         }
+      }
+   };
+
    return (
       <Modal isVisible={quizFinishModalVisible} testID="closeButton">
          <View style={styles.contentBox}>
@@ -192,6 +189,7 @@ const QuizFinishModal = ({
                         styles.buttonBox,
                         {backgroundColor: ReplayQuizColor},
                      ]}
+                     testID="replayQuizHandler"
                      onPress={replayQuizHandler}>
                      <Text style={styles.buttonText}>
                         다시 풀어보고 싶어요!
@@ -203,7 +201,8 @@ const QuizFinishModal = ({
                         styles.buttonBox,
                         {backgroundColor: InCorrectColor},
                      ]}
-                     onPress={insertWongAnswerNote}>
+                     testID="insertWrongAnswerNote"
+                     onPress={insertWrongAnswerNote}>
                      <Text style={styles.buttonText}>
                         오답노트를 보고싶어요!
                      </Text>
@@ -214,6 +213,7 @@ const QuizFinishModal = ({
                   <TouchableOpacity
                      activeOpacity={0.6}
                      style={[styles.buttonBox, {backgroundColor: CorrectColor}]}
+                     testID="selectAnotherQuizHandler"
                      onPress={selectAnotherQuizHandler}>
                      <Text style={styles.buttonText}>
                         다른 퀴즈를 고를래요!

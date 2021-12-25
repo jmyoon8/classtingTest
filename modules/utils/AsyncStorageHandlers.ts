@@ -13,12 +13,13 @@ export const getWrongAnswerNote = async (): Promise<
       const getItem: WrongAnswerNoteType[] = JSON.parse(
          (await AsyncStorage.getItem(GET_WRONG_ANSWER_NOTE)) as string,
       );
+
       return getItem;
    } catch (error) {
       return false;
    }
 };
-const insertWrongAnswerNote = async (Item: WrongAnswerNoteType[]) => {
+export const insertWrongAnswerNote = async (Item: WrongAnswerNoteType[]) => {
    try {
       await AsyncStorage.setItem(GET_WRONG_ANSWER_NOTE, JSON.stringify(Item));
       return true;
@@ -40,16 +41,17 @@ export const insertQuizLog = async (
    startTime: any,
 ) => {
    const getItem = await getWrongAnswerNote();
+
    if (typeof getItem !== 'boolean') {
       if (!getItem.find(item => item.quizId === quizId)) {
          getItem.push({
-            selectAnswer,
+            getQuizTimer,
             getShuffleQuiz,
             quizId,
-            solvedDate: moment().format('YYYY-MM-DD A hh:mm'),
-            selectedOption,
             result,
-            getQuizTimer,
+            selectAnswer,
+            selectedOption,
+            solvedDate: moment().format('YYYY-MM-DD A hh:mm'),
             startTime,
          });
          await insertWrongAnswerNote(getItem);
@@ -62,11 +64,13 @@ export const insertQuizLog = async (
 export const deleteQiuz = async (id: string) => {
    try {
       let getIteam = await getWrongAnswerNote();
+
       if (typeof getIteam !== 'boolean') {
          getIteam = getIteam.filter(item => item.quizId !== id);
          await insertWrongAnswerNote(getIteam);
+         return true;
       }
-      return true;
+      return false;
    } catch (error) {
       return false;
    }

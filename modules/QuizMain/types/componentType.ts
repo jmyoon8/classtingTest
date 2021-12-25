@@ -30,6 +30,7 @@ export interface QuizStartModalProps {
    selectedOption: GetQuizParamProps;
    setStartTime: React.Dispatch<React.SetStateAction<any>>;
    navigation: QuizStackScreenHeaderNavigationProps;
+   setIsFinish: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface SolvingQuizTopInfoProps {
    title: string;
@@ -51,7 +52,7 @@ export interface QuizCorrectMentProps {
    currentQuizAmount: number;
    currentQuizInfo: QuizType;
 }
-export interface QuizeExplorerProps {
+export interface QuizExplorerProps {
    currentQuizAmount: number;
    quizExplorerHandler: (whereGoing: 'next' | 'prev') => void;
    selectAnswer: string[];
@@ -63,8 +64,7 @@ export interface QuizFinishModalProps {
    selectAnswer: string[];
    setSelectAnswer: React.Dispatch<React.SetStateAction<string[]>>;
    setCurrentQuizAmount: React.Dispatch<React.SetStateAction<number>>;
-   setStartTime: React.Dispatch<any>;
-   setIsFinish: React.Dispatch<React.SetStateAction<boolean>>;
+
    navigation: QuizStackScreenHeaderNavigationProps;
    selectedOption: GetQuizParamProps;
    quizId: string;

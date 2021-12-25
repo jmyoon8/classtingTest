@@ -16,7 +16,7 @@ import SolvingQuizTimer from '../Components/SolvingQuizTimer';
 import {QuizType} from '../types/quizMainTypes';
 import QuizAnswers from '../Components/QuizAnswers';
 import QuizCorrectMent from '../Components/QuizCorrectMent';
-import QuizeExplorer from '../Components/QuizeExplorer';
+import QuizExplorer from '../Components/QuizExplorer';
 import QuizFinishModal from '../Components/QuizFinishModal';
 import 'react-native-get-random-values';
 import {v4 as uuid} from 'uuid';
@@ -167,6 +167,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                selectedOption={selectedOption}
                setStartTime={setStartTime}
                navigation={navigation}
+               setIsFinish={setIsFinish}
             />
 
             {quizFinishModalVisible && (
@@ -177,8 +178,6 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                   setQuizFinishModalVisible={setQuizFinishModalVisible}
                   setSelectAnswer={setSelectAnswer}
                   setCurrentQuizAmount={setCurrentQuizAmount}
-                  setStartTime={setStartTime}
-                  setIsFinish={setIsFinish}
                   navigation={navigation}
                   selectedOption={selectedOption}
                   quizId={quizId}
@@ -190,7 +189,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                />
             )}
          </ScrollView>
-         <QuizeExplorer
+         <QuizExplorer
             currentQuizAmount={currentQuizAmount}
             quizExplorerHandler={quizExplorerHandler}
             selectAnswer={selectAnswer}

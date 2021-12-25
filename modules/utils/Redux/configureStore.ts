@@ -4,4 +4,5 @@ import reducers from './reducers';
 const configureStroe = configureStore({
    reducer: reducers,
 });
+
 export default configureStroe;

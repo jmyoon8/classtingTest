@@ -16,6 +16,7 @@ const WrongAnswerListItem = ({
          key={wrongAnswerNoteItem.quizId}
          activeOpacity={0.6}
          style={styles.wrongAnswerNoteContainer}
+         testID="goToWrongAnswerNoteHandler"
          onPress={() => goToWrongAnswerNoteHandler(wrongAnswerNoteItem)}>
          <View style={styles.wrongAnswerNoteHeaderBox}>
             <Text style={styles.accordionContentBoxSubFont}>
@@ -25,6 +26,7 @@ const WrongAnswerListItem = ({
                )}
             </Text>
             <TouchableOpacity
+            testID='deleteWrongAnswerNoteHandler'
                onPress={() =>
                   deleteWrongAnswerNoteHandler(wrongAnswerNoteItem.quizId)
                }
