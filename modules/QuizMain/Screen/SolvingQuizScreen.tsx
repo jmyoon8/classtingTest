@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useMemo, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useMemo, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View, Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import _ from 'lodash';
@@ -32,8 +32,9 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       return id;
    }, [isReplay]);
 
-   const [quizStartModalVisible, setQuizStartModalVisible] =
-      useState(isWrongAnswerNotes);
+   const [quizStartModalVisible, setQuizStartModalVisible] = useState(
+      !isWrongAnswerNotes,
+   );
    const [quizFinishModalVisible, setQuizFinishModalVisible] = useState(false);
 
    const [currentQuizAmount, setCurrentQuizAmount] = useState(1);
@@ -89,8 +90,8 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                      text: '네! 볼래요!',
                      style: 'default',
                      onPress: () => {
-                        setQuizFinishModalVisible(true);
                         setIsFinish(true);
+                        setQuizFinishModalVisible(true);
                      },
                   },
                   {
@@ -119,7 +120,9 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
          <ScrollView bounces={false} style={styles.container}>
             <View style={styles.titleBox}>
                <Text style={styles.titleText}>퀴즈를 풀어보아요!</Text>
-               <SolvingQuizTimer startTime={startTime} isFinish={isFinish} />
+               {isWrongAnswerView || (
+                  <SolvingQuizTimer startTime={startTime} isFinish={isFinish} />
+               )}
             </View>
             <View style={styles.topInfoContainer}>
                {topInfoArr.map(item => (
@@ -157,15 +160,15 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                   />
                </View>
             </View>
-            {isWrongAnswerView || (
-               <QuizStartModal
-                  quizStartModalVisible={quizStartModalVisible}
-                  setQuizStartModalVisible={setQuizStartModalVisible}
-                  selectedOption={selectedOption}
-                  setStartTime={setStartTime}
-                  navigation={navigation}
-               />
-            )}
+
+            <QuizStartModal
+               quizStartModalVisible={quizStartModalVisible}
+               setQuizStartModalVisible={setQuizStartModalVisible}
+               selectedOption={selectedOption}
+               setStartTime={setStartTime}
+               navigation={navigation}
+            />
+
             {quizFinishModalVisible && (
                <QuizFinishModal
                   selectAnswer={selectAnswer}
@@ -183,6 +186,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                   setIsWrongAnswerView={setIsWrongAnswerView}
                   isWrongAnswerView={isWrongAnswerView}
                   startTime={startTime}
+                  setQuizStartModalVisible={setQuizStartModalVisible}
                />
             )}
          </ScrollView>

@@ -14,6 +14,7 @@ const SolvingQuizTimer = ({startTime, isFinish}: SolvingQuizTimerProps) => {
    const quizTimerSelect = useSelector(
       (state: any) => state.slice.quizTimerState,
    );
+
    const timerHandler = () => {
       const interval = setInterval(() => {
          const lastSeconds = moment

@@ -72,6 +72,7 @@ export interface QuizFinishModalProps {
    isWrongAnswerView: boolean;
    setIsWrongAnswerView: React.Dispatch<React.SetStateAction<boolean>>;
    startTime: string;
+   setQuizStartModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface WrongAnswerListItemProps {
    wrongAnswerNoteItem: WrongAnswerNoteType;

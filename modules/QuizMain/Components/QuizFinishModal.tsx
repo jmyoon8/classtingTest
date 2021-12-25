@@ -34,20 +34,29 @@ const QuizFinishModal = ({
    setIsWrongAnswerView,
    isWrongAnswerView,
    startTime,
+   setQuizStartModalVisible,
 }: QuizFinishModalProps) => {
+   // 다시풀기
    const replayQuizHandler = () => {
+      // 피니시 모달 끄기
       setQuizFinishModalVisible(false);
-      setStartTime(moment());
-      setIsFinish(false);
+      // 선택한 문제 초기화
       setSelectAnswer(prev => {
          prev = Array(prev.length).fill(undefined);
          return prev;
       });
+      // 문제 ID 재생성 위한 스테이트 변경
       setIsReplay(prev => !prev);
+      // 현재 문제 번호 변경
       setCurrentQuizAmount(1);
+      //
       setIsWrongAnswerView(false);
+      setQuizStartModalVisible(true);
+      setIsWrongAnswerView(false);
+      setIsFinish(false);
    };
    const selectAnotherQuizHandler = () => {
+      setQuizStartModalVisible(true);
       setQuizFinishModalVisible(false);
       setTimeout(() => {
          navigation.navigate('SelectQuizOption');
