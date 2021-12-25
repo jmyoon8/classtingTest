@@ -32,9 +32,8 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       return id;
    }, [isReplay]);
 
-   const [quizStartModalVisible, setQuizStartModalVisible] = useState(
-      isWrongAnswerNotes ? false : true,
-   );
+   const [quizStartModalVisible, setQuizStartModalVisible] =
+      useState(isWrongAnswerNotes);
    const [quizFinishModalVisible, setQuizFinishModalVisible] = useState(false);
 
    const [currentQuizAmount, setCurrentQuizAmount] = useState(1);
@@ -51,9 +50,8 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
    const currentQuizInfo = getShuffleQuiz[currentQuizAmount - 1];
 
    const [isFinish, setIsFinish] = useState(false);
-   const [isWrongAnswerView, setIsWrongAnswerView] = useState(
-      isWrongAnswerNotes ? true : false,
-   );
+   const [isWrongAnswerView, setIsWrongAnswerView] =
+      useState(isWrongAnswerNotes);
    const topInfoArr = [
       {
          title: '퀴즈풀기',
@@ -159,14 +157,15 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                   />
                </View>
             </View>
-
-            <QuizStartModal
-               quizStartModalVisible={quizStartModalVisible}
-               setQuizStartModalVisible={setQuizStartModalVisible}
-               selectedOption={selectedOption}
-               setStartTime={setStartTime}
-               navigation={navigation}
-            />
+            {isWrongAnswerView || (
+               <QuizStartModal
+                  quizStartModalVisible={quizStartModalVisible}
+                  setQuizStartModalVisible={setQuizStartModalVisible}
+                  selectedOption={selectedOption}
+                  setStartTime={setStartTime}
+                  navigation={navigation}
+               />
+            )}
             {quizFinishModalVisible && (
                <QuizFinishModal
                   selectAnswer={selectAnswer}

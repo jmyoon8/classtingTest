@@ -59,6 +59,7 @@ const MainStackScreenHeader = ({
                difficulty: difficulty,
                type: quizType,
             },
+            isWrongAnswerNotes: false,
          });
       } else {
          Alert.alert('옵션을 모두 선택해주세요!');

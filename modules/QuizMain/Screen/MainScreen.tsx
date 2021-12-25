@@ -78,7 +78,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    const goToWrongAnswerNoteHandler = (info: WrongAnswerNoteType) => {
       navigation.navigate('SolvingQuiz', {
          selectedOption: info.selectedOption,
-         isWrongAnswerNotes: 'watchNow',
+         isWrongAnswerNotes: true,
          wrongAnswerNoteInfo: info,
       });
    };
