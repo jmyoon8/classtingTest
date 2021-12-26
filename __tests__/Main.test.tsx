@@ -11,10 +11,11 @@ import {DisabledColor} from '../modules/utils/Styles';
 import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
 import {MockingNavigatorComponent, MockingProvier} from './testUtils.test';
 import {navigationMocking} from '../mock';
+import {MainStackScreenProps} from '../modules/QuizMain/types/quizMainStackNavigationTypes';
 
 let MainRendered: RenderAPI | undefined;
 let MainHeader: RenderAPI | undefined;
-let mainHeaderProps: MainStackScreenHeaderProps = {
+const mainHeaderProps: MainStackScreenHeaderProps = {
    navigation: navigationMocking,
    title: '퀴즈 고르기',
    difficulty: '쉬움',
@@ -22,19 +23,17 @@ let mainHeaderProps: MainStackScreenHeaderProps = {
    quizType: '객관식',
    category: '일반상식',
 };
-
+const headerProps: MainStackScreenProps = {
+   navigation: navigationMocking,
+   route: {
+      key: '',
+      name: 'SelectQuizOption',
+   },
+};
 beforeEach(() => {
    MainRendered = render(
       <MockingNavigatorComponent
-         Component={() => (
-            <MainScreen
-               navigation={navigationMocking}
-               route={{
-                  key: '',
-                  name: 'SelectQuizOption',
-               }}
-            />
-         )}
+         Component={() => <MainScreen {...headerProps} />}
       />,
    );
    MainHeader = render(
