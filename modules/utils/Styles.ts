@@ -19,5 +19,6 @@ export const CorrectColor = '#7AB6FF';
 export const InCorrectColor = '#86007B';
 export const ReplayQuizColor = '#7160C1';
 export const BottomDividerColor = '#bcbbc1';
+export const FontColorBlack = '#000';
 
 export const dimentions = Dimensions.get('screen');
