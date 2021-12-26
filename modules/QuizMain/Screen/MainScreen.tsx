@@ -129,12 +129,12 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                setWrongAnswerNote(getItem);
             }
          });
+         setIsNumberQuizExtends(false);
+         setIsCategoryExtends(false);
+         setIsDifficultyExtends(false);
+         setIsQuizType(false);
+         setIsWrongAnswerExtends(false);
       }
-      setIsNumberQuizExtends(false);
-      setIsCategoryExtends(false);
-      setIsDifficultyExtends(false);
-      setIsQuizType(false);
-      setIsWrongAnswerExtends(false);
    }, [isFocus]);
 
    return (
