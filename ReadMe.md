@@ -2,11 +2,11 @@
 
 react native에 환경설정은 아래 페이지를 따라 하시면 됩니다.  
 https://reactnative.dev/docs/environment-setup  
-react native를 설치하셨다면
+react nativ를 설치하셨다면
 
 1. rootdirectory에서 터미널에`npm install`을 입력 하려 패키지를 인스톨
 2. `cd ios`으로 ios폴더로 접근하여 `pod install`을 입력 하려 pod파일을 인스톨합니다.
-3. 이후 다시 `cd ..` 을 입력하여 rootDirectory으로 이동한뒤
+3. 이후 다시 `cd ...` 을 입력하여 rootDirectory으로 이동한뒤
 4. `npm run ios`으로 스크립트를 실행시켜주세요!
 
 # jest 테스트방법
@@ -110,11 +110,14 @@ react native를 설치하셨다면
 ### async-storage
 
 1. 앱 내부에 반영구적(앱이 삭제되면 지워지므로)으로 값을 저장하기위한 localStorage  
-   라이브러리입니다.
+   라이브러리입니다.  
+
+참고한 싸이트 : https://github.com/react-native-async-storage/async-storage  
 
 ### uuid
+1. 오답노트의 유니크 아이디를 만들어주기위해 사용하였습니다.  
 
-1. 오답노트의 유니크 아이디를 만들어주기위해 사용하였습니다.
+참고한 싸이트 : https://www.npmjs.com/package/uuid  
 
 # Convention을위한 툴
 
