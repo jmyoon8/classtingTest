@@ -53,12 +53,13 @@ const Slice = createSlice<ReduxDefaultProps, any, any>({
             const results = action.payload.data.results;
             state.apiState = '';
 
-            let cloneQuiz = _.cloneDeep(results);
+            let cloneQuiz = results;
             for (let i = 0; i < cloneQuiz.length; i++) {
                cloneQuiz[i].answers = cloneQuiz[i].incorrect_answers;
                cloneQuiz[i].answers.push(cloneQuiz[i].correct_answer);
                cloneQuiz[i].answers = _.shuffle(cloneQuiz[i].answers);
             }
+
             state.shuffleQuiz = cloneQuiz;
          },
       );
