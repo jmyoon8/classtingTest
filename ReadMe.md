@@ -112,7 +112,11 @@ react nativ를 설치하셨다면
 1. 앱 내부에 반영구적(앱이 삭제되면 지워지므로)으로 값을 저장하기위한 localStorage  
    라이브러리입니다.
 
-### Convention을위한 툴
+### uuid
+
+1. 오답노트의 유니크 아이디를 만들어주기위해 사용하였습니다.
+
+# Convention을위한 툴
 
 1. eslint
 2. prettier
