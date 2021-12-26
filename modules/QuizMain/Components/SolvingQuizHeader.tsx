@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
-import {BackgroundColor, HeaderColor} from '../../utils/Styles';
+import {BackgroundColor, FontColorBlack, HeaderColor} from '../../utils/Styles';
 import {SolvingQuizStackScreenHeaderProps} from '../types/componentType';
 
 const styles = StyleSheet.create({
@@ -33,6 +33,11 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'flex-end',
    },
+   headerRightText: {
+      fontSize: 15,
+      fontWeight: '600',
+      color: FontColorBlack,
+   },
 });
 
 const SolvingQuizHeader = ({
@@ -41,24 +46,18 @@ const SolvingQuizHeader = ({
 }: SolvingQuizStackScreenHeaderProps) => {
    return (
       <View style={styles.container}>
-         <View style={styles.arrowBox}>
-            <TouchableOpacity
-               onPress={() => navigation.popToTop()}
-               testID="popToTop">
-               <Icon type="material" name="arrow-back-ios" />
-            </TouchableOpacity>
-         </View>
+         <TouchableOpacity
+            style={styles.arrowBox}
+            onPress={() => navigation.popToTop()}
+            testID="popToTop">
+            <Icon color={'#000'} type="material" name="arrow-back-ios" />
+         </TouchableOpacity>
+
          <View style={styles.headerTitleBox}>
             <Text style={styles.headerTitle}>{title}</Text>
          </View>
          <TouchableOpacity style={styles.confirmMessageBox} activeOpacity={0.6}>
-            <Text
-               style={{
-                  fontSize: 15,
-                  fontWeight: '600',
-               }}>
-               퀴즈 풀이
-            </Text>
+            <Text style={styles.headerRightText}>퀴즈 풀이</Text>
          </TouchableOpacity>
       </View>
    );
