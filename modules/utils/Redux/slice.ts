@@ -19,7 +19,7 @@ export const getQuizThunk = createAsyncThunk(
    },
 );
 
-const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
+const Slice = createSlice<ReduxDefaultProps, any, any>({
    name: 'quiz',
    initialState: {
       apiState: '',
@@ -67,5 +67,5 @@ const getArticleSlice = createSlice<ReduxDefaultProps, any, any>({
       });
    },
 });
-export const {resetQuiz, setQuizTimerState} = getArticleSlice.actions as any;
-export default getArticleSlice.reducer;
+export const {resetQuiz, setQuizTimerState} = Slice.actions as any;
+export default Slice.reducer;
