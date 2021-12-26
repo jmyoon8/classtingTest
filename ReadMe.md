@@ -2,7 +2,7 @@
 
 react native에 환경설정은 아래 페이지를 따라 하시면 됩니다.  
 https://reactnative.dev/docs/environment-setup  
-react nativ를 설치하셨다면
+react native를 설치하셨다면
 
 1. rootdirectory에서 터미널에`npm install`을 입력 하려 패키지를 인스톨
 2. `cd ios`으로 ios폴더로 접근하여 `pod install`을 입력 하려 pod파일을 인스톨합니다.
