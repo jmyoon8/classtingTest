@@ -99,17 +99,14 @@ const QuizFinishModal = ({
    const insertWrongAnswerNote = async () => {
       setCurrentQuizAmount(1);
       setIsWrongAnswerView(true);
-      setTimeout(() => {
-         setQuizFinishModalVisible(false);
-      }, 500);
-      const {correct, inCorrect} = result;
+
       if (!isWrongAnswerView) {
          const insertQuiz = await insertQuizLog(
             selectAnswer,
             getShuffleQuiz,
             quizId,
             selectedOption,
-            {correct, inCorrect},
+            result,
             getQuizTimer,
             startTime,
          );
@@ -119,6 +116,10 @@ const QuizFinishModal = ({
             Toast.show(`저장에 실패했습니다. `, Toast.SHORT);
          }
       }
+
+      setTimeout(() => {
+         setQuizFinishModalVisible(false);
+      }, 400);
    };
 
    return (
