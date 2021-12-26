@@ -26,5 +26,3 @@ describe('slice test', () => {
       expect(getData.payload).toEqual(timerData);
    });
 });
-
-export {};

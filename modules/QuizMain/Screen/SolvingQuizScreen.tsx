@@ -138,7 +138,6 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       );
 
       return () => {
-         console.log('화면아웃?');
          backHandler.remove();
       };
    }, [currentQuizAmount, isfocus]);
