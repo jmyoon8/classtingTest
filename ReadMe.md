@@ -6,7 +6,7 @@ react native를 설치하셨다면
 
 1. rootdirectory에서 터미널에`npm install`을 입력 하려 패키지를 인스톨
 2. `cd ios`으로 ios폴더로 접근하여 `pod install`을 입력 하려 pod파일을 인스톨합니다.
-3. 이후 다시 `cd ...` 을 입력하여 rootDirectory으로 이동한뒤
+3. 이후 다시 `cd ..` 을 입력하여 rootDirectory으로 이동한뒤
 4. `npm run ios`으로 스크립트를 실행시켜주세요!
 
 # jest 테스트방법
