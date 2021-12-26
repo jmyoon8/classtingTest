@@ -7,6 +7,7 @@ import {
    BackgroundColor,
    CancelColor,
    CheckColor,
+   FontColorBlack,
    HeaderColor,
    MainFontColor,
 } from '../../utils/Styles';
@@ -24,7 +25,7 @@ const QuizStartModal = ({
       setQuizStartModalVisible(false);
       setTimeout(() => {
          navigation.goBack();
-      }, 100);
+      }, 300);
    };
    const checkHandler = () => {
       setStartTime(moment());
@@ -40,7 +41,7 @@ const QuizStartModal = ({
             <TouchableOpacity
                style={styles.alignSelfEnd}
                onPress={closeHandler}>
-               <Icon type="ionicon" name="ios-close" />
+               <Icon type="ionicon" color={FontColorBlack} name="ios-close" />
             </TouchableOpacity>
             <Text style={styles.titleText}>
                아래 내용으로 퀴즈를 시작하시겠습니까?
