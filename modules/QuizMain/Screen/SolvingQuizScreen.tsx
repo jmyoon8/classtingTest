@@ -1,5 +1,12 @@
 import React, {useEffect, useLayoutEffect, useMemo, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View, Alert} from 'react-native';
+import {
+   ScrollView,
+   StyleSheet,
+   Text,
+   View,
+   Alert,
+   BackHandler,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import _ from 'lodash';
 import SolvingQuizHeader from '../Components/SolvingQuizHeader';
@@ -20,8 +27,16 @@ import QuizExplorer from '../Components/QuizExplorer';
 import QuizFinishModal from '../Components/QuizFinishModal';
 import 'react-native-get-random-values';
 import {v4 as uuid} from 'uuid';
+import {useIsFocused} from '@react-navigation/native';
 
 const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
+   useLayoutEffect(() => {
+      navigation.setOptions({
+         header: () => (
+            <SolvingQuizHeader navigation={navigation} title="퀴즈퀴즈!" />
+         ),
+      });
+   }, [navigation]);
    const {selectedOption, isWrongAnswerNotes, wrongAnswerNoteInfo} =
       route.params;
    const [startTime, setStartTime] = useState<any>('');
@@ -53,6 +68,8 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
    const [isFinish, setIsFinish] = useState(false);
    const [isWrongAnswerView, setIsWrongAnswerView] =
       useState(isWrongAnswerNotes);
+
+   const isfocus = useIsFocused();
    const topInfoArr = [
       {
          title: '퀴즈풀기',
@@ -103,18 +120,28 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
             );
          }
       } else {
-         setCurrentQuizAmount(currentQuizAmount - 1);
+         if (currentQuizAmount > 1) {
+            setCurrentQuizAmount(currentQuizAmount - 1);
+         }
       }
    };
+   useEffect(() => {
+      const backFunc = () => {
+         console.log('badck');
+         quizExplorerHandler('prev');
+         return true;
+      };
 
-   useLayoutEffect(() => {
-      navigation.setOptions({
-         header: () => (
-            <SolvingQuizHeader navigation={navigation} title="퀴즈퀴즈!" />
-         ),
-      });
-   }, [navigation]);
+      const backHandler = BackHandler.addEventListener(
+         'hardwareBackPress',
+         backFunc,
+      );
 
+      return () => {
+         console.log('화면아웃?');
+         backHandler.remove();
+      };
+   }, [currentQuizAmount, isfocus]);
    return (
       <>
          <ScrollView bounces={false} style={styles.container}>
