@@ -5,6 +5,7 @@ import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import QuizMainNavigator from './modules/QuizMain/QuizMainNavigator';
 import configureStroe from './modules/utils/Redux/configureStore';
+import {StyleSheet} from 'react-native';
 
 const App = () => {
    useEffect(() => {
@@ -19,7 +20,7 @@ const App = () => {
    }, []);
    return (
       <SafeAreaProvider>
-         <SafeAreaView style={{flex: 1}}>
+         <SafeAreaView style={styles.flex1}>
             <Provider store={configureStroe}>
                <NavigationContainer>
                   <QuizMainNavigator />
@@ -31,3 +32,9 @@ const App = () => {
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+   flex1: {
+      flex: 1,
+   },
+});

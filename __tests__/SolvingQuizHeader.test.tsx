@@ -9,17 +9,16 @@ describe('SolvingQuizHeader render well', () => {
       navigation: navigationMocking,
       title: '퀴즈퀴즈!',
    };
-   const renderHander = () => {
-      return render(<SolvingQuizHeader {...mockProps} />);
-   };
+
    test('SolvingQuizHeader render well', () => {
-      const rendered = renderHander();
+      const rendered = render(<SolvingQuizHeader {...mockProps} />);
       const getTitle = rendered.getByText(mockProps.title);
       expect(getTitle.props.children).toBe(mockProps.title);
    });
    test('popToTop', () => {
-      const rendered = renderHander();
+      const rendered = render(<SolvingQuizHeader {...mockProps} />);
       const getNavigationButton = rendered.getByTestId('popToTop');
+      expect(rendered).toBeTruthy();
       fireEvent(getNavigationButton, 'onPress');
    });
 });

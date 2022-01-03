@@ -4,7 +4,7 @@ import QuizAnswers from '../modules/QuizMain/Components/QuizAnswers';
 import {QuizAnswersProps} from '../modules/QuizMain/types/componentType';
 
 describe('QuizAnswers render test', () => {
-   test('render well and selectAnswer Correctly? ', () => {
+   test('render well and selectAnswer Correctly?', () => {
       const answerArr: string[] = Array(10).fill(undefined);
       const currentQuizAmount = 1;
       const selectHandler = (selectedAnswer: any) => {

@@ -19,7 +19,8 @@ const mockProps: WrongAnswerListItemProps = {
 };
 describe('WrongAnswerListItem render well?', () => {
    test('WrongAnswerListItem rendering test', () => {
-      render(<WrongAnswerListItem {...mockProps} />);
+      const rendered = render(<WrongAnswerListItem {...mockProps} />);
+      expect(rendered).toBeTruthy();
    });
    test('WrongAnswerListItem button test', () => {
       const rendered = render(<WrongAnswerListItem {...mockProps} />);

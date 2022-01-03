@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, {useEffect, useLayoutEffect, useMemo, useState} from 'react';
 import {
    ScrollView,
@@ -8,7 +9,7 @@ import {
    BackHandler,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-import _ from 'lodash';
+
 import SolvingQuizHeader from '../Components/SolvingQuizHeader';
 import {QuizStackScreenProps} from '../types/quizMainStackNavigationTypes';
 import QuizStartModal from '../Components/QuizStartModal';
@@ -45,6 +46,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
    const quizId = useMemo(() => {
       const id = uuid();
       return id;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [isReplay]);
 
    const [quizStartModalVisible, setQuizStartModalVisible] = useState(
@@ -140,12 +142,15 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       return () => {
          backHandler.remove();
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [currentQuizAmount, isfocus]);
    return (
       <>
          <ScrollView bounces={false} style={styles.container}>
             <View style={styles.titleBox}>
                <Text style={styles.titleText}>퀴즈를 풀어보아요!</Text>
+
+               {/* 문제풀때만 타이머 노출 */}
                {isWrongAnswerView || (
                   <SolvingQuizTimer startTime={startTime} isFinish={isFinish} />
                )}
@@ -265,18 +270,7 @@ const styles = StyleSheet.create({
       fontWeight: '500',
       fontSize: 18,
    },
-   answerIsCorrectBox: {
-      height: 30,
-      minWidth: 40,
-      paddingHorizontal: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 40,
-   },
-   answerIsCorrectMent: {
-      color: BackgroundColor,
-      fontWeight: 'bold',
-   },
+
    questionText: {
       color: MainFontColor,
       fontSize: 17,

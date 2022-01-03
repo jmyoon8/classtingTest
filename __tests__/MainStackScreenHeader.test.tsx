@@ -2,10 +2,10 @@ import React from 'react';
 import {fireEvent, render, RenderAPI} from '@testing-library/react-native';
 import MainStackScreenHeader from '../modules/QuizMain/Components/MainStackScreenHeader';
 import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
-import {MockingProvier} from './testUtils.test';
+import {MockingProvier} from '../testUtil/testUtils';
 import {navigationMocking} from '../mock';
 
-let renderMainStackScreenHeader: RenderAPI | undefined;
+let renderMainStackScreenHeader: RenderAPI;
 
 beforeEach(() => {
    const mockProps: MainStackScreenHeaderProps = {
@@ -24,11 +24,9 @@ beforeEach(() => {
 });
 describe('MainStackScreenHeader Test', () => {
    test('PressConfirmButton', () => {
-      if (renderMainStackScreenHeader) {
-         expect(renderMainStackScreenHeader).toBeTruthy();
-         const getButtonElement =
-            renderMainStackScreenHeader.getByTestId('confirmButton');
-         fireEvent(getButtonElement, 'onPress');
-      }
+      expect(renderMainStackScreenHeader).toBeTruthy();
+      const getButtonElement =
+         renderMainStackScreenHeader.getByTestId('confirmButton');
+      fireEvent(getButtonElement, 'onPress');
    });
 });

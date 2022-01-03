@@ -36,11 +36,13 @@ const QuizStartModal = ({
       <Modal
          isVisible={quizStartModalVisible}
          onBackButtonPress={closeHandler}
-         testID="closeButton">
+         testID="closeButton"
+      >
          <View style={styles.contentBox}>
             <TouchableOpacity
                style={styles.alignSelfEnd}
-               onPress={closeHandler}>
+               onPress={closeHandler}
+            >
                <Icon type="ionicon" color={FontColorBlack} name="ios-close" />
             </TouchableOpacity>
             <Text style={styles.titleText}>
@@ -62,12 +64,14 @@ const QuizStartModal = ({
                <TouchableOpacity
                   onPress={checkHandler}
                   style={styles.checkButtonBox}
-                  testID="checkButton">
+                  testID="checkButton"
+               >
                   <Text style={styles.checkButtonText}>확인</Text>
                </TouchableOpacity>
                <TouchableOpacity
                   onPress={closeHandler}
-                  style={styles.cancelButtonBox}>
+                  style={styles.cancelButtonBox}
+               >
                   <Text style={styles.cancelButtonText}>취소</Text>
                </TouchableOpacity>
             </View>

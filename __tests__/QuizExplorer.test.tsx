@@ -18,7 +18,8 @@ const mockProps: QuizExplorerProps = {
 };
 describe('QuizFinishModal render well?', () => {
    test('rendering test', () => {
-      render(<QuizExplorer {...mockProps} />);
+      const rendered = render(<QuizExplorer {...mockProps} />);
+      expect(rendered).toBeTruthy();
    });
    test('button test', () => {
       const rendered = render(<QuizExplorer {...mockProps} />);

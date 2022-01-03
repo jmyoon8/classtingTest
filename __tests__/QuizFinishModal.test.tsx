@@ -3,7 +3,7 @@ import {render, fireEvent} from '@testing-library/react-native';
 import QuizFinishModal from '../modules/QuizMain/Components/QuizFinishModal';
 import {QuizFinishModalProps} from '../modules/QuizMain/types/componentType';
 import {navigationMocking} from '../mock';
-import {MockingProvier} from './testUtils.test';
+import {MockingProvier} from '../testUtil/testUtils';
 
 const mockProps: QuizFinishModalProps = {
    getShuffleQuiz: [
@@ -32,11 +32,12 @@ const mockProps: QuizFinishModalProps = {
 };
 describe('QuizFinishModal render well?', () => {
    test('rendering test', () => {
-      render(
+      const rendered = render(
          <MockingProvier
             Component={() => <QuizFinishModal {...mockProps} />}
          />,
       );
+      expect(rendered).toBeTruthy();
    });
    test('button test', () => {
       const rendered = render(

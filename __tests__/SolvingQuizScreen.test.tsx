@@ -3,7 +3,7 @@ import {render, fireEvent} from '@testing-library/react-native';
 import SolvingQuizScreen from '../modules/QuizMain/Screen/SolvingQuizScreen';
 import {QuizStackScreenProps} from '../modules/QuizMain/types/quizMainStackNavigationTypes';
 import {navigationMocking} from '../mock';
-import {MockingNavigatorComponent, MockingProvier} from './testUtils.test';
+import {MockingNavigatorComponent} from '../testUtil/testUtils';
 
 const mockProps: QuizStackScreenProps = {
    navigation: navigationMocking,
@@ -19,11 +19,12 @@ const mockProps: QuizStackScreenProps = {
 
 describe('SolvingQuizScreen render well?', () => {
    test('rendering test', () => {
-      render(
+      const rendered = render(
          <MockingNavigatorComponent
             Component={() => <SolvingQuizScreen {...mockProps} />}
          />,
       );
+      expect(rendered).toBeTruthy();
    });
    test('getFunction', () => {
       const rendered = render(
@@ -31,6 +32,7 @@ describe('SolvingQuizScreen render well?', () => {
             Component={() => <SolvingQuizScreen {...mockProps} />}
          />,
       );
+      expect(rendered).toBeTruthy();
       const getCheckButton = rendered.getByTestId('checkButton');
       fireEvent(getCheckButton, 'onClick');
    });

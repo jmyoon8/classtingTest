@@ -24,5 +24,3 @@ describe('functionTest', () => {
       expect(getParsingData.type).toBe('multiple');
    });
 });
-
-export {};

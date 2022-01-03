@@ -3,7 +3,7 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import MainScreen from './Screen/MainScreen';
 import {QuizStackNavigation} from './types/quizMainStackNavigationTypes';
 import SolvingQuizScreen from './Screen/SolvingQuizScreen';
-import {dimentions} from '../utils/Styles';
+import {dimentions, FontColorBlack} from '../utils/Styles';
 import {useSelector} from 'react-redux';
 
 const QuizMainNavigator = () => {
@@ -24,11 +24,13 @@ const QuizMainNavigator = () => {
          <View
             testID="isLoading"
             style={[
+               // eslint-disable-next-line react-native/no-inline-styles
                {
                   display: quizLoading === 'pending' ? 'flex' : 'none',
                },
                styles.loadingDim,
-            ]}>
+            ]}
+         >
             <ActivityIndicator size={'large'} />
          </View>
       </>
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
       height: dimentions.height,
       borderWidth: 1,
       justifyContent: 'center',
-      backgroundColor: '#000',
+      backgroundColor: FontColorBlack,
       opacity: 0.5,
    },
 });

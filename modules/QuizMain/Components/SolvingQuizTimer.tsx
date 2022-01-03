@@ -1,4 +1,3 @@
-import {useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useLayoutEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
@@ -9,7 +8,8 @@ import numberPad from '../../utils/utilFunction';
 import {SolvingQuizTimerProps} from '../types/componentType';
 
 const SolvingQuizTimer = ({startTime, isFinish}: SolvingQuizTimerProps) => {
-   const isFocus = useIsFocused();
+   // 쓰지 않는 변수 제거
+   // const isFocus = useIsFocused();
    const dispatcher = useDispatch();
    const quizTimerSelect = useSelector(
       (state: any) => state.slice.quizTimerState,
@@ -31,6 +31,7 @@ const SolvingQuizTimer = ({startTime, isFinish}: SolvingQuizTimerProps) => {
                seconds: lastSeconds.toString(),
             }),
          );
+         console.log('시간흐름');
       }, 1000);
 
       return interval;
@@ -45,7 +46,9 @@ const SolvingQuizTimer = ({startTime, isFinish}: SolvingQuizTimerProps) => {
             clearInterval(timer);
          };
       }
-   }, [startTime, isFocus, isFinish]);
+      // depth에서 isFocus 제거
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [startTime, isFinish]);
 
    return (
       <View style={styles.timerContainer}>

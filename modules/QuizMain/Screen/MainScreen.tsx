@@ -1,12 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {
-   Alert,
-   ScrollView,
-   StyleSheet,
-   View,
-   Text,
-   TouchableOpacity,
-} from 'react-native';
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Slider} from 'react-native-elements/dist/slider/Slider';
 import AccordianContent from '../Components/AccordianContent';
@@ -17,12 +10,9 @@ import {quizOptions} from '../../utils/QuizOptions';
 import {
    HeaderColor,
    C56D8AE,
-   MainFontColor,
    SliderThumbColor,
    SliderTrackColor,
-   SubFontColor,
    BackgroundColor,
-   BottomDividerColor,
 } from '../../utils/Styles';
 import {MainStackScreenProps} from '../types/quizMainStackNavigationTypes';
 import MainStackScreenHeader from '../Components/MainStackScreenHeader';
@@ -35,6 +25,7 @@ import {
 } from '../../utils/AsyncStorageHandlers';
 import {WrongAnswerNoteType} from '../../utils/utilsTypes';
 import WrongAnswerListItem from '../Components/WrongAnswerListItem';
+import QuizOptionItem from '../Components/QuizOptionItem';
 
 const MainScreen = ({navigation}: MainStackScreenProps) => {
    const [numberOfQuiz, setNumberOfQuiz] = useState(1);
@@ -60,12 +51,12 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
       setSelectedCategory(category);
       setIsCategoryExtends(false);
    };
-   const difficultyHandler = (difficulty: string) => {
-      setDifficulty(difficulty);
+   const difficultyHandler = (option: string) => {
+      setDifficulty(option);
       setIsDifficultyExtends(false);
    };
-   const quizTypeHandler = (quizType: string) => {
-      setQuizType(quizType);
+   const quizTypeHandler = (option: string) => {
+      setQuizType(option);
       setIsQuizType(false);
    };
    const deleteWrongAnswerNoteHandler = (id: string) => {
@@ -95,7 +86,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
             />
          ),
       });
-   }, [difficulty, numberOfQuiz, quizType, selectedCategory]);
+   }, [difficulty, navigation, numberOfQuiz, quizType, selectedCategory]);
    useLayoutEffect(() => {
       // 자동으로 퀴즈 가져오기
       const getParsing = getParsingQuizOption(
@@ -107,17 +98,20 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
       if (selectedCategory && difficulty && quizType && numberOfQuiz) {
          dispatcher(getQuizThunk(getParsing));
       }
-   }, [selectedCategory, difficulty, quizType, numberOfQuiz]);
+   }, [selectedCategory, difficulty, quizType, numberOfQuiz, dispatcher]);
    useLayoutEffect(() => {
       // 퀴즈가 없으면 다시 검색해달라는 메세지 띄우기
+
       if (selectedCategory && difficulty && quizType && numberOfQuiz) {
          if (getQuiz.length <= 0) {
             Alert.alert('퀴즈가 없습니다 다른옵션으로 다시 검색해주세요!');
          }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [getQuiz]);
    useLayoutEffect(() => {
       if (isFocus) {
+         // 화면이 포커스 될때마다 퀴즈의 모든 옵션 초기화
          setNumberOfQuiz(1);
          setSelectedCategory('');
          setDifficulty('');
@@ -135,7 +129,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
          setIsQuizType(false);
          setIsWrongAnswerExtends(false);
       }
-   }, [isFocus]);
+   }, [dispatcher, isFocus]);
 
    return (
       <>
@@ -160,7 +154,8 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                   />
                }
                isExpanded={isNumberOfQuizExtends}
-               onPress={() => setIsNumberQuizExtends(!isNumberOfQuizExtends)}>
+               onPress={() => setIsNumberQuizExtends(!isNumberOfQuizExtends)}
+            >
                <View style={styles.sliderContainer}>
                   <Slider
                      value={numberOfQuiz}
@@ -198,18 +193,15 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                isExpanded={isDifficultyExtends}
                onPress={() => {
                   setIsDifficultyExtends(!isDifficultyExtends);
-               }}>
+               }}
+            >
                {isDifficultyExtends &&
-                  quizOptions.SelectDifficulty.map(difficulty => (
-                     <TouchableOpacity
-                        key={difficulty}
-                        activeOpacity={0.4}
-                        onPress={() => difficultyHandler(difficulty)}
-                        style={styles.listItemContainer}>
-                        <Text style={styles.accordionContentBoxSubFont}>
-                           {difficulty}
-                        </Text>
-                     </TouchableOpacity>
+                  quizOptions.SelectDifficulty.map(option => (
+                     <QuizOptionItem
+                        key={option}
+                        option={option}
+                        optionHandler={difficultyHandler}
+                     />
                   ))}
             </ListItem.Accordion>
             <ListItem.Accordion
@@ -234,18 +226,15 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                isExpanded={isQuizType}
                onPress={() => {
                   setIsQuizType(!isQuizType);
-               }}>
+               }}
+            >
                {isQuizType &&
-                  quizOptions.SelectType.map(quizType => (
-                     <TouchableOpacity
-                        key={quizType}
-                        activeOpacity={0.4}
-                        onPress={() => quizTypeHandler(quizType)}
-                        style={styles.listItemContainer}>
-                        <Text style={styles.accordionContentBoxSubFont}>
-                           {quizType}
-                        </Text>
-                     </TouchableOpacity>
+                  quizOptions.SelectType.map(option => (
+                     <QuizOptionItem
+                        key={option}
+                        option={option}
+                        optionHandler={quizTypeHandler}
+                     />
                   ))}
             </ListItem.Accordion>
             <ListItem.Accordion
@@ -270,18 +259,15 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                isExpanded={isCategoryExtends}
                onPress={() => {
                   setIsCategoryExtends(!isCategoryExtends);
-               }}>
+               }}
+            >
                {isCategoryExtends &&
                   quizOptions.SelectCategory.map(category => (
-                     <TouchableOpacity
-                        activeOpacity={0.4}
+                     <QuizOptionItem
                         key={category}
-                        onPress={() => categoryHandler(category)}
-                        style={styles.listItemContainer}>
-                        <Text style={styles.accordionContentBoxSubFont}>
-                           {category}
-                        </Text>
-                     </TouchableOpacity>
+                        option={category}
+                        optionHandler={categoryHandler}
+                     />
                   ))}
             </ListItem.Accordion>
             <ListItem.Accordion
@@ -306,7 +292,8 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                isExpanded={isWrongAnswerExtends}
                onPress={() => {
                   setIsWrongAnswerExtends(!isWrongAnswerExtends);
-               }}>
+               }}
+            >
                {isWrongAnswerExtends &&
                   wrongAnswerNote.map(wrongAnswerNoteItem => (
                      <WrongAnswerListItem
@@ -338,28 +325,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1.3,
       borderBottomColor: C56D8AE,
    },
-   accordionContent: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-   },
-   accordionContentBox: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-   },
-   accordionContentBoxMainFont: {
-      color: MainFontColor,
-      fontWeight: '700',
-      fontSize: 18,
-   },
-   accordionContentBoxSubFont: {
-      color: SubFontColor,
-      fontWeight: '700',
-      marginVertical: 4,
-   },
-   marginLeft8: {marginLeft: 8},
+
    sliderContainer: {
       paddingHorizontal: 20,
    },
@@ -373,12 +339,5 @@ const styles = StyleSheet.create({
       width: 30,
       height: 30,
       backgroundColor: SliderThumbColor,
-   },
-   listItemContainer: {
-      height: 43.3,
-      justifyContent: 'center',
-      paddingHorizontal: 14,
-      borderBottomColor: BottomDividerColor,
-      borderBottomWidth: 0.3,
    },
 });

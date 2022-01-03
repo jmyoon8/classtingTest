@@ -68,7 +68,7 @@ const QuizFinishModal = ({
          },
       ];
       return {pieChartData, correct, inCorrect};
-   }, [selectAnswer]);
+   }, [getShuffleQuiz, selectAnswer]);
 
    // 다시풀기
    const replayQuizHandler = () => {
@@ -111,9 +111,9 @@ const QuizFinishModal = ({
             startTime,
          );
          if (insertQuiz) {
-            Toast.show(`저장되었습니다.`, Toast.SHORT);
+            Toast.show('저장되었습니다.', Toast.SHORT);
          } else {
-            Toast.show(`저장에 실패했습니다. `, Toast.SHORT);
+            Toast.show('저장에 실패했습니다. ', Toast.SHORT);
          }
       }
 
@@ -155,7 +155,7 @@ const QuizFinishModal = ({
                      type="feather"
                      name="check-circle"
                      color={CorrectColor}
-                     style={{marginLeft: 12}}
+                     style={styles.marginLeft12}
                   />
                </View>
                <View style={styles.quizCorrectInCorrectBox}>
@@ -169,12 +169,12 @@ const QuizFinishModal = ({
                      type="feather"
                      name="x-circle"
                      color={InCorrectColor}
-                     style={{marginLeft: 12}}
+                     style={styles.marginLeft12}
                   />
                </View>
 
                <PieChart
-                  style={{alignSelf: 'center'}}
+                  style={styles.alignSelf}
                   data={result.pieChartData}
                   width={250}
                   height={140}
@@ -191,7 +191,8 @@ const QuizFinishModal = ({
                         {backgroundColor: ReplayQuizColor},
                      ]}
                      testID="replayQuizHandler"
-                     onPress={replayQuizHandler}>
+                     onPress={replayQuizHandler}
+                  >
                      <Text style={styles.buttonText}>
                         다시 풀어보고 싶어요!
                      </Text>
@@ -203,7 +204,8 @@ const QuizFinishModal = ({
                         {backgroundColor: InCorrectColor},
                      ]}
                      testID="insertWrongAnswerNote"
-                     onPress={insertWrongAnswerNote}>
+                     onPress={insertWrongAnswerNote}
+                  >
                      <Text style={styles.buttonText}>
                         오답노트를 보고싶어요!
                      </Text>
@@ -215,7 +217,8 @@ const QuizFinishModal = ({
                      activeOpacity={0.6}
                      style={[styles.buttonBox, {backgroundColor: CorrectColor}]}
                      testID="selectAnotherQuizHandler"
-                     onPress={selectAnotherQuizHandler}>
+                     onPress={selectAnotherQuizHandler}
+                  >
                      <Text style={styles.buttonText}>
                         다른 퀴즈를 고를래요!
                      </Text>
@@ -240,9 +243,6 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
    },
 
-   alignSelfEnd: {
-      alignSelf: 'flex-end',
-   },
    resultInfoContainer: {
       flex: 1,
       justifyContent: 'space-around',
@@ -294,5 +294,11 @@ const styles = StyleSheet.create({
       color: BackgroundColor,
       fontWeight: 'bold',
       fontSize: 14,
+   },
+   marginLeft12: {
+      marginLeft: 12,
+   },
+   alignSelf: {
+      alignSelf: 'center',
    },
 });

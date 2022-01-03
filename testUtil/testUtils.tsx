@@ -1,5 +1,6 @@
-import {NavigationContainer} from '@react-navigation/native';
+/* eslint-disable no-undef */
 import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
 import configureStroe from '../modules/utils/Redux/configureStore';
 
@@ -23,4 +24,3 @@ export const MockingNavigatorComponent = ({Component}: MockingProvier) => {
       </Provider>
    );
 };
-test('', () => {});

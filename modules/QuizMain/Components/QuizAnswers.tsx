@@ -4,6 +4,7 @@ import {Icon} from 'react-native-elements/dist/icons/Icon';
 import {
    BackgroundColor,
    CorrectColor,
+   FontColorBlack,
    InCorrectColor,
    MainFontColor,
    SelectedAnswerColor,
@@ -32,18 +33,20 @@ const QuizAnswers = ({
                            : SelectedAnswerColor,
                   },
                   styles.answerBox,
-               ]}>
-               <View style={{flexDirection: 'row'}}>
+               ]}
+            >
+               <View style={styles.flexRow}>
                   <Text
                      style={[
                         styles.answerNumber,
                         {
                            color:
                               selectAnswer[currentQuizAmount - 1] !== item
-                                 ? '#000'
+                                 ? FontColorBlack
                                  : BackgroundColor,
                         },
-                     ]}>
+                     ]}
+                  >
                      {index + 1}.{'  '}
                   </Text>
 
@@ -53,10 +56,11 @@ const QuizAnswers = ({
                         {
                            color:
                               selectAnswer[currentQuizAmount - 1] !== item
-                                 ? '#000'
+                                 ? FontColorBlack
                                  : BackgroundColor,
                         },
-                     ]}>
+                     ]}
+                  >
                      {item}
                   </Text>
                </View>
@@ -75,7 +79,7 @@ const QuizAnswers = ({
                            type="feather"
                            name="x-circle"
                            color={InCorrectColor}
-                           style={{marginLeft: 12}}
+                           style={styles.marginLeft}
                         />
                      </View>
                   ))}
@@ -110,5 +114,11 @@ const styles = StyleSheet.create({
    answerNumber: {
       fontSize: 16,
       fontWeight: 'bold',
+   },
+   flexRow: {
+      flexDirection: 'row',
+   },
+   marginLeft: {
+      marginLeft: 12,
    },
 });

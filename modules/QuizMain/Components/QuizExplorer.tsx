@@ -20,7 +20,8 @@ const QuizExplorer = ({
                testID="prev"
                onPress={() => quizExplorerHandler('prev')}
                activeOpacity={0.6}
-               style={styles.quizExplorerBeforeBox}>
+               style={styles.quizExplorerBeforeBox}
+            >
                <Icon
                   color={BackgroundColor}
                   type="antdesign"
@@ -34,7 +35,8 @@ const QuizExplorer = ({
                testID="next"
                onPress={() => quizExplorerHandler('next')}
                activeOpacity={0.6}
-               style={styles.quizExplorerNextBox}>
+               style={styles.quizExplorerNextBox}
+            >
                <Text style={styles.quizExplorerText}>다음</Text>
                <Icon
                   color={BackgroundColor}

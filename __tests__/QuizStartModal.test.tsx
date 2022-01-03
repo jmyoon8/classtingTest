@@ -33,6 +33,7 @@ const renderedHandler = () => {
 describe('component render well', () => {
    test('render well', () => {
       const rendered = renderedHandler();
+      expect(rendered).toBeTruthy();
    });
    test('when onBackButtonPress close Button is worked', () => {
       const renderd = renderedHandler();

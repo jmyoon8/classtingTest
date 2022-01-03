@@ -25,7 +25,8 @@ const QuizCorrectMent = ({
                            : InCorrectColor,
                   },
                   styles.answerIsCorrectBox,
-               ]}>
+               ]}
+            >
                <Text style={styles.answerIsCorrectMent}>
                   {selectAnswer[currentQuizAmount - 1] ===
                   currentQuizInfo?.correct_answer

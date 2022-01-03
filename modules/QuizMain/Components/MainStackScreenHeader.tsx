@@ -81,13 +81,16 @@ const MainStackScreenHeader = ({
             testID="confirmButton"
             onPress={headerConfirmHandler}
             style={styles.confirmMessageBox}
-            activeOpacity={0.6}>
+            activeOpacity={0.6}
+         >
             <Text
+               // eslint-disable-next-line react-native/no-inline-styles
                style={{
                   color: getQuiz.length > 0 ? SubFontColor : DisabledColor,
                   fontSize: 15,
                   fontWeight: '700',
-               }}>
+               }}
+            >
                {getQuiz.length > 0 ? '퀴즈 풀러가기!' : '퀴즈를\n골라주세요!'}
             </Text>
          </TouchableOpacity>

@@ -22,7 +22,6 @@ describe('slice test', () => {
       const dispatcher = configureStroe.dispatch;
       const getData = dispatcher(setQuizTimerState(timerData));
 
-      console.log(getData.payload);
       expect(getData.payload).toEqual(timerData);
    });
 });

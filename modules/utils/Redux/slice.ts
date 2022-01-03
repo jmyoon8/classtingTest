@@ -32,7 +32,7 @@ const Slice = createSlice<ReduxDefaultProps, any, any>({
    },
 
    reducers: {
-      resetQuiz: (state: ReduxDefaultProps, action: any) => {
+      resetQuiz: (state: ReduxDefaultProps) => {
          state.shuffleQuiz = [];
       },
 

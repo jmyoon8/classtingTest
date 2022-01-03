@@ -49,8 +49,13 @@ const SolvingQuizHeader = ({
          <TouchableOpacity
             style={styles.arrowBox}
             onPress={() => navigation.popToTop()}
-            testID="popToTop">
-            <Icon color={'#000'} type="material" name="arrow-back-ios" />
+            testID="popToTop"
+         >
+            <Icon
+               color={FontColorBlack}
+               type="material"
+               name="arrow-back-ios"
+            />
          </TouchableOpacity>
 
          <View style={styles.headerTitleBox}>

@@ -4,7 +4,6 @@ import {
    StackScreenProps,
 } from '@react-navigation/stack';
 import {WrongAnswerNoteType} from '../../utils/utilsTypes';
-import {QuizType} from './quizMainTypes';
 
 export type GetQuizParamProps = {
    category: number | string;

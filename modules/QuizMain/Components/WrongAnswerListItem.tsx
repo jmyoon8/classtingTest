@@ -17,7 +17,8 @@ const WrongAnswerListItem = ({
          activeOpacity={0.6}
          style={styles.wrongAnswerNoteContainer}
          testID="goToWrongAnswerNoteHandler"
-         onPress={() => goToWrongAnswerNoteHandler(wrongAnswerNoteItem)}>
+         onPress={() => goToWrongAnswerNoteHandler(wrongAnswerNoteItem)}
+      >
          <View style={styles.wrongAnswerNoteHeaderBox}>
             <Text style={styles.accordionContentBoxSubFont}>
                시작시간 시간 :{' '}
@@ -26,11 +27,12 @@ const WrongAnswerListItem = ({
                )}
             </Text>
             <TouchableOpacity
-            testID='deleteWrongAnswerNoteHandler'
+               testID="deleteWrongAnswerNoteHandler"
                onPress={() =>
                   deleteWrongAnswerNoteHandler(wrongAnswerNoteItem.quizId)
                }
-               activeOpacity={0.4}>
+               activeOpacity={0.4}
+            >
                <Icon type="ionicon" name="ios-close" />
             </TouchableOpacity>
          </View>

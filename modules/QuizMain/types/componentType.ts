@@ -1,3 +1,4 @@
+import React from 'react';
 import {WrongAnswerNoteType} from '../../utils/utilsTypes';
 import {
    GetQuizParamProps,
@@ -78,4 +79,9 @@ export interface WrongAnswerListItemProps {
    wrongAnswerNoteItem: WrongAnswerNoteType;
    goToWrongAnswerNoteHandler: (info: WrongAnswerNoteType) => void;
    deleteWrongAnswerNoteHandler: (id: string) => void;
+}
+
+export interface QuizOptionPoprs {
+   option: string;
+   optionHandler: (options: string) => void;
 }
