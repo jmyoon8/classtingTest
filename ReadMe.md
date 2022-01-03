@@ -110,16 +110,50 @@ react nativ를 설치하셨다면
 ### async-storage
 
 1. 앱 내부에 반영구적(앱이 삭제되면 지워지므로)으로 값을 저장하기위한 localStorage  
-   라이브러리입니다.  
+   라이브러리입니다.
 
-참고한 싸이트 : https://github.com/react-native-async-storage/async-storage  
+참고한 싸이트 : https://github.com/react-native-async-storage/async-storage
 
 ### uuid
-1. 오답노트의 유니크 아이디를 만들어주기위해 사용하였습니다.  
 
-참고한 싸이트 : https://www.npmjs.com/package/uuid  
+1. 오답노트의 유니크 아이디를 만들어주기위해 사용하였습니다.
+
+참고한 싸이트 : https://www.npmjs.com/package/uuid
 
 # Convention을위한 툴
 
 1. eslint
 2. prettier
+
+# 리펙토링(2022-01-03(월))
+
+1. solvingQuizTimer  
+   -  test=> setTimeInterval 테스트, jest.fakeTimers()를 mock.ts에서 가져옴  
+   -  component=> 사용하지 않는 변수제거(useIsfocused)  
+2. mock.ts  
+   -  설명추가  
+   -  jest.fakeTimers() 제거  
+3. .prettierrc.json  
+   -  jsxBracketSameLine:true=>false(>가 같은 라인에 붙어있어 구분이 어려움)  
+4. Main.tsx  
+   -  Accordion children 콤포넌트화  
+5. #000=>FontColorBlack으로 변경  
+6. Eslant 다시적용  
+   -  인라인스타일 체크  
+   -  안쓰는 변수들 체크  
+   -  부모의 변수명과 중복 체크  
+   -  Depth 요소 체크  
+   -  test안에서 if 사용금지  
+   -  모두 수정 완료  
+7. 렌더링 확인  
+   -  QuizExplorer.test  
+   -  QuizFinishModal.test  
+   -  QuizStartModal.test  
+   -  SolvingQuizHeader.test  
+   -  SolvingQuizScreen.test  
+   -  테스트 완료  
+8. QuizCorrectMent.test 테스트 추가  
+   -  정답일경우 멘트확인  
+   -  오답일경우 멘트확인  
+9. Aslant ignore folder  
+   -  Coverage  
