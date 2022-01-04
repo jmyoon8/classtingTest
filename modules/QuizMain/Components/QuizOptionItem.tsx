@@ -9,6 +9,7 @@ const QuizOptionItem = ({option, optionHandler}: QuizOptionPoprs) => {
          activeOpacity={0.4}
          key={option}
          onPress={() => optionHandler(option)}
+         testID="button"
          style={styles.listItemContainer}
       >
          <Text style={styles.accordionContentBoxSubFont}>{option}</Text>
