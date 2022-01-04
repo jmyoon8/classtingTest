@@ -157,3 +157,5 @@ react nativ를 설치하셨다면
    -  오답일경우 멘트확인  
 9. Aslant ignore folder  
    -  Coverage  
+10. 테스트 추가  
+    - QuizOptionItem.test  
