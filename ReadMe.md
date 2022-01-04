@@ -125,8 +125,7 @@ react nativ를 설치하셨다면
 1. eslint
 2. prettier
 
-# 리펙토링(2022-01-03(월))
-
+# 리펙토링
 1. solvingQuizTimer  
    -  test=> setTimeInterval 테스트, jest.fakeTimers()를 mock.ts에서 가져옴  
    -  component=> 사용하지 않는 변수제거(useIsfocused)  
