@@ -41,6 +41,8 @@ const QuizFinishModal = ({
    const quizTimerState = useSelector(
       (state: any) => state.slice.quizTimerState,
    );
+
+   // selectAnswer,getShuffleQuiz만 바뀔때마다 제할당한다
    const result = useMemo(() => {
       let correct = 0;
       let inCorrect = 0;
@@ -70,36 +72,20 @@ const QuizFinishModal = ({
       return {pieChartData, correct, inCorrect};
    }, [getShuffleQuiz, selectAnswer]);
 
-   // 다시풀기
-   const replayQuizHandler = () => {
-      // 피니시 모달 끄기
-      setQuizFinishModalVisible(false);
-      // 선택한 문제 초기화
-      setSelectAnswer(prev => {
-         prev = Array(prev.length).fill(undefined);
-         return prev;
-      });
-      // 문제 ID 재생성 위한 스테이트 변경
-      setIsReplay(prev => !prev);
-      // 현재 문제 번호 변경
-      setCurrentQuizAmount(1);
-      // 오답 노트 상태일때 문제풀이 환경으로 변경
-      setIsWrongAnswerView(false);
-      // 재시작이니 만큼 스타트 모달 노출
-      setQuizStartModalVisible(true);
-   };
-
    const selectAnotherQuizHandler = () => {
       setQuizFinishModalVisible(false);
       setTimeout(() => {
          navigation.navigate('SelectQuizOption');
-      }, 200);
+      }, 400);
    };
 
    const insertWrongAnswerNote = async () => {
       setCurrentQuizAmount(1);
       setIsWrongAnswerView(true);
-
+      setTimeout(() => {
+         setQuizFinishModalVisible(false);
+      }, 400);
+      // 오답노트 보기 모드가 아닐대만 풀이정보를 저장
       if (!isWrongAnswerView) {
          const insertQuiz = await insertQuizLog(
             selectAnswer,
@@ -116,12 +102,27 @@ const QuizFinishModal = ({
             Toast.show('저장에 실패했습니다. ', Toast.SHORT);
          }
       }
+   };
+   // finishModal 다시풀기
+   const replayQuizHandler = () => {
+      // 선택한 문제 초기화
+      setSelectAnswer(prev => {
+         return Array(prev.length).fill(undefined);
+      });
+      // 문제 ID 재생성 위한 스테이트 변경
+      setIsReplay(prev => !prev);
+      // 현재 문제 번호 변경
+      setCurrentQuizAmount(1);
+      // 오답 노트 상태일때 문제풀이 환경으로 변경
+      setIsWrongAnswerView(false);
+      // 재시작이니 만큼 스타트 모달 노출
 
+      // 피니시 모달 끄기
+      setQuizFinishModalVisible(false);
       setTimeout(() => {
-         setQuizFinishModalVisible(false);
+         setQuizStartModalVisible(true);
       }, 400);
    };
-
    return (
       <Modal isVisible={quizFinishModalVisible} testID="closeButton">
          <View style={styles.contentBox}>
