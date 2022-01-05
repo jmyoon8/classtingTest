@@ -115,12 +115,11 @@ const QuizFinishModal = ({
       setCurrentQuizAmount(1);
       // 오답 노트 상태일때 문제풀이 환경으로 변경
       setIsWrongAnswerView(false);
-      // 재시작이니 만큼 스타트 모달 노출
 
       // 피니시 모달 끄기
       setQuizFinishModalVisible(false);
       setTimeout(() => {
-         // start modal 노출
+         // 재시작이니 스타트 모달 노출
          setQuizStartModalVisible(true);
       }, 400);
    };
