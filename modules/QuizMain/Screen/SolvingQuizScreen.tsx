@@ -127,6 +127,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
          }
       }
    };
+
    useEffect(() => {
       const backFunc = () => {
          console.log('badck');
@@ -144,6 +145,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [currentQuizAmount, isfocus]);
+
    return (
       <>
          <ScrollView bounces={false} style={styles.container}>
@@ -200,25 +202,23 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                navigation={navigation}
                setIsFinish={setIsFinish}
             />
-
-            {quizFinishModalVisible && (
-               <QuizFinishModal
-                  selectAnswer={selectAnswer}
-                  getShuffleQuiz={getShuffleQuiz}
-                  quizFinishModalVisible={quizFinishModalVisible}
-                  setQuizFinishModalVisible={setQuizFinishModalVisible}
-                  setSelectAnswer={setSelectAnswer}
-                  setCurrentQuizAmount={setCurrentQuizAmount}
-                  navigation={navigation}
-                  selectedOption={selectedOption}
-                  quizId={quizId}
-                  setIsReplay={setIsReplay}
-                  setIsWrongAnswerView={setIsWrongAnswerView}
-                  isWrongAnswerView={isWrongAnswerView}
-                  startTime={startTime}
-                  setQuizStartModalVisible={setQuizStartModalVisible}
-               />
-            )}
+            {/*  quizFinishModalVisible 으로 콤포넌트 마운트 언마운트 분기처리되는점 제거*/}
+            <QuizFinishModal
+               selectAnswer={selectAnswer}
+               getShuffleQuiz={getShuffleQuiz}
+               quizFinishModalVisible={quizFinishModalVisible}
+               setQuizFinishModalVisible={setQuizFinishModalVisible}
+               setSelectAnswer={setSelectAnswer}
+               setCurrentQuizAmount={setCurrentQuizAmount}
+               navigation={navigation}
+               selectedOption={selectedOption}
+               quizId={quizId}
+               setIsReplay={setIsReplay}
+               setIsWrongAnswerView={setIsWrongAnswerView}
+               isWrongAnswerView={isWrongAnswerView}
+               startTime={startTime}
+               setQuizStartModalVisible={setQuizStartModalVisible}
+            />
          </ScrollView>
          <QuizExplorer
             currentQuizAmount={currentQuizAmount}
