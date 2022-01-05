@@ -120,6 +120,7 @@ const QuizFinishModal = ({
       // 피니시 모달 끄기
       setQuizFinishModalVisible(false);
       setTimeout(() => {
+         // start modal 노출
          setQuizStartModalVisible(true);
       }, 400);
    };

@@ -34,6 +34,8 @@ export const getParsingQuizOption = (
 
 export const numberPad = (n: string, width: number) => {
    n = n + '';
-   return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+   return n.length >= width
+      ? n
+      : new Array(width - n.length).fill('0').join('') + n;
 };
 export default numberPad;
