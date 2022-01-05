@@ -158,3 +158,9 @@ react nativ를 설치하셨다면
    -  Coverage  
 10. 테스트 추가  
     - QuizOptionItem.test  
+11. QuizFinishModal.test 테스트 추가  
+    - setTime타이밍맞춰 setState테스트  
+    - fireEvent마다 setState실행 테스트 정리  
+12. QuizFinishModal invisible일경우 에니메이션 적용안되는 점 수정  
+13. SolvingQuizScreen.test   
+    - 쓸모없는 테스트 제거   
