@@ -31,7 +31,6 @@ const SolvingQuizTimer = ({startTime, isFinish}: SolvingQuizTimerProps) => {
                seconds: lastSeconds.toString(),
             }),
          );
-         console.log('시간흐름');
       }, 1000);
 
       return interval;
