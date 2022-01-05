@@ -47,27 +47,40 @@ describe('QuizFinishModal render well?', () => {
       );
 
       const replayQuizButton = rendered.getByTestId('replayQuizHandler');
-      const insertWrongAnswerNoteButton = rendered.getByTestId(
-         'insertWrongAnswerNote',
-      );
+      fireEvent(replayQuizButton, 'onPress');
+      expect(mockProps.setSelectAnswer).toBeCalledTimes(1);
+      expect(mockProps.setIsReplay).toBeCalledTimes(1);
+      expect(mockProps.setCurrentQuizAmount).toBeCalledTimes(1);
+      expect(mockProps.setCurrentQuizAmount).toBeCalledWith(1);
+      expect(mockProps.setIsWrongAnswerView).toBeCalledTimes(1);
+      expect(mockProps.setQuizFinishModalVisible).toBeCalledTimes(1);
+      setTimeout(() => {
+         expect(mockProps.setQuizStartModalVisible).toBeCalledTimes(1);
+      }, 400);
+
       const selectAnotherQuizButton = rendered.getByTestId(
          'selectAnotherQuizHandler',
       );
-      fireEvent(replayQuizButton, 'onPress');
-      fireEvent(selectAnotherQuizButton, 'onPress');
-      fireEvent(insertWrongAnswerNoteButton, 'onPress');
 
+      fireEvent(selectAnotherQuizButton, 'onPress');
+      expect(mockProps.setQuizFinishModalVisible).toBeCalledTimes(2);
+      setTimeout(() => {
+         expect(mockProps.navigation.navigate).toBeCalledTimes(1);
+         expect(mockProps.navigation.navigate).toBeCalledWith(
+            'SelectQuizOption',
+         );
+      }, 400);
+
+      const insertWrongAnswerNoteButton = rendered.getByTestId(
+         'insertWrongAnswerNote',
+      );
+      fireEvent(insertWrongAnswerNoteButton, 'onPress');
       expect(mockProps.setCurrentQuizAmount).toBeCalledTimes(2);
       expect(mockProps.setCurrentQuizAmount).toBeCalledWith(1);
-
-      expect(mockProps.setIsReplay).toBeCalledTimes(1);
-
       expect(mockProps.setIsWrongAnswerView).toBeCalledTimes(2);
-
-      expect(mockProps.setQuizFinishModalVisible).toBeCalledTimes(2);
-
-      expect(mockProps.setQuizStartModalVisible).toBeCalledTimes(1);
-
-      expect(mockProps.setSelectAnswer).toBeCalledTimes(1);
+      setTimeout(() => {
+         expect(mockProps.setQuizFinishModalVisible).toBeCalledWith(false);
+         expect(mockProps.setQuizFinishModalVisible).toBeCalledTimes(1);
+      }, 400);
    });
 });
