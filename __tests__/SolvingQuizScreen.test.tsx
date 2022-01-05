@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, fireEvent} from '@testing-library/react-native';
+import {render} from '@testing-library/react-native';
 import SolvingQuizScreen from '../modules/QuizMain/Screen/SolvingQuizScreen';
 import {QuizStackScreenProps} from '../modules/QuizMain/types/quizMainStackNavigationTypes';
 import {navigationMocking} from '../mock';
@@ -26,14 +26,15 @@ describe('SolvingQuizScreen render well?', () => {
       );
       expect(rendered).toBeTruthy();
    });
-   test('getFunction', () => {
-      const rendered = render(
-         <MockingNavigatorComponent
-            Component={() => <SolvingQuizScreen {...mockProps} />}
-         />,
-      );
-      expect(rendered).toBeTruthy();
-      const getCheckButton = rendered.getByTestId('checkButton');
-      fireEvent(getCheckButton, 'onClick');
-   });
+   // 쓸모없는 테스트 제거
+   // test('getFunction', () => {
+   //    const rendered = render(
+   //       <MockingNavigatorComponent
+   //          Component={() => <SolvingQuizScreen {...mockProps} />}
+   //       />,
+   //    );
+   //    expect(rendered).toBeTruthy();
+   //    const getCheckButton = rendered.getByTestId('checkButton');
+   //    fireEvent(getCheckButton, 'onPress');
+   // });
 });
