@@ -163,4 +163,8 @@ react nativ를 설치하셨다면
     - fireEvent마다 setState실행 테스트 정리  
 12. QuizFinishModal invisible일경우 에니메이션 적용안되는 점 수정  
 13. SolvingQuizScreen.test   
-    - 쓸모없는 테스트 제거   
+    - 쓸모없는 테스트 제거     
+14. MainScreen  
+    - 햇갈리는 변수명 변경(isQuizType=>isQuizTypeExtends)  
+15. getUrl.test 테스트 추가  
+    -  모든 분기 커버  
