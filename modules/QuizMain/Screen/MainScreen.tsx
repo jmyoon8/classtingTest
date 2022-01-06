@@ -36,8 +36,8 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    const [isNumberOfQuizExtends, setIsNumberQuizExtends] = useState(false);
    const [isCategoryExtends, setIsCategoryExtends] = useState(false);
    const [isDifficultyExtends, setIsDifficultyExtends] = useState(false);
-   const [isQuizType, setIsQuizType] = useState(false);
    const [isWrongAnswerExtends, setIsWrongAnswerExtends] = useState(false);
+   const [isQuizTypeExtends, setIsQuizTypeExtends] = useState(false);
 
    const [wrongAnswerNote, setWrongAnswerNote] = useState<
       WrongAnswerNoteType[]
@@ -57,7 +57,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    };
    const quizTypeHandler = (option: string) => {
       setQuizType(option);
-      setIsQuizType(false);
+      setIsQuizTypeExtends(false);
    };
    const deleteWrongAnswerNoteHandler = (id: string) => {
       deleteQiuz(id).then(isDeleted => {
@@ -126,7 +126,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
          setIsNumberQuizExtends(false);
          setIsCategoryExtends(false);
          setIsDifficultyExtends(false);
-         setIsQuizType(false);
+         setIsQuizTypeExtends(false);
          setIsWrongAnswerExtends(false);
       }
    }, [dispatcher, isFocus]);
@@ -223,12 +223,12 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                      title="퀴즈 형식"
                   />
                }
-               isExpanded={isQuizType}
+               isExpanded={isQuizTypeExtends}
                onPress={() => {
-                  setIsQuizType(!isQuizType);
+                  setIsQuizTypeExtends(!isQuizTypeExtends);
                }}
             >
-               {isQuizType &&
+               {isQuizTypeExtends &&
                   quizOptions.SelectType.map(option => (
                      <QuizOptionItem
                         key={option}
