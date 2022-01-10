@@ -28,7 +28,7 @@ const QuizAnswers = ({
                style={[
                   {
                      backgroundColor:
-                        selectAnswer[currentQuizAmount - 1] !== item
+                        selectAnswer[currentQuizAmount] !== item
                            ? BackgroundColor
                            : SelectedAnswerColor,
                   },
@@ -41,7 +41,7 @@ const QuizAnswers = ({
                         styles.answerNumber,
                         {
                            color:
-                              selectAnswer[currentQuizAmount - 1] !== item
+                              selectAnswer[currentQuizAmount] !== item
                                  ? FontColorBlack
                                  : BackgroundColor,
                         },
@@ -55,7 +55,7 @@ const QuizAnswers = ({
                         styles.answerText,
                         {
                            color:
-                              selectAnswer[currentQuizAmount - 1] !== item
+                              selectAnswer[currentQuizAmount] !== item
                                  ? FontColorBlack
                                  : BackgroundColor,
                         },

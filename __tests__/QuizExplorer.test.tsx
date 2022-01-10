@@ -4,7 +4,7 @@ import {QuizExplorerProps} from '../modules/QuizMain/types/componentType';
 import QuizExplorer from '../modules/QuizMain/Components/QuizExplorer';
 
 const mockProps: QuizExplorerProps = {
-   currentQuizAmount: 2,
+   currentQuizAmount: 1,
    quizExplorerHandler: jest
       .fn()
       .mockImplementation((whereGoing: 'next' | 'prev') => {
@@ -14,7 +14,7 @@ const mockProps: QuizExplorerProps = {
             mockProps.currentQuizAmount--;
          }
       }),
-   selectAnswer: ['고른답1', '고른답2'],
+   selectAnswer: ['고른답1', '고른답2', '고른답3'],
 };
 describe('QuizFinishModal render well?', () => {
    test('rendering test', () => {
@@ -27,12 +27,12 @@ describe('QuizFinishModal render well?', () => {
       fireEvent(nextButton, 'onPress');
       expect(mockProps.quizExplorerHandler).toBeCalledTimes(1);
       expect(mockProps.quizExplorerHandler).toBeCalledWith('next');
-      expect(mockProps.currentQuizAmount).toBe(3);
+      expect(mockProps.currentQuizAmount).toBe(2);
 
       const prevButton = rendered.getByTestId('prev');
       fireEvent(prevButton, 'onPress');
       expect(mockProps.quizExplorerHandler).toBeCalledTimes(2);
       expect(mockProps.quizExplorerHandler).toBeCalledWith('prev');
-      expect(mockProps.currentQuizAmount).toBe(2);
+      expect(mockProps.currentQuizAmount).toBe(1);
    });
 });

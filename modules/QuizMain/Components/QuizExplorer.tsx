@@ -15,7 +15,7 @@ const QuizExplorer = ({
 }: QuizExplorerProps) => {
    return (
       <View style={styles.quizExplorerContainer}>
-         {currentQuizAmount - 1 !== 0 && (
+         {currentQuizAmount !== 0 && (
             <TouchableOpacity
                testID="prev"
                onPress={() => quizExplorerHandler('prev')}
@@ -30,7 +30,7 @@ const QuizExplorer = ({
                <Text style={styles.quizExplorerText}>이전</Text>
             </TouchableOpacity>
          )}
-         {selectAnswer[currentQuizAmount - 1] && (
+         {selectAnswer[currentQuizAmount] && (
             <TouchableOpacity
                testID="next"
                onPress={() => quizExplorerHandler('next')}

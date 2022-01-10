@@ -9,7 +9,6 @@ import {
    BackHandler,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-
 import SolvingQuizHeader from '../Components/SolvingQuizHeader';
 import {QuizStackScreenProps} from '../types/quizMainStackNavigationTypes';
 import QuizStartModal from '../Components/QuizStartModal';
@@ -46,15 +45,18 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
    const quizId = useMemo(() => {
       const id = uuid();
       return id;
+
+      // 문제 다시풀기를 선택할경우 문제아이디를 재할당한다(문제 저장은 중복된 문제아이디로는 저장할수없다.)
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [isReplay]);
 
+   // 스타트 모달은 오탑노트 보기가 아닐때만
    const [quizStartModalVisible, setQuizStartModalVisible] = useState(
       !isWrongAnswerNotes,
    );
    const [quizFinishModalVisible, setQuizFinishModalVisible] = useState(false);
 
-   const [currentQuizAmount, setCurrentQuizAmount] = useState(1);
+   const [currentQuizAmount, setCurrentQuizAmount] = useState(0);
 
    const getShuffleQuiz: QuizType[] = isWrongAnswerNotes
       ? wrongAnswerNoteInfo?.getShuffleQuiz
@@ -65,7 +67,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
          ? (wrongAnswerNoteInfo?.selectAnswer as string[])
          : Array(getShuffleQuiz.length).fill(undefined),
    );
-   const currentQuizInfo = getShuffleQuiz[currentQuizAmount - 1];
+   const currentQuizInfo = getShuffleQuiz[currentQuizAmount];
 
    const [isFinish, setIsFinish] = useState(false);
    const [isWrongAnswerView, setIsWrongAnswerView] =
@@ -87,18 +89,18 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       },
       {
          title: '진행사항',
-         subtitle: `${selectedOption.amount} / ${currentQuizAmount}`,
+         subtitle: `${selectedOption.amount} / ${currentQuizAmount + 1}`,
       },
    ];
    const selectAnswerHandler = (selectedAnswer: any) => {
-      if (!selectAnswer[currentQuizAmount - 1]) {
-         selectAnswer.splice(currentQuizAmount - 1, 1, selectedAnswer);
+      if (!selectAnswer[currentQuizAmount]) {
+         selectAnswer.splice(currentQuizAmount, 1, selectedAnswer);
          setSelectAnswer([...selectAnswer]);
       }
    };
    const quizExplorerHandler = (whereGoing: 'next' | 'prev') => {
       if (whereGoing === 'next') {
-         if (selectedOption.amount !== currentQuizAmount) {
+         if (selectedOption.amount !== currentQuizAmount + 1) {
             setCurrentQuizAmount(currentQuizAmount + 1);
          } else {
             Alert.alert(
@@ -170,7 +172,7 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
                <View style={styles.questionContainer}>
                   <View style={styles.questionTitleBox}>
                      <Text style={styles.questionTitle}>
-                        {currentQuizAmount}.{' '}
+                        {currentQuizAmount + 1}.{' '}
                         {isWrongAnswerView ? '오답노트' : '문제'}
                      </Text>
                      <QuizCorrectMent

@@ -51,7 +51,7 @@ describe('QuizFinishModal render well?', () => {
       expect(mockProps.setSelectAnswer).toBeCalledTimes(1);
       expect(mockProps.setIsReplay).toBeCalledTimes(1);
       expect(mockProps.setCurrentQuizAmount).toBeCalledTimes(1);
-      expect(mockProps.setCurrentQuizAmount).toBeCalledWith(1);
+      expect(mockProps.setCurrentQuizAmount).toBeCalledWith(0);
       expect(mockProps.setIsWrongAnswerView).toBeCalledTimes(1);
       expect(mockProps.setQuizFinishModalVisible).toBeCalledTimes(1);
       setTimeout(() => {
@@ -76,7 +76,7 @@ describe('QuizFinishModal render well?', () => {
       );
       fireEvent(insertWrongAnswerNoteButton, 'onPress');
       expect(mockProps.setCurrentQuizAmount).toBeCalledTimes(2);
-      expect(mockProps.setCurrentQuizAmount).toBeCalledWith(1);
+      expect(mockProps.setCurrentQuizAmount).toBeCalledWith(0);
       expect(mockProps.setIsWrongAnswerView).toBeCalledTimes(2);
       setTimeout(() => {
          expect(mockProps.setQuizFinishModalVisible).toBeCalledWith(false);

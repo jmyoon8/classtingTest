@@ -6,7 +6,7 @@ describe('CorrectMent render well?', () => {
    test('isCorrect?', () => {
       const rendered = render(
          <QuizCorrectMent
-            currentQuizAmount={1}
+            currentQuizAmount={0}
             currentQuizInfo={{
                answers: ['testIsGood', 'testIsNotGood'],
                correct_answer: 'testIsGood',
@@ -24,7 +24,7 @@ describe('CorrectMent render well?', () => {
    test('isInCorrect?', () => {
       const rendered = render(
          <QuizCorrectMent
-            currentQuizAmount={1}
+            currentQuizAmount={0}
             currentQuizInfo={{
                answers: ['testIsGood', 'testIsNotGood'],
                correct_answer: 'testIsGood',

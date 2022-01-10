@@ -80,7 +80,7 @@ const QuizFinishModal = ({
    };
 
    const insertWrongAnswerNote = async () => {
-      setCurrentQuizAmount(1);
+      setCurrentQuizAmount(0);
       setIsWrongAnswerView(true);
       setTimeout(() => {
          setQuizFinishModalVisible(false);
@@ -112,7 +112,7 @@ const QuizFinishModal = ({
       // 문제 ID 재생성 위한 스테이트 변경
       setIsReplay(prev => !prev);
       // 현재 문제 번호 변경
-      setCurrentQuizAmount(1);
+      setCurrentQuizAmount(0);
       // 오답 노트 상태일때 문제풀이 환경으로 변경
       setIsWrongAnswerView(false);
 

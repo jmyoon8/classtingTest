@@ -14,12 +14,12 @@ const QuizCorrectMent = ({
 }: QuizCorrectMentProps) => {
    return (
       <View>
-         {selectAnswer[currentQuizAmount - 1] && (
+         {selectAnswer[currentQuizAmount] && (
             <View
                style={[
                   {
                      backgroundColor:
-                        selectAnswer[currentQuizAmount - 1] ===
+                        selectAnswer[currentQuizAmount] ===
                         currentQuizInfo?.correct_answer
                            ? CorrectColor
                            : InCorrectColor,
@@ -28,7 +28,7 @@ const QuizCorrectMent = ({
                ]}
             >
                <Text style={styles.answerIsCorrectMent}>
-                  {selectAnswer[currentQuizAmount - 1] ===
+                  {selectAnswer[currentQuizAmount] ===
                   currentQuizInfo?.correct_answer
                      ? '정답입니다!'
                      : '틀렸습니다!'}
