@@ -1,8 +1,8 @@
 import {configureStore} from '@reduxjs/toolkit';
-import reducers from './reducers';
+import combinReducers from './combinReducers';
 
 const configureStroe = configureStore({
-   reducer: reducers,
+   reducer: combinReducers,
 });
 
 export default configureStroe;
