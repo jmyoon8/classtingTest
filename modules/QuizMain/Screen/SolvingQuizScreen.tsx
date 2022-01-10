@@ -9,6 +9,8 @@ import {
    BackHandler,
 } from 'react-native';
 import {useSelector} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
+import {v4 as uuid} from 'uuid';
 import SolvingQuizHeader from '../Components/SolvingQuizHeader';
 import {QuizStackScreenProps} from '../types/quizMainStackNavigationTypes';
 import QuizStartModal from '../Components/QuizStartModal';
@@ -26,8 +28,6 @@ import QuizCorrectMent from '../Components/QuizCorrectMent';
 import QuizExplorer from '../Components/QuizExplorer';
 import QuizFinishModal from '../Components/QuizFinishModal';
 import 'react-native-get-random-values';
-import {v4 as uuid} from 'uuid';
-import {useIsFocused} from '@react-navigation/native';
 
 const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
    useLayoutEffect(() => {
@@ -45,7 +45,6 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
    const quizId = useMemo(() => {
       const id = uuid();
       return id;
-
       // 문제 다시풀기를 선택할경우 문제아이디를 재할당한다(문제 저장은 중복된 문제아이디로는 저장할수없다.)
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [isReplay]);
@@ -74,24 +73,28 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
       useState(isWrongAnswerNotes);
 
    const isfocus = useIsFocused();
-   const topInfoArr = [
-      {
-         title: '퀴즈풀기',
-         subtitle: selectedOption.category,
-      },
-      {
-         title: '난이도',
-         subtitle: selectedOption.difficulty,
-      },
-      {
-         title: '퀴즈형식',
-         subtitle: selectedOption.type,
-      },
-      {
-         title: '진행사항',
-         subtitle: `${selectedOption.amount} / ${currentQuizAmount + 1}`,
-      },
-   ];
+   const topInfoArr = useMemo(
+      () => [
+         {
+            title: '퀴즈풀기',
+            subtitle: selectedOption.category,
+         },
+         {
+            title: '난이도',
+            subtitle: selectedOption.difficulty,
+         },
+         {
+            title: '퀴즈형식',
+            subtitle: selectedOption.type,
+         },
+         {
+            title: '진행사항',
+            subtitle: `${selectedOption.amount} / ${currentQuizAmount + 1}`,
+         },
+      ],
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [currentQuizAmount],
+   );
    const selectAnswerHandler = (selectedAnswer: any) => {
       if (!selectAnswer[currentQuizAmount]) {
          selectAnswer.splice(currentQuizAmount, 1, selectedAnswer);
@@ -132,7 +135,6 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
 
    useEffect(() => {
       const backFunc = () => {
-         console.log('badck');
          quizExplorerHandler('prev');
          return true;
       };
@@ -153,7 +155,6 @@ const SolvingQuizScreen = ({navigation, route}: QuizStackScreenProps) => {
          <ScrollView bounces={false} style={styles.container}>
             <View style={styles.titleBox}>
                <Text style={styles.titleText}>퀴즈를 풀어보아요!</Text>
-
                {/* 문제풀때만 타이머 노출 */}
                {isWrongAnswerView || (
                   <SolvingQuizTimer startTime={startTime} isFinish={isFinish} />
