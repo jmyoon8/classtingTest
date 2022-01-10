@@ -168,3 +168,7 @@ react nativ를 설치하셨다면
     - 햇갈리는 변수명 변경(isQuizType=>isQuizTypeExtends)  
 15. getUrl.test 테스트 추가  
     -  모든 분기 커버  
+16. MainScreen.tsx  
+    - Accordion 차일드 위로 다른 Accordian이 위로 뜨는 현상 제거  
+17. SolvingQuizScreen.tsx  
+    - CurrentAmount 초기값 1=>0으로 변경   
