@@ -43,6 +43,7 @@ export const insertQuizLog = async (
    const getItem = await getWrongAnswerNote();
 
    if (typeof getItem !== 'boolean') {
+      // 중복된 문제아이디를 저장불가
       if (!getItem.find(item => item.quizId === quizId)) {
          getItem.push({
             getQuizTimer,
