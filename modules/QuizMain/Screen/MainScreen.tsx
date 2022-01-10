@@ -132,8 +132,8 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
    }, [dispatcher, isFocus]);
 
    return (
-      <>
-         <ScrollView bounces={false} style={styles.container}>
+      <ScrollView bounces={false} style={styles.ScrollViewContainer}>
+         <View style={styles.container}>
             <ListItem.Accordion
                testID="numberOfQuiz"
                hasTVPreferredFocus={undefined}
@@ -306,26 +306,27 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
                      />
                   ))}
             </ListItem.Accordion>
-         </ScrollView>
-      </>
+         </View>
+      </ScrollView>
    );
 };
 
 export default MainScreen;
 
 const styles = StyleSheet.create({
-   container: {
+   ScrollViewContainer: {
       paddingHorizontal: 12,
       paddingTop: 10,
-      height: '100%',
       backgroundColor: BackgroundColor,
+   },
+   container: {
+      flex: 1,
    },
    accordionContentStyle: {
       paddingHorizontal: 4,
       borderBottomWidth: 1.3,
       borderBottomColor: C56D8AE,
    },
-
    sliderContainer: {
       paddingHorizontal: 20,
    },
