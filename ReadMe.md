@@ -172,3 +172,5 @@ react nativ를 설치하셨다면
     - Accordion 차일드 위로 다른 Accordian이 위로 뜨는 현상 제거  
 17. SolvingQuizScreen.tsx  
     - CurrentAmount 초기값 1=>0으로 변경   
+18. SolvingQuizHeader.test 테스트 추가  
+    - popToTop 펑션 실행횟수확인  
