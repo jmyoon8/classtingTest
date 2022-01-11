@@ -1,5 +1,10 @@
 import React from 'react';
-import {fireEvent, render, RenderAPI} from '@testing-library/react-native';
+import {
+   fireEvent,
+   render,
+   RenderAPI,
+   waitFor,
+} from '@testing-library/react-native';
 import MainStackScreenHeader from '../modules/QuizMain/Components/MainStackScreenHeader';
 import {MainStackScreenHeaderProps} from '../modules/QuizMain/types/componentType';
 import {MockingProvier} from '../testUtil/testUtils';
@@ -40,16 +45,18 @@ describe('MainStackScreenHeader Test', () => {
    test('PressConfirmButton selected quiz', async () => {
       const getButtonElement =
          renderMainStackScreenHeader.getByTestId('confirmButton');
-
-      const dispatcher = configureStroe.dispatch;
-      await dispatcher(
-         getQuizThunk({
-            amount: 10,
-            category: '9',
-            difficulty: 'easy',
-            type: 'boolean',
-         }),
-      );
+      // 비동기 객체 실행시 해당 로직은 리엑트의 컴포넌트 밖에서 실행된다 때문에 waitfor를 이용해 콜스택 내부에서 실행되도록 한다
+      await waitFor(async () => {
+         const dispatcher = configureStroe.dispatch;
+         await dispatcher(
+            getQuizThunk({
+               amount: 10,
+               category: '9',
+               difficulty: 'easy',
+               type: 'boolean',
+            }),
+         );
+      });
       expect(renderMainStackScreenHeader).toBeTruthy();
       fireEvent(getButtonElement, 'onPress');
       expect(mockProps.navigation.navigate).toBeCalledTimes(1);
