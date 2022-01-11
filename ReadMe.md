@@ -154,7 +154,7 @@ react nativ를 설치하셨다면
 8. QuizCorrectMent.test 테스트 추가  
    -  정답일경우 멘트확인  
    -  오답일경우 멘트확인  
-9. Aslant ignore folder  
+9. eslint ignore folder  
    -  Coverage  
 10. 테스트 추가  
     - QuizOptionItem.test  
