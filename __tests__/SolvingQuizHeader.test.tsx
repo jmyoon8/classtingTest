@@ -20,5 +20,6 @@ describe('SolvingQuizHeader render well', () => {
       const getNavigationButton = rendered.getByTestId('popToTop');
       expect(rendered).toBeTruthy();
       fireEvent(getNavigationButton, 'onPress');
+      expect(mockProps.navigation.popToTop).toBeCalledTimes(1);
    });
 });
