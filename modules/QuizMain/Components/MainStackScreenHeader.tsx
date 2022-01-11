@@ -69,7 +69,10 @@ const MainStackScreenHeader = ({
       <View style={styles.container}>
          <View style={styles.arrowBox}>
             {navigation.canGoBack() && (
-               <TouchableOpacity onPress={() => navigation.goBack()}>
+               <TouchableOpacity
+                  testID="goBack"
+                  onPress={() => navigation.goBack()}
+               >
                   <Icon type="material" name="arrow-back-ios" />
                </TouchableOpacity>
             )}

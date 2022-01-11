@@ -174,3 +174,6 @@ react nativ를 설치하셨다면
     - CurrentAmount 초기값 1=>0으로 변경   
 18. SolvingQuizHeader.test 테스트 추가  
     - popToTop 펑션 실행횟수확인  
+19. MainStackScreenHeader.test 테스트 추가  
+    - 문제선택 전/후 버튼 테스트 추가  
+    - 뒤로가기 버튼 테스트 추가  
