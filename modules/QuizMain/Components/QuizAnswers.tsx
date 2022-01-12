@@ -64,7 +64,7 @@ const QuizAnswers = ({
                      {item}
                   </Text>
                </View>
-               {!isWrongAnswerView &&
+               {isWrongAnswerView &&
                   (currentQuizInfo.correct_answer === item ? (
                      <View>
                         <Icon
