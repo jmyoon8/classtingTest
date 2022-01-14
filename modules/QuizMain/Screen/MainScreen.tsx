@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Slider} from 'react-native-elements/dist/slider/Slider';
@@ -87,25 +87,25 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
          ),
       });
    }, [difficulty, navigation, numberOfQuiz, quizType, selectedCategory]);
-   useLayoutEffect(() => {
+   useEffect(() => {
       // 자동으로 퀴즈 가져오기
-      const getParsing = getParsingQuizOption(
-         selectedCategory,
-         difficulty,
-         quizType,
-         numberOfQuiz,
-      );
       if (selectedCategory && difficulty && quizType && numberOfQuiz) {
+         const getParsing = getParsingQuizOption(
+            selectedCategory,
+            difficulty,
+            quizType,
+            numberOfQuiz,
+         );
          dispatcher(getQuizThunk(getParsing));
+         console.log('퀴즈가져오기');
       }
    }, [selectedCategory, difficulty, quizType, numberOfQuiz, dispatcher]);
-   useLayoutEffect(() => {
-      // 퀴즈가 없으면 다시 검색해달라는 메세지 띄우기
-
+   useEffect(() => {
       if (selectedCategory && difficulty && quizType && numberOfQuiz) {
          if (getQuiz.length <= 0) {
             Alert.alert('퀴즈가 없습니다 다른옵션으로 다시 검색해주세요!');
          }
+         console.log('퀴츠체크');
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [getQuiz]);
@@ -130,7 +130,7 @@ const MainScreen = ({navigation}: MainStackScreenProps) => {
          setIsWrongAnswerExtends(false);
       }
    }, [dispatcher, isFocus]);
-
+   console.log('렌더링?');
    return (
       <ScrollView bounces={false} style={styles.ScrollViewContainer}>
          <View style={styles.container}>
